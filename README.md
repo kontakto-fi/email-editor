@@ -48,6 +48,33 @@ const MyApp = () => {
 };
 ```
 
+## Theming
+
+The EmailEditor component does not include its own ThemeProvider, allowing you to integrate it with your application's theme. To apply a theme to the EmailEditor, wrap it with MUI's ThemeProvider:
+
+```jsx
+import React from 'react';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { EmailEditor } from 'kontakto-email-editor';
+import { createTheme } from '@mui/material/styles';
+
+// Create your custom theme or import it
+const theme = createTheme({
+  // Your theme options
+});
+
+const MyApp = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <EmailEditor />
+    </ThemeProvider>
+  );
+};
+```
+
+For reference, you can copy the default theme implementation from the `src/theme.ts` file in the package and customize it according to your application's design system.
+
 ## Development
 
 To run this locally:

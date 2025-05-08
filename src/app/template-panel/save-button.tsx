@@ -3,24 +3,24 @@ import React from 'react';
 import { SaveOutlined } from '@mui/icons-material';
 import { IconButton, Snackbar, Tooltip } from '@mui/material';
 
-import { useDocument } from '@editor/editor-context';
+import { useEmailEditor } from '../context';
 
 export default function SaveButton() {
-  const document = useDocument();
+  const { saveTemplate } = useEmailEditor();
   const [message, setMessage] = React.useState<string | null>(null);
 
   const onClick = async () => {
-    // Here you would normally implement the save functionality
-    // For now, we'll just show a message
-    
-    // Example of how you might handle the save action:
-    // const templateData = JSON.stringify(document);
-    // await saveTemplateToServer(templateData);
-    
-    setMessage('Template saved successfully!');
-    
-    // You can also trigger any save callback passed from parent components
-    // if (onSave) onSave(document);
+    try {
+      // Use the saveTemplate function from the EmailEditorContext
+      const savedTemplate = saveTemplate();
+      
+      // Set success message
+      setMessage('Template saved successfully!');
+    } catch (error) {
+      // Handle any errors
+      console.error('Error saving template:', error);
+      setMessage('Error saving template');
+    }
   };
 
   const onClose = () => {
