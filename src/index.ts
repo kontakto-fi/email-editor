@@ -1,31 +1,109 @@
-// Export components
-export * from './editor';
+// Export components from editor
+export { editorVersion } from './editor';
 
 // Export blocks
-// Resolve ambiguous exports by explicitly naming them
-export * from './blocks/index';
+export { 
+  // From text
+  Text,
+  TextPropsSchema,
+  TextProps,
+  TextPropsDefaults,
+  EmailMarkdown,
+  
+  // From avatar
+  Avatar,
+  AvatarPropsSchema,
+  AvatarProps,
+  AvatarPropsDefaults,
+  
+  // From button
+  Button,
+  ButtonPropsSchema,
+  ButtonProps,
+  ButtonPropsDefaults,
+  
+  // From columns-container
+  ColumnsContainer,
+  ColumnsContainerPropsSchema,
+  ColumnsContainerProps,
+  
+  // From container
+  Container,
+  ContainerPropsSchema,
+  ContainerProps,
+  
+  // From divider
+  Divider,
+  DividerPropsSchema,
+  DividerProps,
+  DividerPropsDefaults,
+  
+  // From heading
+  Heading,
+  HeadingPropsSchema,
+  HeadingProps,
+  HeadingPropsDefaults,
+  
+  // From html
+  Html,
+  HtmlPropsSchema,
+  HtmlProps,
+  
+  // From image
+  Image,
+  ImagePropsSchema,
+  ImageProps,
+  
+  // From spacer
+  Spacer,
+  SpacerPropsSchema,
+  SpacerProps,
+  SpacerPropsDefaults
+} from './blocks/index';
 
 // Export core functionality
-export * from './core/index';
+export {
+  // Builders
+  buildBlockComponent,
+  buildBlockConfigurationSchema,
+  buildBlockConfigurationDictionary,
+  
+  // Utility types
+  BlockConfiguration, 
+  DocumentBlocksDictionary
+} from './core/index';
 
 // Export email-builder
-// Make sure to avoid name collisions with the blocks export
 export {
   renderToStaticMarkup,
   Reader,
   ReaderBlock,
   ReaderBlockSchema,
   ReaderDocumentSchema,
+  
+  // Specialized blocks from email-builder
+  ColumnsContainerReader,
+  ContainerReader,
+  EmailLayoutPropsSchema,
+  EmailLayoutReader,
+  
+  // Types
   type TReaderBlock,
   type TReaderBlockProps,
   type TReaderDocument,
-  type TReaderProps,
-  EmailLayoutPropsSchema,
-  EmailLayoutReader
+  type TReaderProps
 } from './email-builder';
 
-// Export App component
-export { default as App } from './app';
-
 // Export theme
-export { default as theme } from './theme'; 
+export { default as theme } from './theme';
+
+// Export the new EmailEditor with its API
+export {
+  EmailEditor,
+  EmailEditorProvider,
+  useEmailEditor,
+  type EmailEditorProps,
+  type EmailEditorRef,
+  type EmailEditorContextType,
+  type EmailEditorProviderProps
+} from './email-editor'; 
