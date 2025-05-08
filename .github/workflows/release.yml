@@ -27,8 +27,15 @@ jobs:
           node-version: "lts/*"
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Remove package-lock.json and node_modules (npm bug workaround)
+        run: |
+          rm -rf package-lock.json node_modules
+          
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-optional
+
+      - name: Add platform-specific Rollup dependencies
+        run: npm install --save-dev @rollup/rollup-linux-x64-gnu
 
       - name: Build
         run: npm run build
