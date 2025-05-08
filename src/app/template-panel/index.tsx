@@ -20,6 +20,7 @@ import ImportJson from './import-json';
 import JsonPanel from './json-panel';
 import MainTabsGroup from './main-tabs-group';
 import ShareButton from './share-button';
+import SaveButton from './save-button';
 
 export default function TemplatePanel() {
   const document = useDocument();
@@ -110,6 +111,7 @@ export default function TemplatePanel() {
               </ToggleButton>
             </ToggleButtonGroup>
             <ShareButton />
+            <SaveButton />
           </Stack>
         </Stack>
         <ToggleInspectorPanelButton />
