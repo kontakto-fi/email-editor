@@ -1,5 +1,5 @@
 {
-  "name": "kontakto-email-editor",
+  "name": "@kontakto/react-email-editor",
   "version": "0.1.1",
   "type": "module",
   "main": "dist/index.js",
