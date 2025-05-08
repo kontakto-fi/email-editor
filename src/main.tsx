@@ -241,9 +241,8 @@ if (!root) {
 ReactDOM.createRoot(root).render(
   <div
     style={{
-      width: "50%",
-      height: "50%",
-      margin: "2% auto",
+      width: "90%",
+      margin: "1% auto",
     }}
   >
     <ThemeProvider theme={theme}>
