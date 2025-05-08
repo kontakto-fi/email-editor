@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { TextFieldsOutlined } from '@mui/icons-material';
 import { InputLabel, Stack } from '@mui/material';
@@ -12,6 +12,12 @@ type Props = {
 };
 export default function FontSizeInput({ label, defaultValue, onChange }: Props) {
   const [value, setValue] = useState(defaultValue);
+  
+  // Synchronize with external changes to defaultValue
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+  
   const handleChange = (value: number) => {
     setValue(value);
     onChange(value);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { MenuItem, TextField } from '@mui/material';
 
@@ -17,6 +17,12 @@ type NullableProps = {
 };
 export function NullableFontFamily({ label, onChange, defaultValue }: NullableProps) {
   const [value, setValue] = useState(defaultValue ?? 'inherit');
+  
+  // Synchronize with external changes to defaultValue
+  useEffect(() => {
+    setValue(defaultValue ?? 'inherit');
+  }, [defaultValue]);
+  
   return (
     <TextField
       select

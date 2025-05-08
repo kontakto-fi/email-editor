@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { FormatAlignCenterOutlined, FormatAlignLeftOutlined, FormatAlignRightOutlined } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
@@ -12,6 +12,11 @@ type Props = {
 };
 export default function TextAlignInput({ label, defaultValue, onChange }: Props) {
   const [value, setValue] = useState(defaultValue ?? 'left');
+  
+  // Synchronize with external changes to defaultValue
+  useEffect(() => {
+    setValue(defaultValue ?? 'left');
+  }, [defaultValue]);
 
   return (
     <RadioGroupInput
