@@ -26,11 +26,23 @@ export interface InspectorDrawerProps {
    * @default 225
    */
   exitDuration?: number;
+
+  /**
+   * Callback to delete a template by ID
+   */
+  deleteTemplate?: (templateId: string) => void;
+  
+  /**
+   * Callback to copy a template with a new name
+   */
+  copyTemplate?: (templateName: string, content: any) => void;
 }
 
 export default function InspectorDrawer({ 
   enterDuration = 225, 
-  exitDuration = 225 
+  exitDuration = 225,
+  deleteTemplate,
+  copyTemplate
 }: InspectorDrawerProps = {}) {
   const selectedSidebarTab = useSelectedSidebarTab();
   const inspectorDrawerOpen = useInspectorDrawerOpen();
@@ -42,7 +54,7 @@ export default function InspectorDrawer({
       case 'styles':
         return <StylesPanel />;
       case 'template-settings':
-        return <TemplatePanel />;
+        return <TemplatePanel deleteTemplate={deleteTemplate} copyTemplate={copyTemplate} />;
     }
   };
 

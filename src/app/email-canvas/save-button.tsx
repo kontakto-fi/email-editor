@@ -10,9 +10,10 @@ import { useDocument } from '@editor/editor-context';
 
 interface SaveButtonProps {
   loadTemplates?: () => Promise<any>;
+  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
 }
 
-export default function SaveButton({ loadTemplates }: SaveButtonProps) {
+export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
   const { saveTemplate, currentTemplateId, setCurrentTemplate } = useEmailEditor();
   const { showMessage } = useSnackbar();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
@@ -42,46 +43,24 @@ export default function SaveButton({ loadTemplates }: SaveButtonProps) {
 
   const handleSaveAs = async (templateName: string) => {
     try {
-      // Create new template ID
-      const templateId = `template-${Date.now()}`;
+      if (saveAs) {
+        // Use provided saveAs function
+        const { id: templateId, name } = await saveAs(templateName, document);
+        
+        // Update context
+        setCurrentTemplate(templateId, name);
 
-      // Get existing templates
-      const existingTemplatesJSON = localStorage.getItem('savedTemplates');
-      const existingTemplates = existingTemplatesJSON ? JSON.parse(existingTemplatesJSON) : [];
+        // Refresh templates list
+        if (loadTemplates) {
+          await loadTemplates();
+        }
 
-      // Create new template
-      const newTemplate = {
-        id: templateId,
-        name: templateName,
-        content: document,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+        showMessage('Template saved successfully!');
+        setSaveDialogOpen(false);
 
-      // Add to templates
-      existingTemplates.push(newTemplate);
-      localStorage.setItem('savedTemplates', JSON.stringify(existingTemplates));
-
-      // Update current template info
-      localStorage.setItem('lastEditedTemplate', JSON.stringify(document));
-      localStorage.setItem('lastEditedTemplateId', templateId);
-      localStorage.setItem('lastEditedTemplateName', templateName);
-
-      // Update context
-      setCurrentTemplate(templateId, templateName);
-
-      // Refresh templates list
-      if (loadTemplates) {
-        const updatedTemplates = await loadTemplates();
-        // Dispatch a custom event to notify about template list update
-        window.dispatchEvent(new CustomEvent('templateListUpdated', { detail: updatedTemplates }));
+        // Update URL
+        window.location.hash = `#template/${templateId}`;
       }
-
-      showMessage('Template saved successfully!');
-      setSaveDialogOpen(false);
-
-      // Update URL
-      window.location.hash = `#template/${templateId}`;
     } catch (error) {
       console.error('Error saving template:', error);
       showMessage('Error saving template');

@@ -7,6 +7,7 @@ import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEdito
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
 import TemplatePanel from './email-canvas';
+import InspectorTemplatePanel from './inspector-drawer/template-panel';
 import { SnackbarProvider } from './email-canvas/snackbar-provider';
 
 // Define the SampleTemplate interface directly here
@@ -62,6 +63,18 @@ export interface EmailEditorProps {
    * This will be called when a sample is selected from the drawer.
    */
   loadTemplate?: (templateId: string) => Promise<TEditorConfiguration | null>;
+  /**
+   * Callback to delete a template by ID.
+   */
+  deleteTemplate?: (templateId: string) => void;
+  /**
+   * Callback to copy a template with a new name.
+   */
+  copyTemplate?: (templateName: string, content: any) => void;
+  /**
+   * Callback to save a template with a new name.
+   */
+  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
 }
 
 function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: boolean) {
@@ -81,6 +94,9 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
     loadSamples,
     loadTemplates,
     loadTemplate,
+    deleteTemplate,
+    copyTemplate,
+    saveAs,
   } = props;
   const { template, updateTemplate, saveTemplate, loadTemplate: contextLoadTemplate, currentTemplateId } = useEmailEditor();
   const currentDocument = useDocument();
@@ -116,6 +132,8 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
       <InspectorDrawer 
         enterDuration={drawerEnterDuration}
         exitDuration={drawerExitDuration}
+        deleteTemplate={deleteTemplate}
+        copyTemplate={copyTemplate}
       />
       <SamplesDrawer 
         enterDuration={drawerEnterDuration}
@@ -125,6 +143,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
         loadTemplates={loadTemplates}
         loadTemplate={loadTemplate}
         currentTemplateId={currentTemplateId}
+        deleteTemplate={deleteTemplate}
       />
 
       <Stack
@@ -134,7 +153,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
           transition: [marginLeftTransition, marginRightTransition].join(', '),
         }}
       >
-        <TemplatePanel loadTemplates={loadTemplates} />
+        <TemplatePanel loadTemplates={loadTemplates} saveAs={saveAs} />
       </Stack>
     </Stack>
   );
@@ -154,6 +173,9 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     loadSamples,
     loadTemplates,
     loadTemplate,
+    deleteTemplate,
+    copyTemplate,
+    saveAs,
   } = props;
 
   // Initialize with the provided template
@@ -180,6 +202,9 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
           loadSamples={loadSamples}
           loadTemplates={loadTemplates}
           loadTemplate={loadTemplate}
+          deleteTemplate={deleteTemplate}
+          copyTemplate={copyTemplate}
+          saveAs={saveAs}
         />
       </EmailEditorProvider>
     </SnackbarProvider>

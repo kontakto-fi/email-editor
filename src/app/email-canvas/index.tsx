@@ -26,9 +26,10 @@ import { SampleTemplate } from '..';
 
 interface TemplatePanelProps {
   loadTemplates?: () => Promise<SampleTemplate[]>;
+  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
 }
 
-export default function TemplatePanel({ loadTemplates }: TemplatePanelProps) {
+export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelProps) {
   const document = useDocument();
   const selectedMainTab = useSelectedMainTab();
   const selectedScreenSize = useSelectedScreenSize();
@@ -117,7 +118,7 @@ export default function TemplatePanel({ loadTemplates }: TemplatePanelProps) {
                 </Tooltip>
               </ToggleButton>
             </ToggleButtonGroup>
-            <SaveButton loadTemplates={loadTemplates} />
+            <SaveButton loadTemplates={loadTemplates} saveAs={saveAs} />
           </Stack>
         </Stack>
         <ToggleInspectorPanelButton />

@@ -63,6 +63,11 @@ export interface SamplesDrawerProps {
    * Callback to create a new empty template
    */
   onCreateTemplate?: (templateName: string) => Promise<void>;
+  
+  /**
+   * Callback to delete a template by ID
+   */
+  deleteTemplate?: (templateId: string) => void;
 }
 
 export default function SamplesDrawer({
@@ -74,6 +79,7 @@ export default function SamplesDrawer({
   loadTemplate,
   currentTemplateId,
   onCreateTemplate,
+  deleteTemplate,
 }: SamplesDrawerProps) {
   const samplesDrawerOpen = useSamplesDrawerOpen();
   const [samples, setSamples] = useState<SampleTemplate[]>([]);

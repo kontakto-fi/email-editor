@@ -4,10 +4,15 @@ import { DeleteOutlined, ContentCopyOutlined } from '@mui/icons-material';
 
 import { useEmailEditor } from '../context';
 import { useDocument } from '@editor/editor-context';
-import { StoredTemplate } from '../context';
 import BaseSidebarPanel from './configuration-panel/input-panels/helpers/base-sidebar-panel';
 
-export default function TemplatePanel() {
+export interface TemplatePanelProps {
+  loadTemplates?: () => Promise<any[]>;
+  deleteTemplate?: (templateId: string) => void;
+  copyTemplate?: (templateName: string, content: any) => void;
+}
+
+export default function TemplatePanel({ deleteTemplate, copyTemplate }: TemplatePanelProps) {
   const { currentTemplateId, currentTemplateName } = useEmailEditor();
   const document = useDocument();
 
@@ -16,46 +21,26 @@ export default function TemplatePanel() {
       return;
     }
 
-    // Get existing templates
-    const existingTemplatesJSON = localStorage.getItem('savedTemplates');
-    if (!existingTemplatesJSON) return;
-
-    const existingTemplates: StoredTemplate[] = JSON.parse(existingTemplatesJSON);
-    const updatedTemplates = existingTemplates.filter((template: StoredTemplate) => template.id !== currentTemplateId);
-    
-    // Update localStorage
-    localStorage.setItem('savedTemplates', JSON.stringify(updatedTemplates));
-    localStorage.removeItem('lastEditedTemplateId');
-    localStorage.removeItem('lastEditedTemplateName');
-
-    // Refresh the page to load a new template
-    window.location.hash = '#';
-    window.location.reload();
+    if (deleteTemplate) {
+      // Use the provided deleteTemplate function
+      deleteTemplate(currentTemplateId);
+      
+      // Refresh the page to load a new template
+      window.location.hash = '#';
+      window.location.reload();
+    }
   };
 
   const handleCopyToSamples = () => {
     if (!currentTemplateName || !document) return;
 
-    // Get existing templates
-    const existingTemplatesJSON = localStorage.getItem('savedTemplates');
-    const existingTemplates: StoredTemplate[] = existingTemplatesJSON ? JSON.parse(existingTemplatesJSON) : [];
-
-    // Create new template
-    const templateId = `template-${Date.now()}`;
-    const newTemplate: StoredTemplate = {
-      id: templateId,
-      name: `${currentTemplateName} (Copy)`,
-      content: document,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    // Add to templates
-    existingTemplates.push(newTemplate);
-    localStorage.setItem('savedTemplates', JSON.stringify(existingTemplates));
-
-    // Show confirmation
-    window.alert('Template copied successfully!');
+    if (copyTemplate) {
+      // Use the provided copyTemplate function
+      copyTemplate(`${currentTemplateName} (Copy)`, document);
+      
+      // Show confirmation
+      window.alert('Template copied successfully!');
+    }
   };
 
   if (!currentTemplateId) {

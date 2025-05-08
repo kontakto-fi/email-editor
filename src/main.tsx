@@ -200,9 +200,103 @@ const EmailEditorWrapper = () => {
       if (currentTemplateId === templateId) {
         localStorage.removeItem("lastEditedTemplateId");
         localStorage.removeItem("lastEditedTemplateName");
+        // If current template was deleted, load empty template
+        setInitialTemplate(EMPTY_EMAIL_MESSAGE);
       }
+      
+      // Dispatch event to notify components about template deletion
+      const templateListUpdatedEvent = new CustomEvent('templateListUpdated', {
+        detail: updatedTemplates.map((template: StoredTemplate) => ({
+          id: template.id,
+          name: template.name,
+          description: `Last updated: ${new Date(template.updatedAt).toLocaleString()}`,
+        }))
+      });
+      window.dispatchEvent(templateListUpdatedEvent);
     } catch (error) {
       console.error("Error deleting template:", error);
+    }
+  };
+
+  // Handle template copying
+  const handleCopyTemplate = (templateName: string, content: any) => {
+    try {
+      // Get existing templates
+      const existingTemplatesJSON = localStorage.getItem('savedTemplates');
+      const existingTemplates: StoredTemplate[] = existingTemplatesJSON 
+        ? JSON.parse(existingTemplatesJSON) 
+        : [];
+
+      // Create new template
+      const templateId = `template-${Date.now()}`;
+      const newTemplate: StoredTemplate = {
+        id: templateId,
+        name: templateName,
+        content,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Add to templates
+      existingTemplates.push(newTemplate);
+      localStorage.setItem('savedTemplates', JSON.stringify(existingTemplates));
+
+      // Dispatch event to notify components about the new template
+      const templateListUpdatedEvent = new CustomEvent('templateListUpdated', {
+        detail: existingTemplates.map((template: StoredTemplate) => ({
+          id: template.id,
+          name: template.name,
+          description: `Last updated: ${new Date(template.updatedAt).toLocaleString()}`,
+        }))
+      });
+      window.dispatchEvent(templateListUpdatedEvent);
+    } catch (error) {
+      console.error("Error copying template:", error);
+    }
+  };
+
+  // Handle saving a template with a new name
+  const handleSaveAs = async (templateName: string, content: any): Promise<{id: string, name: string}> => {
+    try {
+      // Create new template ID
+      const templateId = `template-${Date.now()}`;
+
+      // Get existing templates
+      const existingTemplatesJSON = localStorage.getItem('savedTemplates');
+      const existingTemplates = existingTemplatesJSON ? JSON.parse(existingTemplatesJSON) : [];
+
+      // Create new template
+      const newTemplate = {
+        id: templateId,
+        name: templateName,
+        content,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Add to templates
+      existingTemplates.push(newTemplate);
+      localStorage.setItem('savedTemplates', JSON.stringify(existingTemplates));
+
+      // Update current template info
+      localStorage.setItem('lastEditedTemplate', JSON.stringify(content));
+      localStorage.setItem('lastEditedTemplateId', templateId);
+      localStorage.setItem('lastEditedTemplateName', templateName);
+
+      // Dispatch event to notify components about template list update
+      const templateListUpdatedEvent = new CustomEvent('templateListUpdated', {
+        detail: existingTemplates.map((template: StoredTemplate) => ({
+          id: template.id,
+          name: template.name,
+          description: `Last updated: ${new Date(template.updatedAt).toLocaleString()}`,
+        }))
+      });
+      window.dispatchEvent(templateListUpdatedEvent);
+
+      return { id: templateId, name: templateName };
+    } catch (error) {
+      console.error('Error saving template:', error);
+      throw error;
     }
   };
 
@@ -228,6 +322,9 @@ const EmailEditorWrapper = () => {
       loadSamples={handleLoadSamples}
       loadTemplates={handleLoadTemplates}
       loadTemplate={handleLoadTemplate}
+      deleteTemplate={handleDeleteTemplate}
+      copyTemplate={handleCopyTemplate}
+      saveAs={handleSaveAs}
     />
   );
 };
