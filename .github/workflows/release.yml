@@ -28,10 +28,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn build:bundle
+        run: npm run build
+
+      - name: Install semantic-release plugins
+        run: npm install -g semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/github @semantic-release/npm @semantic-release/release-notes-generator
 
       - name: Release
         env:
