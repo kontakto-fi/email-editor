@@ -5,6 +5,8 @@ import EmailEditor, { SampleTemplate } from './app';
 import { TEditorConfiguration } from '@editor/core';
 import theme from './theme';
 import { StoredTemplate } from './app/context';
+import WELCOME from '@sample/welcome';
+import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
 
 // Wrapper component to handle sample loading and context initialization
 const EmailEditorWrapper = () => {
@@ -23,11 +25,11 @@ const EmailEditorWrapper = () => {
           setInitialTemplateId(localStorage.getItem('lastEditedTemplateId'));
           setInitialTemplateName(localStorage.getItem('lastEditedTemplateName'));
         } else {
-          const module = await import('./configuration/sample/welcome');
-          setInitialTemplate(module.default);
+          setInitialTemplate(WELCOME);
         }
       } catch (error) {
         console.error('Error loading initial template:', error);
+        setInitialTemplate(EMPTY_EMAIL_MESSAGE);
       } finally {
         setLoading(false);
       }
@@ -112,19 +114,19 @@ const EmailEditorWrapper = () => {
 
   // Load sample templates
   const handleLoadSamples = async (): Promise<SampleTemplate[]> => {
-    return [{ id: 'welcome', name: 'Welcome email' }];
+    return [
+      { 
+        id: 'welcome', 
+        name: 'Welcome email',
+        description: 'A simple welcome email template'
+      }
+    ];
   };
 
   // Load a specific template by ID
   const handleLoadTemplate = async (templateId: string): Promise<TEditorConfiguration | null> => {
     if (templateId === 'welcome') {
-      try {
-        const module = await import('./configuration/sample/welcome');
-        return module.default;
-      } catch (error) {
-        console.error('Error loading welcome template:', error);
-        return null;
-      }
+      return WELCOME;
     }
 
     try {
@@ -185,18 +187,18 @@ const EmailEditorWrapper = () => {
       loadSamples={handleLoadSamples}
       loadTemplates={handleLoadTemplates}
       loadTemplate={handleLoadTemplate}
-      onDeleteTemplate={handleDeleteTemplate}
     />
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <div style={{ width: '50%', height: '50%', marginLeft: '10%', marginRight: '10%'}}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <EmailEditorWrapper />
-      </ThemeProvider>
-    </div>
-  </React.StrictMode>
+// Create root element and render app
+const root = document.createElement('div');
+root.id = 'root';
+document.body.appendChild(root);
+
+ReactDOM.createRoot(root).render(
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <EmailEditorWrapper />
+  </ThemeProvider>
 );

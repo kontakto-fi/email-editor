@@ -1,38 +1,39 @@
 import { create } from 'zustand';
-
-import getConfiguration, { getConfigurationSync } from '@configuration';
-
 import { TEditorConfiguration } from './core';
 
 type TValue = {
   document: TEditorConfiguration;
-
   selectedBlockId: string | null;
   selectedSidebarTab: 'block-configuration' | 'styles' | 'template-settings';
   selectedMainTab: 'editor' | 'preview' | 'json' | 'html';
   selectedScreenSize: 'desktop' | 'mobile';
-
   inspectorDrawerOpen: boolean;
   samplesDrawerOpen: boolean;
 };
 
+// Initialize with an empty document
+const EMPTY_DOCUMENT: TEditorConfiguration = {
+  root: {
+    type: 'EmailLayout',
+    data: {
+      backdropColor: '#F5F5F5',
+      canvasColor: '#FFFFFF',
+      textColor: '#262626',
+      fontFamily: 'MODERN_SANS',
+      childrenIds: [],
+    },
+  },
+};
+
 const editorStateStore = create<TValue>(() => ({
-  document: getConfigurationSync(window.location.hash),
+  document: EMPTY_DOCUMENT,
   selectedBlockId: null,
   selectedSidebarTab: 'styles',
   selectedMainTab: 'editor',
   selectedScreenSize: 'desktop',
-
   inspectorDrawerOpen: true,
   samplesDrawerOpen: true,
 }));
-
-// Initialize with the async version after mount
-if (typeof window !== 'undefined') {
-  getConfiguration(window.location.hash).then(config => {
-    editorStateStore.setState({ document: config });
-  });
-}
 
 export function useDocument() {
   return editorStateStore((s) => s.document);

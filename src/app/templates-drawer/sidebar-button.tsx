@@ -1,20 +1,18 @@
 import React from 'react';
-
 import { Button, SxProps, Theme } from '@mui/material';
-
 import { resetDocument } from '@editor/editor-context';
-import getConfiguration from '@configuration';
 import { useEmailEditor } from '../context';
+import { TEditorConfiguration } from '@editor/core';
 
 export interface SidebarButtonProps {
-  href: string;
+  templateId: string;
   children: JSX.Element | string;
-  templateLoader?: () => Promise<any>;
+  templateLoader: () => Promise<TEditorConfiguration>;
   sx?: SxProps<Theme>;
 }
 
 export default function SidebarButton({ 
-  href, 
+  templateId, 
   children,
   templateLoader,
   sx
@@ -22,36 +20,21 @@ export default function SidebarButton({
   const { setCurrentTemplate } = useEmailEditor();
   
   const handleClick = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default hash navigation
+    e.preventDefault();
     
-    let config;
-    
-    if (templateLoader) {
-      // Use the provided template loader
-      config = await templateLoader();
-    } else {
-      // Fall back to the default configuration loader
-      config = await getConfiguration(href);
-    }
-    
-    if (config) {
-      resetDocument(config);
-      window.location.hash = href; // Update the URL hash manually
-      
-      // Extract template ID from href
-      const templateId = href.startsWith('#template/') 
-        ? href.replace('#template/', '')
-        : href.startsWith('#sample/') 
-          ? href.replace('#sample/', '')
-          : null;
-          
-      // Update current template in context
-      setCurrentTemplate(templateId, null);
+    try {
+      const template = await templateLoader();
+      if (template) {
+        resetDocument(template);
+        setCurrentTemplate(templateId, null);
+      }
+    } catch (error) {
+      console.error('Error loading template:', error);
     }
   };
   
   return (
-    <Button size="small" href={href} onClick={handleClick} sx={sx}>
+    <Button size="small" onClick={handleClick} sx={sx}>
       {children}
     </Button>
   );

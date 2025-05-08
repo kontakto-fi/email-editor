@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
   Box,
   Button,
@@ -10,13 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-
-import { resetDocument, useSamplesDrawerOpen } from "@editor/editor-context";
+import { useSamplesDrawerOpen } from "@editor/editor-context";
 import { SampleTemplate } from "../index";
-import getConfiguration from "@configuration";
 import SaveTemplateDialog from "../email-canvas/save-template-dialog";
-import { useEmailEditor } from "../context";
-
+import { TEditorConfiguration } from "@editor/core";
 import SidebarButton from "./sidebar-button";
 
 export const SAMPLES_DRAWER_WIDTH = 240;
@@ -56,12 +52,17 @@ export interface SamplesDrawerProps {
    * Callback to load a specific template by ID.
    * This will be called when a template is selected from the drawer.
    */
-  loadTemplate?: (templateId: string) => Promise<any>;
+  loadTemplate?: (templateId: string) => Promise<TEditorConfiguration>;
 
   /**
    * ID of the currently active template
    */
   currentTemplateId?: string | null;
+
+  /**
+   * Callback to create a new empty template
+   */
+  onCreateTemplate: (templateName: string) => Promise<void>;
 }
 
 export default function SamplesDrawer({
@@ -72,7 +73,8 @@ export default function SamplesDrawer({
   loadTemplates,
   loadTemplate,
   currentTemplateId,
-}: SamplesDrawerProps = {}) {
+  onCreateTemplate,
+}: SamplesDrawerProps) {
   const samplesDrawerOpen = useSamplesDrawerOpen();
   const [samples, setSamples] = useState<SampleTemplate[]>([]);
   const [templates, setTemplates] = useState<SampleTemplate[]>([]);
@@ -122,18 +124,6 @@ export default function SamplesDrawer({
     return () => window.removeEventListener('templateListUpdated', handleTemplateListUpdate as EventListener);
   }, []);
 
-  // Refresh templates list when localStorage changes
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'savedTemplates' && loadTemplates) {
-        loadTemplates().then(setTemplates);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [loadTemplates]);
-
   // Handle opening the new template dialog
   const handleNewTemplateClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -142,44 +132,18 @@ export default function SamplesDrawer({
 
   // Handle creating a new empty template with a name
   const handleCreateNewTemplate = async (templateName: string) => {
-    // Get empty configuration
-    const emptyConfig = await getConfiguration("#");
-
-    // Set the document with empty config
-    resetDocument(emptyConfig);
-
-    // Store the new template in localStorage
-    const templateId = `template-${Date.now()}`;
-
-    const storedTemplate = {
-      id: templateId,
-      name: templateName,
-      content: emptyConfig,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    // Get existing templates
-    const existingTemplatesJSON = localStorage.getItem("savedTemplates");
-    const existingTemplates = existingTemplatesJSON
-      ? JSON.parse(existingTemplatesJSON)
-      : [];
-
-    // Add new template
-    existingTemplates.push(storedTemplate);
-
-    // Save to localStorage
-    localStorage.setItem("savedTemplates", JSON.stringify(existingTemplates));
-    localStorage.setItem("lastEditedTemplate", JSON.stringify(emptyConfig));
-    localStorage.setItem("lastEditedTemplateId", templateId);
-    localStorage.setItem("lastEditedTemplateName", templateName);
-
-    // Refresh templates list
-    if (loadTemplates) {
-      loadTemplates().then(setTemplates);
+    try {
+      await onCreateTemplate(templateName);
+      setNewTemplateDialogOpen(false);
+      
+      // Refresh templates list
+      if (loadTemplates) {
+        const updatedTemplates = await loadTemplates();
+        setTemplates(updatedTemplates);
+      }
+    } catch (error) {
+      console.error("Error creating template:", error);
     }
-
-    window.location.hash = "#"; // Update the URL hash
   };
 
   if (!enabled) {
@@ -234,7 +198,6 @@ export default function SamplesDrawer({
 
             {/* New Template Button */}
             <Button
-              href="#"
               onClick={handleNewTemplateClick}
               variant="contained"
               color="primary"
@@ -284,10 +247,8 @@ export default function SamplesDrawer({
                         }}
                       >
                         <SidebarButton
-                          href={`#template/${template.id}`}
-                          templateLoader={loadTemplate
-                            ? () => loadTemplate(template.id)
-                            : undefined}
+                          templateId={template.id}
+                          templateLoader={() => loadTemplate?.(template.id) ?? Promise.reject()}
                           sx={{ flexGrow: 1 }}
                         >
                           {template.name}
@@ -328,10 +289,8 @@ export default function SamplesDrawer({
                     {samples.map((sample) => (
                       <SidebarButton
                         key={sample.id}
-                        href={`#sample/${sample.id}`}
-                        templateLoader={loadTemplate
-                          ? () => loadTemplate(sample.id)
-                          : undefined}
+                        templateId={sample.id}
+                        templateLoader={() => loadTemplate?.(sample.id) ?? Promise.reject()}
                       >
                         {sample.name}
                       </SidebarButton>

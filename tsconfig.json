@@ -27,10 +27,9 @@
       "@core": ["src/core"],
       "@email-builder/*": ["src/email-builder/*"],
       "@email-builder": ["src/email-builder"],
-      "@configuration/*": ["src/configuration/*"],
-      "@configuration": ["src/configuration"],
       "@types/*": ["src/types/*"],
-      "@types": ["src/types"]
+      "@types": ["src/types"],
+      "@sample/*": ["sample-templates/*"]
     }
   },
   "exclude": ["dist"]
