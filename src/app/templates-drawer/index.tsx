@@ -52,7 +52,7 @@ export interface SamplesDrawerProps {
    * Callback to load a specific template by ID.
    * This will be called when a template is selected from the drawer.
    */
-  loadTemplate?: (templateId: string) => Promise<TEditorConfiguration>;
+  loadTemplate?: (templateId: string) => Promise<TEditorConfiguration | null>;
 
   /**
    * ID of the currently active template
@@ -62,7 +62,7 @@ export interface SamplesDrawerProps {
   /**
    * Callback to create a new empty template
    */
-  onCreateTemplate: (templateName: string) => Promise<void>;
+  onCreateTemplate?: (templateName: string) => Promise<void>;
 }
 
 export default function SamplesDrawer({
@@ -133,7 +133,7 @@ export default function SamplesDrawer({
   // Handle creating a new empty template with a name
   const handleCreateNewTemplate = async (templateName: string) => {
     try {
-      await onCreateTemplate(templateName);
+      await onCreateTemplate?.(templateName);
       setNewTemplateDialogOpen(false);
       
       // Refresh templates list
@@ -197,21 +197,23 @@ export default function SamplesDrawer({
             </Typography>
 
             {/* New Template Button */}
-            <Button
-              onClick={handleNewTemplateClick}
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              sx={{
-                mb: 1,
-                borderRadius: 1,
-                textTransform: "none",
-                justifyContent: "flex-start",
-                px: 2,
-              }}
-            >
-              Create New Template
-            </Button>
+            {onCreateTemplate && (
+              <Button
+                onClick={handleNewTemplateClick}
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                sx={{
+                  mb: 1,
+                  borderRadius: 1,
+                  textTransform: "none",
+                  justifyContent: "flex-start",
+                  px: 2,
+                }}
+              >
+                Create New Template
+              </Button>
+            )}
 
             {/* Existing Templates Section */}
             {loadTemplates && (

@@ -7,7 +7,7 @@ import { TEditorConfiguration } from '@editor/core';
 export interface SidebarButtonProps {
   templateId: string;
   children: JSX.Element | string;
-  templateLoader: () => Promise<TEditorConfiguration>;
+  templateLoader: () => Promise<TEditorConfiguration | null>;
   sx?: SxProps<Theme>;
 }
 
