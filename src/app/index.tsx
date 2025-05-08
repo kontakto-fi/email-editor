@@ -62,7 +62,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, {}>((_props, ref) => {
   }));
 
   return (
-    <>
+    <Stack position="relative" id="drawer-container">
       <InspectorDrawer />
       <SamplesDrawer />
 
@@ -75,7 +75,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, {}>((_props, ref) => {
       >
         <TemplatePanel />
       </Stack>
-    </>
+    </Stack>
   );
 });
 

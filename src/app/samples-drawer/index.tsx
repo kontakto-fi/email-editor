@@ -16,6 +16,17 @@ export default function SamplesDrawer() {
       variant="persistent"
       anchor="left"
       open={samplesDrawerOpen}
+      slotProps={{
+        backdrop: { style: { position: 'absolute' } }
+      }}
+      PaperProps={{
+        style: { position: 'absolute' }
+      }}
+      ModalProps={{
+        container: document.getElementById('drawer-container'),
+        style: { position: 'absolute' },
+        keepMounted: true
+      }}
       sx={{
         width: samplesDrawerOpen ? SAMPLES_DRAWER_WIDTH : 0,
       }}
@@ -40,7 +51,7 @@ export default function SamplesDrawer() {
 
           <Divider />
         </Stack>
-        </Stack>
+      </Stack>
     </Drawer>
   );
 }
