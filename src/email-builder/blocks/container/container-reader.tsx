@@ -1,9 +1,9 @@
 import React from 'react';
 
 // Import from our local blocks
-import { Container as BaseContainer } from '../../../blocks/container';
+import { Container as BaseContainer } from '@blocks';
 
-import { ReaderBlock } from '../../reader/core';
+import { ReaderBlock } from '@email-builder/reader/core';
 
 import { ContainerProps } from './container-props-schema';
 

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { AspectRatioOutlined } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
-import { AvatarPropsDefaults, AvatarPropsSchema } from '../../../../blocks';
-import type { AvatarProps } from '../../../../blocks';
+import { AvatarPropsDefaults, AvatarPropsSchema } from '@blocks';
+import type { AvatarProps } from '@blocks';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import RadioGroupInput from './helpers/inputs/radio-group-input';

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { TEditorConfiguration } from '../documents/editor/core';
+import { TEditorConfiguration } from '@editor/core';
 
 export interface EmailEditorContextType {
   template: TEditorConfiguration;

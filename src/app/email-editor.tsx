@@ -3,8 +3,8 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 
 import App from '../app';
 import theme from '../theme';
-import { TEditorConfiguration } from '../documents/editor/core';
-import { useDocument, resetDocument } from '../documents/editor/editor-context';
+import { TEditorConfiguration } from '@editor/core';
+import { useDocument, resetDocument } from '@editor/editor-context';
 import { EmailEditorProvider, useEmailEditor } from './context';
 
 // The ref interface for imperative controls

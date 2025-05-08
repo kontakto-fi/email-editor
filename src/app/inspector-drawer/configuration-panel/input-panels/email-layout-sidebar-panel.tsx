@@ -4,7 +4,7 @@ import { RoundedCornerOutlined } from '@mui/icons-material';
 
 import EmailLayoutPropsSchema, {
   EmailLayoutProps,
-} from '../../../../documents/blocks/email-layout/email-layout-props-schema';
+} from '@editor/blocks/email-layout/email-layout-props-schema';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import ColorInput, { NullableColorInput } from './helpers/inputs/color-input';

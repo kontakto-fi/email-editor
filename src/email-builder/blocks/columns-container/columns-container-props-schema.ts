@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Import from our local blocks
-import { ColumnsContainerPropsSchema as BaseColumnsContainerPropsSchema } from '../../../blocks/columns-container';
+import { ColumnsContainerPropsSchema as BaseColumnsContainerPropsSchema } from '@blocks';
 
 /**
  * Schema for ColumnsContainer props in the email editor

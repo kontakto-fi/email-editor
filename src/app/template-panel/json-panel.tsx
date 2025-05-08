@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { useDocument } from '../../documents/editor/editor-context';
+import { useDocument } from '@editor/editor-context';
 
 import HighlightedCodePanel from './helper/highlighted-code-panel';
 

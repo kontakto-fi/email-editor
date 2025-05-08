@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useCurrentBlockId } from '../../editor/editor-block';
-import { setDocument, setSelectedBlockId, useDocument } from '../../editor/editor-context';
-import EditorChildrenIds from '../helpers/editor-children-ids';
+import { useCurrentBlockId } from '@editor/editor-block';
+import { setDocument, setSelectedBlockId, useDocument } from '@editor/editor-context';
+import EditorChildrenIds from '@editor/blocks/helpers/editor-children-ids';
 
 import { EmailLayoutProps } from './email-layout-props-schema';
 

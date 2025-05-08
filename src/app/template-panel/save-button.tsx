@@ -3,7 +3,7 @@ import React from 'react';
 import { SaveOutlined } from '@mui/icons-material';
 import { IconButton, Snackbar, Tooltip } from '@mui/material';
 
-import { useDocument } from '../../documents/editor/editor-context';
+import { useDocument } from '@editor/editor-context';
 
 export default function SaveButton() {
   const document = useDocument();

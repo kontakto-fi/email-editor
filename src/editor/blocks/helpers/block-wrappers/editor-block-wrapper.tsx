@@ -2,8 +2,8 @@ import React, { CSSProperties, useState } from 'react';
 
 import { Box } from '@mui/material';
 
-import { useCurrentBlockId } from '../../../editor/editor-block';
-import { setSelectedBlockId, useSelectedBlockId } from '../../../editor/editor-context';
+import { useCurrentBlockId } from '@editor/editor-block';
+import { setSelectedBlockId, useSelectedBlockId } from '@editor/editor-context';
 
 import TuneMenu from './tune-menu';
 

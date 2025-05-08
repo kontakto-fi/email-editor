@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { TextProps, TextPropsSchema } from '../../../../blocks';
+import { TextProps, TextPropsSchema } from '@blocks';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import BooleanInput from './helpers/inputs/boolean-input';

@@ -1,4 +1,4 @@
-import { TEditorConfiguration } from '../../documents/editor/core';
+import { TEditorConfiguration } from '@editor/core';
 
 const ONE_TIME_PASSCODE: TEditorConfiguration = {
   root: {

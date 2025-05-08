@@ -3,7 +3,7 @@ import React from 'react';
 import { FirstPageOutlined, MenuOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
-import { toggleSamplesDrawerOpen, useSamplesDrawerOpen } from '../../documents/editor/editor-context';
+import { toggleSamplesDrawerOpen, useSamplesDrawerOpen } from '@editor/editor-context';
 
 function useIcon() {
   const samplesDrawerOpen = useSamplesDrawerOpen();

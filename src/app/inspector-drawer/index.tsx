@@ -6,7 +6,7 @@ import {
   setSidebarTab, 
   useInspectorDrawerOpen, 
   useSelectedSidebarTab
-} from '../../documents/editor/editor-context';
+} from '@editor/editor-context';
 
 import ConfigurationPanel from './configuration-panel';
 import StylesPanel from './styles-panel';

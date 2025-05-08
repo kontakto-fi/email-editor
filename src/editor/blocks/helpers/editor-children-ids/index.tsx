@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
-import { TEditorBlock } from '../../../editor/core';
-import EditorBlock from '../../../editor/editor-block';
+import { TEditorBlock } from '@editor/core';
+import EditorBlock from '@editor/editor-block';
 
 import AddBlockButton from './add-block-menu';
 

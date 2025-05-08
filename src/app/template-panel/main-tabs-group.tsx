@@ -3,7 +3,7 @@ import React from 'react';
 import { CodeOutlined, DataObjectOutlined, EditOutlined, PreviewOutlined } from '@mui/icons-material';
 import { Tab, Tabs, Tooltip } from '@mui/material';
 
-import { setSelectedMainTab, useSelectedMainTab } from '../../documents/editor/editor-context';
+import { setSelectedMainTab, useSelectedMainTab } from '@editor/editor-context';
 
 export default function MainTabsGroup() {
   const selectedMainTab = useSelectedMainTab();

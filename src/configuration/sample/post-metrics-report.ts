@@ -1,4 +1,4 @@
-import { TEditorConfiguration } from '../../documents/editor/core';
+import { TEditorConfiguration } from '@editor/core';
 
 const POST_METRICS_REPORT: TEditorConfiguration = {
   root: {

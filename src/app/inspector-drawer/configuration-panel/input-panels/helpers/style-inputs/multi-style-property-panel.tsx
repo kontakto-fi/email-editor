@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TStyle } from '../../../../../../documents/blocks/helpers/tstyle';
+import { TStyle } from '@editor/blocks/helpers/tstyle';
 
 import SingleStylePropertyPanel from './single-style-property-panel';
 

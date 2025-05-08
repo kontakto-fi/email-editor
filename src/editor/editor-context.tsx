@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import getConfiguration from '../../configuration';
+import getConfiguration from '@configuration';
 
 import { TEditorConfiguration } from './core';
 

@@ -10,20 +10,20 @@ import {
   Image, ImagePropsSchema,
   Spacer, SpacerPropsSchema,
   Text, TextPropsSchema
-} from '../../blocks';
+} from '@blocks';
 import {
   buildBlockComponent,
   buildBlockConfigurationDictionary,
   buildBlockConfigurationSchema,
-} from '../../core';
+} from '@core';
 
-import ColumnsContainerEditor from '../blocks/columns-container/columns-container-editor';
-import ColumnsContainerPropsSchema from '../blocks/columns-container/columns-container-props-schema';
-import ContainerEditor from '../blocks/container/container-editor';
-import ContainerPropsSchema from '../blocks/container/container-props-schema';
-import EmailLayoutEditor from '../blocks/email-layout/email-layout-editor';
-import EmailLayoutPropsSchema from '../blocks/email-layout/email-layout-props-schema';
-import EditorBlockWrapper from '../blocks/helpers/block-wrappers/editor-block-wrapper';
+import ColumnsContainerEditor from '@editor/blocks/columns-container/columns-container-editor';
+import ColumnsContainerPropsSchema from '@editor/blocks/columns-container/columns-container-props-schema';
+import ContainerEditor from '@editor/blocks/container/container-editor';
+import ContainerPropsSchema from '@editor/blocks/container/container-props-schema';
+import EmailLayoutEditor from '@editor/blocks/email-layout/email-layout-editor';
+import EmailLayoutPropsSchema from '@editor/blocks/email-layout/email-layout-props-schema';
+import EditorBlockWrapper from '@editor/blocks/helpers/block-wrappers/editor-block-wrapper';
 
 const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
   Avatar: {

@@ -2,17 +2,17 @@ import React from 'react';
 
 import { MonitorOutlined, PhoneIphoneOutlined } from '@mui/icons-material';
 import { Box, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
-import { Reader } from '../../email-builder';
+import { Reader } from '@email-builder';
 
-import EditorBlock from '../../documents/editor/editor-block';
+import EditorBlock from '@editor/editor-block';
 import {
   setSelectedScreenSize,
   useDocument,
   useSelectedMainTab,
   useSelectedScreenSize,
-} from '../../documents/editor/editor-context';
-import ToggleInspectorPanelButton from '../../app/inspector-drawer/toggle-inspector-panel-button';
-import ToggleSamplesPanelButton from '../../app/samples-drawer/toggle-samples-panel-button';
+} from '@editor/editor-context';
+import ToggleInspectorPanelButton from '../inspector-drawer/toggle-inspector-panel-button';
+import ToggleSamplesPanelButton from '../samples-drawer/toggle-samples-panel-button';
 
 import DownloadJson from './download-json';
 import HtmlPanel from './html-panel';

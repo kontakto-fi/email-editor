@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { TEditorBlock } from '../../../../editor/core';
+import { TEditorBlock } from '@editor/core';
 
 import BlocksMenu from './blocks-menu';
 import DividerButton from './divider-button';

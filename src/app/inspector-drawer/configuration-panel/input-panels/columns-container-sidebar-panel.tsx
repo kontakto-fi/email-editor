@@ -10,7 +10,7 @@ import { ToggleButton } from '@mui/material';
 
 import ColumnsContainerPropsSchema, {
   ColumnsContainerProps,
-} from '../../../../documents/blocks/columns-container/columns-container-props-schema';
+} from '@editor/blocks/columns-container/columns-container-props-schema';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import ColumnWidthsInput from './helpers/inputs/column-widths-input';

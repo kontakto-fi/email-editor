@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Import from our local blocks
-import { ColumnsContainer as BaseColumnsContainer } from '../../../blocks/columns-container';
+import { ColumnsContainer as BaseColumnsContainer } from '@blocks';
 
 import { ReaderBlock } from '../../reader/core';
 

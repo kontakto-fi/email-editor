@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Box, Button, Divider, Drawer, Link, Stack, Typography } from '@mui/material';
+import { Divider, Drawer, Stack, Typography } from '@mui/material';
 
-import { useSamplesDrawerOpen } from '../../documents/editor/editor-context';
+import { useSamplesDrawerOpen } from '@editor/editor-context';
 
 import SidebarButton from './sidebar-button';
-import logo from './waypoint.svg';
 
 export const SAMPLES_DRAWER_WIDTH = 240;
 

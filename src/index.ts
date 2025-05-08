@@ -1,6 +1,3 @@
-// Export components from editor
-export { editorVersion } from './editor';
-
 // Export blocks
 export { 
   // From text
@@ -106,4 +103,4 @@ export {
   type EmailEditorRef,
   type EmailEditorContextType,
   type EmailEditorProviderProps
-} from './email-editor'; 
+} from './app/email-editor-index'; 

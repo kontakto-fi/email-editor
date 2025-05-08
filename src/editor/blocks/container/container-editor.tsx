@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Container as BaseContainer } from '../../../blocks';
+import { Container as BaseContainer } from '@blocks';
 
-import { useCurrentBlockId } from '../../editor/editor-block';
-import { setDocument, setSelectedBlockId, useDocument } from '../../editor/editor-context';
-import EditorChildrenIds from '../helpers/editor-children-ids';
+import { useCurrentBlockId } from '@editor/editor-block';
+import { setDocument, setSelectedBlockId, useDocument } from '@editor/editor-context';
+import EditorChildrenIds from '@editor/blocks/helpers/editor-children-ids';
 
 import { ContainerProps } from './container-props-schema';
 

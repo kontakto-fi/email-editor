@@ -16,7 +16,22 @@
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@blocks": ["src/blocks"],
+      "@blocks/*": ["src/blocks/*"],
+      "@editor/*": ["src/editor/*"],
+      "@editor": ["src/editor"],
+      "@core/*": ["src/core/*"],
+      "@core": ["src/core"],
+      "@email-builder/*": ["src/email-builder/*"],
+      "@email-builder": ["src/email-builder"],
+      "@configuration/*": ["src/configuration/*"],
+      "@configuration": ["src/configuration"],
+      "@types/*": ["src/types/*"],
+      "@types": ["src/types"]
+    }
   },
   "exclude": ["dist"]
 }

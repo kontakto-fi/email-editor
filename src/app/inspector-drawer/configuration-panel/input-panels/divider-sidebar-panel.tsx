@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { HeightOutlined } from '@mui/icons-material';
-import { DividerPropsDefaults, DividerPropsSchema } from '../../../../blocks';
-import type { DividerProps } from '../../../../blocks';
+import { DividerPropsDefaults, DividerPropsSchema } from '@blocks/divider';
+import type { DividerProps } from '@blocks/divider';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import ColorInput from './helpers/inputs/color-input';

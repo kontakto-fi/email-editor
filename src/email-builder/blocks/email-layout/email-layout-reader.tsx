@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReaderBlock } from '../../reader/core';
+import { ReaderBlock } from '@email-builder/reader/core';
 
 import { EmailLayoutProps } from './email-layout-props-schema';
 

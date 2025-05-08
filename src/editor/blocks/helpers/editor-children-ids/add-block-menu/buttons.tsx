@@ -13,7 +13,7 @@ import {
   ViewColumnOutlined,
 } from '@mui/icons-material';
 
-import { TEditorBlock } from '../../../../editor/core';
+import { TEditorBlock } from '@editor/core';
 
 type TButtonProps = {
   label: string;

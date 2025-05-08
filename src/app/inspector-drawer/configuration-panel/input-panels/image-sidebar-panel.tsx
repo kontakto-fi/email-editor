@@ -6,7 +6,7 @@ import {
   VerticalAlignTopOutlined,
 } from '@mui/icons-material';
 import { Stack, ToggleButton } from '@mui/material';
-import { ImageProps, ImagePropsSchema } from '../../../../blocks';
+import { ImageProps, ImagePropsSchema } from '@blocks';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import RadioGroupInput from './helpers/inputs/radio-group-input';
