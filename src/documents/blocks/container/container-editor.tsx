@@ -4,9 +4,9 @@ import { Container as BaseContainer } from '../../../blocks';
 
 import { useCurrentBlockId } from '../../editor/editor-block';
 import { setDocument, setSelectedBlockId, useDocument } from '../../editor/editor-context';
-import EditorChildrenIds from '../helpers/EditorChildrenIds';
+import EditorChildrenIds from '../helpers/editor-children-ids';
 
-import { ContainerProps } from './ContainerPropsSchema';
+import { ContainerProps } from './container-props-schema';
 
 export default function ContainerEditor({ style, props }: ContainerProps) {
   const childrenIds = props?.childrenIds ?? [];

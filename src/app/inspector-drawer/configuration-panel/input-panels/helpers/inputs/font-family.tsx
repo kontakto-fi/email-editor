@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { MenuItem, TextField } from '@mui/material';
 
-import { FONT_FAMILIES } from '../../../../../../documents/blocks/helpers/fontFamily';
+import { FONT_FAMILIES } from '../../../../../../documents/blocks/helpers/font-family';
 
 const OPTIONS = FONT_FAMILIES.map((option) => (
   <MenuItem key={option.key} value={option.key} sx={{ fontFamily: option.value }}>

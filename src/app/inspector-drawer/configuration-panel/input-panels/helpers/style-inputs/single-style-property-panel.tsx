@@ -2,7 +2,7 @@ import React from 'react';
 
 import { RoundedCornerOutlined } from '@mui/icons-material';
 
-import { TStyle } from '../../../../../../documents/blocks/helpers/TStyle';
+import { TStyle } from '../../../../../../documents/blocks/helpers/tstyle';
 import { NullableColorInput } from '../inputs/color-input/index';
 import { NullableFontFamily } from '../inputs/font-family';
 import FontSizeInput from '../inputs/font-size-input';

@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { useCurrentBlockId } from '../../../editor/editor-block';
 import { setSelectedBlockId, useSelectedBlockId } from '../../../editor/editor-context';
 
-import TuneMenu from './TuneMenu';
+import TuneMenu from './tune-menu';
 
 type TEditorBlockWrapperProps = {
   children: JSX.Element;

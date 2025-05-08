@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useCurrentBlockId } from '../../editor/editor-block';
 import { setDocument, setSelectedBlockId, useDocument } from '../../editor/editor-context';
-import EditorChildrenIds from '../helpers/EditorChildrenIds';
+import EditorChildrenIds from '../helpers/editor-children-ids';
 
-import { EmailLayoutProps } from './EmailLayoutPropsSchema';
+import { EmailLayoutProps } from './email-layout-props-schema';
 
 function getFontFamily(fontFamily: EmailLayoutProps['fontFamily']) {
   const f = fontFamily ?? 'MODERN_SANS';

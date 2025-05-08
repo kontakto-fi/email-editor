@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react';
 
-import { TStyle } from '../TStyle';
+import { TStyle } from '../tstyle';
 
 type TReaderBlockWrapperProps = {
   style: TStyle;

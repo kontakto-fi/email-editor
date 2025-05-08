@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { TEditorBlock } from '../../../../editor/core';
 
-import BlocksMenu from './BlocksMenu';
-import DividerButton from './DividerButton';
-import PlaceholderButton from './PlaceholderButton';
+import BlocksMenu from './blocks-menu';
+import DividerButton from './divider-button';
+import PlaceholderButton from './placeholder-button';
 
 type Props = {
   placeholder?: boolean;

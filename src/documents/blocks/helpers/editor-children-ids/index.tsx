@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import { TEditorBlock } from '../../../editor/core';
 import EditorBlock from '../../../editor/editor-block';
 
-import AddBlockButton from './AddBlockMenu';
+import AddBlockButton from './add-block-menu';
 
 export type EditorChildrenChange = {
   blockId: string;

@@ -4,7 +4,7 @@ import { Box, Menu } from '@mui/material';
 
 import { TEditorBlock } from '../../../../editor/core';
 
-import BlockButton from './BlockButton';
+import BlockButton from './block-button';
 import { BUTTONS } from './buttons';
 
 type BlocksMenuProps = {

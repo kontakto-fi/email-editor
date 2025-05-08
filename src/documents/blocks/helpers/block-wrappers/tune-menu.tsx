@@ -5,7 +5,7 @@ import { IconButton, Paper, Stack, SxProps, Tooltip } from '@mui/material';
 
 import { TEditorBlock } from '../../../editor/core';
 import { resetDocument, setSelectedBlockId, useDocument } from '../../../editor/editor-context';
-import { ColumnsContainerProps } from '../../ColumnsContainer/ColumnsContainerPropsSchema';
+import { ColumnsContainerProps } from '../../columns-container/columns-container-props-schema';
 
 const sx: SxProps = {
   position: 'absolute',
