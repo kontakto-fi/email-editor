@@ -12,7 +12,7 @@ import {
   useSelectedScreenSize,
 } from '@editor/editor-context';
 import ToggleInspectorPanelButton from '../inspector-drawer/toggle-inspector-panel-button';
-import ToggleSamplesPanelButton from '../samples-drawer/toggle-samples-panel-button';
+import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-button';
 
 import DownloadJson from './download-json';
 import HtmlPanel from './html-panel';
@@ -21,11 +21,18 @@ import JsonPanel from './json-panel';
 import MainTabsGroup from './main-tabs-group';
 import ShareButton from './share-button';
 import SaveButton from './save-button';
+import { useEmailEditor } from '../context';
+import { SampleTemplate } from '..';
 
-export default function TemplatePanel() {
+interface TemplatePanelProps {
+  loadTemplates?: () => Promise<SampleTemplate[]>;
+}
+
+export default function TemplatePanel({ loadTemplates }: TemplatePanelProps) {
   const document = useDocument();
   const selectedMainTab = useSelectedMainTab();
   const selectedScreenSize = useSelectedScreenSize();
+  const { currentTemplateId } = useEmailEditor();
 
   let mainBoxSx: SxProps = {
     height: '100%',
@@ -110,13 +117,14 @@ export default function TemplatePanel() {
                 </Tooltip>
               </ToggleButton>
             </ToggleButtonGroup>
-            <ShareButton />
-            <SaveButton />
+            <SaveButton loadTemplates={loadTemplates} />
           </Stack>
         </Stack>
         <ToggleInspectorPanelButton />
       </Stack>
-      <Box sx={{ height: 'calc(100vh - 49px)', overflow: 'auto', minWidth: 370 }}>{renderMainPanel()}</Box>
+      <Box sx={{ height: 'calc(100vh - 49px)', overflow: 'auto', minWidth: 370 }}>
+        {renderMainPanel()}
+      </Box>
     </>
   );
 }

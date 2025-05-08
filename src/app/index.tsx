@@ -5,8 +5,18 @@ import { TEditorConfiguration } from '@editor/core';
 import { useDocument, resetDocument, useInspectorDrawerOpen, useSamplesDrawerOpen } from '@editor/editor-context';
 import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEditorProviderProps } from './context';
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
-import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './samples-drawer';
-import TemplatePanel from './template-panel';
+import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
+import TemplatePanel from './email-canvas';
+import { SnackbarProvider } from './email-canvas/snackbar-provider';
+
+// Define the SampleTemplate interface directly here
+export interface SampleTemplate {
+  id: string;
+  name: string;
+  description?: string;
+  category?: string;
+  thumbnail?: string;
+}
 
 // The ref interface for imperative controls
 export interface EmailEditorRef {
@@ -18,8 +28,40 @@ export interface EmailEditorRef {
 // Props for the EmailEditor component
 export interface EmailEditorProps {
   initialTemplate?: TEditorConfiguration;
+  initialTemplateId?: string;
+  initialTemplateName?: string;
   onSave?: (template: TEditorConfiguration) => void;
   onChange?: (template: TEditorConfiguration) => void;
+  /**
+   * Duration for drawer enter transition in milliseconds. Set to 0 for instant.
+   * @default 225
+   */
+  drawerEnterDuration?: number;
+  /**
+   * Duration for drawer exit transition in milliseconds. Set to 0 for instant.
+   * @default 225
+   */
+  drawerExitDuration?: number;
+  /**
+   * Whether to show the samples drawer.
+   * @default true
+   */
+  samplesDrawerEnabled?: boolean;
+  /**
+   * Callback to load samples dynamically.
+   * This will be called when the samples drawer is opened.
+   */
+  loadSamples?: () => Promise<SampleTemplate[]>;
+  /**
+   * Callback to load existing templates dynamically.
+   * This will be called when the samples drawer is opened.
+   */
+  loadTemplates?: () => Promise<SampleTemplate[]>;
+  /**
+   * Callback to load a specific template by ID.
+   * This will be called when a sample is selected from the drawer.
+   */
+  loadTemplate?: (templateId: string) => Promise<TEditorConfiguration | null>;
 }
 
 function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: boolean) {
@@ -31,8 +73,16 @@ function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: 
 }
 
 // Internal component that connects the App with the EmailEditor context
-const EmailEditorInternal = forwardRef<EmailEditorRef, {}>((_props, ref) => {
-  const { template, updateTemplate, saveTemplate, loadTemplate } = useEmailEditor();
+const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'initialTemplate' | 'initialTemplateId' | 'initialTemplateName' | 'onSave' | 'onChange'>>((props, ref) => {
+  const { 
+    drawerEnterDuration = 225,
+    drawerExitDuration = 225,
+    samplesDrawerEnabled = true,
+    loadSamples,
+    loadTemplates,
+    loadTemplate,
+  } = props;
+  const { template, updateTemplate, saveTemplate, loadTemplate: contextLoadTemplate, currentTemplateId } = useEmailEditor();
   const currentDocument = useDocument();
   const inspectorDrawerOpen = useInspectorDrawerOpen();
   const samplesDrawerOpen = useSamplesDrawerOpen();
@@ -53,7 +103,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, {}>((_props, ref) => {
       return saveTemplate();
     },
     loadTemplate: (newTemplate) => {
-      loadTemplate(newTemplate);
+      contextLoadTemplate(newTemplate);
       resetDocument(newTemplate);
     },
     getTemplate: () => {
@@ -63,17 +113,28 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, {}>((_props, ref) => {
 
   return (
     <Stack position="relative" id="drawer-container">
-      <InspectorDrawer />
-      <SamplesDrawer />
+      <InspectorDrawer 
+        enterDuration={drawerEnterDuration}
+        exitDuration={drawerExitDuration}
+      />
+      <SamplesDrawer 
+        enterDuration={drawerEnterDuration}
+        exitDuration={drawerExitDuration}
+        enabled={samplesDrawerEnabled}
+        loadSamples={loadSamples}
+        loadTemplates={loadTemplates}
+        loadTemplate={loadTemplate}
+        currentTemplateId={currentTemplateId}
+      />
 
       <Stack
         sx={{
           marginRight: inspectorDrawerOpen ? `${INSPECTOR_DRAWER_WIDTH}px` : 0,
-          marginLeft: samplesDrawerOpen ? `${SAMPLES_DRAWER_WIDTH}px` : 0,
+          marginLeft: samplesDrawerOpen && samplesDrawerEnabled ? `${SAMPLES_DRAWER_WIDTH}px` : 0,
           transition: [marginLeftTransition, marginRightTransition].join(', '),
         }}
       >
-        <TemplatePanel />
+        <TemplatePanel loadTemplates={loadTemplates} />
       </Stack>
     </Stack>
   );
@@ -81,7 +142,19 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, {}>((_props, ref) => {
 
 // The main EmailEditor component that external apps will use
 const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) => {
-  const { initialTemplate, onSave, onChange } = props;
+  const { 
+    initialTemplate, 
+    initialTemplateId,
+    initialTemplateName,
+    onSave, 
+    onChange,
+    drawerEnterDuration,
+    drawerExitDuration,
+    samplesDrawerEnabled,
+    loadSamples,
+    loadTemplates,
+    loadTemplate,
+  } = props;
 
   // Initialize with the provided template
   useEffect(() => {
@@ -91,13 +164,25 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
   }, [initialTemplate]);
 
   return (
-    <EmailEditorProvider 
-      initialTemplate={initialTemplate}
-      onSave={onSave}
-      onChange={onChange}
-    >
-      <EmailEditorInternal ref={ref} />
-    </EmailEditorProvider>
+    <SnackbarProvider>
+      <EmailEditorProvider 
+        initialTemplate={initialTemplate}
+        initialTemplateId={initialTemplateId}
+        initialTemplateName={initialTemplateName}
+        onSave={onSave}
+        onChange={onChange}
+      >
+        <EmailEditorInternal 
+          ref={ref} 
+          drawerEnterDuration={drawerEnterDuration}
+          drawerExitDuration={drawerExitDuration}
+          samplesDrawerEnabled={samplesDrawerEnabled}
+          loadSamples={loadSamples}
+          loadTemplates={loadTemplates}
+          loadTemplate={loadTemplate}
+        />
+      </EmailEditorProvider>
+    </SnackbarProvider>
   );
 });
 

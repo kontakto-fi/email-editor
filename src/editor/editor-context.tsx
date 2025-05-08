@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import getConfiguration from '@configuration';
+import getConfiguration, { getConfigurationSync } from '@configuration';
 
 import { TEditorConfiguration } from './core';
 
@@ -8,7 +8,7 @@ type TValue = {
   document: TEditorConfiguration;
 
   selectedBlockId: string | null;
-  selectedSidebarTab: 'block-configuration' | 'styles';
+  selectedSidebarTab: 'block-configuration' | 'styles' | 'template-settings';
   selectedMainTab: 'editor' | 'preview' | 'json' | 'html';
   selectedScreenSize: 'desktop' | 'mobile';
 
@@ -17,7 +17,7 @@ type TValue = {
 };
 
 const editorStateStore = create<TValue>(() => ({
-  document: getConfiguration(window.location.hash),
+  document: getConfigurationSync(window.location.hash),
   selectedBlockId: null,
   selectedSidebarTab: 'styles',
   selectedMainTab: 'editor',
@@ -26,6 +26,13 @@ const editorStateStore = create<TValue>(() => ({
   inspectorDrawerOpen: true,
   samplesDrawerOpen: true,
 }));
+
+// Initialize with the async version after mount
+if (typeof window !== 'undefined') {
+  getConfiguration(window.location.hash).then(config => {
+    editorStateStore.setState({ document: config });
+  });
+}
 
 export function useDocument() {
   return editorStateStore((s) => s.document);

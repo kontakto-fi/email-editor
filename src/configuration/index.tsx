@@ -1,36 +1,21 @@
 import EMPTY_EMAIL_MESSAGE from './sample/empty-email-message';
-import ONE_TIME_PASSCODE from './sample/one-time-passcode';
-import ORDER_ECOMMERCE from './sample/order-ecommerce';
-import POST_METRICS_REPORT from './sample/post-metrics-report';
-import RESERVATION_REMINDER from './sample/reservation-reminder';
-import RESET_PASSWORD from './sample/reset-password';
-import RESPOND_TO_MESSAGE from './sample/respond-to-message';
-import SUBSCRIPTION_RECEIPT from './sample/subscription-receipt';
-import WELCOME from './sample/welcome';
 
-export default function getConfiguration(template: string) {
+export default async function getConfiguration(template: string): Promise<any> {
+  // Handle sample templates with dynamic loading
   if (template.startsWith('#sample/')) {
     const sampleName = template.replace('#sample/', '');
-    switch (sampleName) {
-      case 'welcome':
-        return WELCOME;
-      case 'one-time-password':
-        return ONE_TIME_PASSCODE;
-      case 'order-ecomerce':
-        return ORDER_ECOMMERCE;
-      case 'post-metrics-report':
-        return POST_METRICS_REPORT;
-      case 'reservation-reminder':
-        return RESERVATION_REMINDER;
-      case 'reset-password':
-        return RESET_PASSWORD;
-      case 'respond-to-message':
-        return RESPOND_TO_MESSAGE;
-      case 'subscription-receipt':
-        return SUBSCRIPTION_RECEIPT;
+    try {
+      // Dynamic import based on the sample ID
+      const module = await import(`./sample/${sampleName}`);
+      return module.default;
+    } catch (error) {
+      // Fall back to empty template if sample not found
+      console.warn(`Sample template not found: ${sampleName}`, error);
+      return EMPTY_EMAIL_MESSAGE;
     }
   }
 
+  // Handle encoded configuration
   if (template.startsWith('#code/')) {
     const encodedString = template.replace('#code/', '');
     const configurationString = decodeURIComponent(atob(encodedString));
@@ -41,5 +26,12 @@ export default function getConfiguration(template: string) {
     }
   }
 
+  return EMPTY_EMAIL_MESSAGE;
+}
+
+// Add a synchronous version for initial load
+export function getConfigurationSync(template: string): any {
+  // For initial load, we use the empty template
+  // This avoids async issues during initial component mounting
   return EMPTY_EMAIL_MESSAGE;
 }
