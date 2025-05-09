@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/kontakto-fi/email-editor/compare/v1.1.0...v1.1.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* **code-formatting:** prettier was replaced with lightweight solutions ([341b940](https://github.com/kontakto-fi/email-editor/commit/341b94024b79a597a9bc6d9c010c0b9fbd4471c7))
+
 # [1.1.0](https://github.com/kontakto-fi/email-editor/compare/v1.0.2...v1.1.0) (2025-05-09)
 
 
