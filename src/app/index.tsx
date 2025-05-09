@@ -1,5 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useEffect } from 'react';
-import { Stack, useTheme } from '@mui/material';
+import { Stack, useTheme, ThemeProvider } from '@mui/material';
+import { Theme } from '@mui/material/styles';
+import defaultTheme from '../theme';
+import { CssBaseline } from '@mui/material';
 
 import { TEditorConfiguration } from '@editor/core';
 import { 
@@ -96,6 +99,11 @@ export interface EmailEditorProps {
    * Callback to save a template with a new name.
    */
   saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
+  /**
+   * Optional theme override. If not provided, the default theme will be used.
+   * This allows for easy styling without requiring a separate ThemeProvider.
+   */
+  theme?: Theme;
 }
 
 function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: boolean) {
@@ -200,6 +208,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     deleteTemplate,
     copyTemplate,
     saveAs,
+    theme,
   } = props;
 
   // Initialize with the provided template and settings
@@ -213,31 +222,34 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
   }, [initialTemplate, persistenceEnabled]);
 
   return (
-    <div style={{ height: '100%', overflow: 'auto' }}>
-      <SnackbarProvider>
-        <EmailEditorProvider 
-          initialTemplate={initialTemplate}
-          initialTemplateId={initialTemplateId}
-          initialTemplateName={initialTemplateName}
-          onSave={onSave}
-          onChange={onChange}
-        >
-          <EmailEditorInternal 
-            ref={ref} 
-            drawerEnterDuration={drawerEnterDuration}
-            drawerExitDuration={drawerExitDuration}
-            samplesDrawerEnabled={samplesDrawerEnabled}
-            minHeight={minHeight}
-            loadSamples={loadSamples}
-            loadTemplates={loadTemplates}
-            loadTemplate={loadTemplate}
-            deleteTemplate={deleteTemplate}
-            copyTemplate={copyTemplate}
-            saveAs={saveAs}
-          />
-        </EmailEditorProvider>
-      </SnackbarProvider>
-    </div>
+    <ThemeProvider theme={theme || defaultTheme}>
+            <CssBaseline />
+      <div style={{ height: '100%', overflow: 'auto' }}>
+        <SnackbarProvider>
+          <EmailEditorProvider 
+            initialTemplate={initialTemplate}
+            initialTemplateId={initialTemplateId}
+            initialTemplateName={initialTemplateName}
+            onSave={onSave}
+            onChange={onChange}
+          >
+            <EmailEditorInternal 
+              ref={ref} 
+              drawerEnterDuration={drawerEnterDuration}
+              drawerExitDuration={drawerExitDuration}
+              samplesDrawerEnabled={samplesDrawerEnabled}
+              minHeight={minHeight}
+              loadSamples={loadSamples}
+              loadTemplates={loadTemplates}
+              loadTemplate={loadTemplate}
+              deleteTemplate={deleteTemplate}
+              copyTemplate={copyTemplate}
+              saveAs={saveAs}
+            />
+          </EmailEditorProvider>
+        </SnackbarProvider>
+      </div>
+    </ThemeProvider>
   );
 });
 

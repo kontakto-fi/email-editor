@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import {
-  Box,
-  CircularProgress,
-  CssBaseline,
-  ThemeProvider,
-} from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import EmailEditor, { SampleTemplate } from "./app";
 import { TEditorConfiguration } from "@editor/core";
 import theme from "./theme";
@@ -168,11 +163,11 @@ const EmailEditorWrapper = () => {
     if (templateId === "welcome") {
       return WELCOME;
     }
-    
+
     if (templateId === "reset-password") {
       return RESET_PASSWORD;
     }
-    
+
     if (templateId === "empty-email") {
       return EMPTY_EMAIL_MESSAGE;
     }
@@ -222,14 +217,16 @@ const EmailEditorWrapper = () => {
         // If current template was deleted, load empty template
         setInitialTemplate(EMPTY_EMAIL_MESSAGE);
       }
-      
+
       // Dispatch event to notify components about template deletion
-      const templateListUpdatedEvent = new CustomEvent('templateListUpdated', {
+      const templateListUpdatedEvent = new CustomEvent("templateListUpdated", {
         detail: updatedTemplates.map((template: StoredTemplate) => ({
           id: template.id,
           name: template.name,
-          description: `Last updated: ${new Date(template.updatedAt).toLocaleString()}`,
-        }))
+          description: `Last updated: ${
+            new Date(template.updatedAt).toLocaleString()
+          }`,
+        })),
       });
       window.dispatchEvent(templateListUpdatedEvent);
     } catch (error) {
@@ -241,9 +238,9 @@ const EmailEditorWrapper = () => {
   const handleCopyTemplate = (templateName: string, content: any) => {
     try {
       // Get existing templates
-      const existingTemplatesJSON = localStorage.getItem('savedTemplates');
-      const existingTemplates: StoredTemplate[] = existingTemplatesJSON 
-        ? JSON.parse(existingTemplatesJSON) 
+      const existingTemplatesJSON = localStorage.getItem("savedTemplates");
+      const existingTemplates: StoredTemplate[] = existingTemplatesJSON
+        ? JSON.parse(existingTemplatesJSON)
         : [];
 
       // Create new template
@@ -258,15 +255,17 @@ const EmailEditorWrapper = () => {
 
       // Add to templates
       existingTemplates.push(newTemplate);
-      localStorage.setItem('savedTemplates', JSON.stringify(existingTemplates));
+      localStorage.setItem("savedTemplates", JSON.stringify(existingTemplates));
 
       // Dispatch event to notify components about the new template
-      const templateListUpdatedEvent = new CustomEvent('templateListUpdated', {
+      const templateListUpdatedEvent = new CustomEvent("templateListUpdated", {
         detail: existingTemplates.map((template: StoredTemplate) => ({
           id: template.id,
           name: template.name,
-          description: `Last updated: ${new Date(template.updatedAt).toLocaleString()}`,
-        }))
+          description: `Last updated: ${
+            new Date(template.updatedAt).toLocaleString()
+          }`,
+        })),
       });
       window.dispatchEvent(templateListUpdatedEvent);
     } catch (error) {
@@ -275,14 +274,19 @@ const EmailEditorWrapper = () => {
   };
 
   // Handle saving a template with a new name
-  const handleSaveAs = async (templateName: string, content: any): Promise<{id: string, name: string}> => {
+  const handleSaveAs = async (
+    templateName: string,
+    content: any,
+  ): Promise<{ id: string; name: string }> => {
     try {
       // Create new template ID
       const templateId = `template-${Date.now()}`;
 
       // Get existing templates
-      const existingTemplatesJSON = localStorage.getItem('savedTemplates');
-      const existingTemplates = existingTemplatesJSON ? JSON.parse(existingTemplatesJSON) : [];
+      const existingTemplatesJSON = localStorage.getItem("savedTemplates");
+      const existingTemplates = existingTemplatesJSON
+        ? JSON.parse(existingTemplatesJSON)
+        : [];
 
       // Create new template
       const newTemplate = {
@@ -295,26 +299,28 @@ const EmailEditorWrapper = () => {
 
       // Add to templates
       existingTemplates.push(newTemplate);
-      localStorage.setItem('savedTemplates', JSON.stringify(existingTemplates));
+      localStorage.setItem("savedTemplates", JSON.stringify(existingTemplates));
 
       // Update current template info
-      localStorage.setItem('lastEditedTemplate', JSON.stringify(content));
-      localStorage.setItem('lastEditedTemplateId', templateId);
-      localStorage.setItem('lastEditedTemplateName', templateName);
+      localStorage.setItem("lastEditedTemplate", JSON.stringify(content));
+      localStorage.setItem("lastEditedTemplateId", templateId);
+      localStorage.setItem("lastEditedTemplateName", templateName);
 
       // Dispatch event to notify components about template list update
-      const templateListUpdatedEvent = new CustomEvent('templateListUpdated', {
+      const templateListUpdatedEvent = new CustomEvent("templateListUpdated", {
         detail: existingTemplates.map((template: StoredTemplate) => ({
           id: template.id,
           name: template.name,
-          description: `Last updated: ${new Date(template.updatedAt).toLocaleString()}`,
-        }))
+          description: `Last updated: ${
+            new Date(template.updatedAt).toLocaleString()
+          }`,
+        })),
       });
       window.dispatchEvent(templateListUpdatedEvent);
 
       return { id: templateId, name: templateName };
     } catch (error) {
-      console.error('Error saving template:', error);
+      console.error("Error saving template:", error);
       throw error;
     }
   };
@@ -334,6 +340,7 @@ const EmailEditorWrapper = () => {
 
   return (
     <EmailEditor
+      theme={theme}
       persistenceEnabled={true}
       minHeight="100vh"
       initialTemplate={initialTemplate || undefined}
@@ -357,16 +364,5 @@ if (!root) {
 }
 
 ReactDOM.createRoot(root).render(
-  <div
-    style={{
-      width: "90%",
-      padding: "10px",
-      margin: "auto"
-    }}
-  >
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <EmailEditorWrapper />
-    </ThemeProvider>
-  </div>,
+  <EmailEditorWrapper />,
 );
