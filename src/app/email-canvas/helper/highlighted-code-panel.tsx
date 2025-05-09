@@ -26,7 +26,13 @@ export default function HighlightedCodePanel({ type, value }: TextEditorPanelPro
 
   return (
     <pre
-      style={{ margin: 0, padding: 16 }}
+      style={{ 
+        margin: 0, 
+        padding: 16,
+        overflowX: 'auto',
+        whiteSpace: 'pre',
+        fontSize: '12px',
+      }}
       dangerouslySetInnerHTML={{ __html: code }}
       onClick={(ev) => {
         const s = window.getSelection();

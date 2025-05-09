@@ -158,7 +158,7 @@ export default function SamplesDrawer({
         variant="persistent"
         anchor="left"
         open={samplesDrawerOpen}
-        slotProps={{
+        componentsProps={{
           backdrop: { style: { position: "absolute" } },
         }}
         PaperProps={{
