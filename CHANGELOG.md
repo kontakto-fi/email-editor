@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/kontakto-fi/email-editor/compare/v1.0.2...v1.1.0) (2025-05-09)
+
+
+### Features
+
+* **height-control:** enable controlling the height of the email editor ([38f205b](https://github.com/kontakto-fi/email-editor/commit/38f205b23939a3d3a22146c7f9f88848f4013e19))
+
 ## [1.0.2](https://github.com/kontakto-fi/email-editor/compare/v1.0.1...v1.0.2) (2025-05-09)
 
 
