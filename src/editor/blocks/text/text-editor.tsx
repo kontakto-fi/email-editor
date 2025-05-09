@@ -36,10 +36,13 @@ function getFontFamily(fontFamily: string | null | undefined) {
 function getPadding(padding: any) {
   if (!padding) return undefined;
   
-  if (typeof padding === 'number') {
-    return `${padding}px`;
+  // Object format from the schema (matching the original blocks)
+  if (typeof padding === 'object' && !Array.isArray(padding) && 
+      'top' in padding && 'right' in padding && 'bottom' in padding && 'left' in padding) {
+    return `${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px`;
   }
   
+  // For backward compatibility with the array format
   if (Array.isArray(padding)) {
     if (padding.length === 1) {
       return `${padding[0]}px`;
@@ -53,6 +56,11 @@ function getPadding(padding: any) {
     if (padding.length === 4) {
       return `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`;
     }
+  }
+  
+  // For single number
+  if (typeof padding === 'number') {
+    return `${padding}px`;
   }
   
   return undefined;
