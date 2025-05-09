@@ -1,4 +1,4 @@
-# Kontakto Email Editor
+# Kontakto Email Editor for React
 
 A React-based email template editor component that allows users to create and customize email templates through a visual interface. This component can be embedded in any React application.
 
