@@ -12,42 +12,85 @@ import {
 interface SaveTemplateDialogProps {
   open: boolean;
   onClose: () => void;
-  onSave: (templateName: string) => void;
+  onSave: (templateName: string) => Promise<boolean> | boolean | void;
+  onNameChange?: () => void;
   defaultName?: string;
+  error?: string | null;
 }
 
 export default function SaveTemplateDialog({ 
   open, 
   onClose, 
   onSave,
-  defaultName = ''
+  onNameChange,
+  defaultName = '',
+  error: externalError = null
 }: SaveTemplateDialogProps) {
   const [templateName, setTemplateName] = useState(defaultName);
-  const [error, setError] = useState('');
+  const [internalError, setInternalError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Reset name when dialog opens with the default name
   useEffect(() => {
     if (open) {
       setTemplateName(defaultName);
-      setError('');
+      setInternalError('');
+      setIsSubmitting(false);
     }
   }, [open, defaultName]);
 
-  const handleSave = () => {
+  // Determine which error to display - external has priority
+  const displayError = externalError || internalError;
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTemplateName(e.target.value);
+    
+    if (e.target.value.trim()) {
+      setInternalError('');
+    }
+    
+    // Notify parent component that name has changed
+    if (onNameChange) {
+      onNameChange();
+    }
+  };
+
+  const handleSave = async () => {
     if (!templateName.trim()) {
-      setError('Please enter a template name');
+      setInternalError('Please enter a template name');
       return;
     }
     
-    onSave(templateName);
-    setTemplateName('');
-    setError('');
-    onClose();
+    setIsSubmitting(true);
+    
+    try {
+      // Call onSave and wait for result if it's a Promise
+      const result = onSave(templateName);
+      
+      // Handle promise or boolean result
+      if (result instanceof Promise) {
+        const success = await result;
+        if (success) {
+          setTemplateName('');
+          setInternalError('');
+          onClose();
+        }
+      } else if (result !== false) {
+        // If not explicitly false, assume success
+        setTemplateName('');
+        setInternalError('');
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error saving template:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
     setTemplateName('');
-    setError('');
+    setInternalError('');
     onClose();
   };
 
@@ -70,31 +113,27 @@ export default function SaveTemplateDialog({
             fullWidth
             variant="outlined"
             value={templateName}
-            onChange={(e) => {
-              setTemplateName(e.target.value);
-              if (e.target.value.trim()) {
-                setError('');
-              }
-            }}
-            error={!!error}
-            helperText={error}
+            onChange={handleNameChange}
+            error={!!displayError}
+            helperText={displayError}
             onKeyPress={(e) => {
-              if (e.key === 'Enter' && templateName.trim()) {
+              if (e.key === 'Enter' && templateName.trim() && !displayError && !isSubmitting) {
                 handleSave();
               }
             }}
+            disabled={isSubmitting}
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleCancel} disabled={isSubmitting}>Cancel</Button>
         <Button 
           onClick={handleSave} 
           variant="contained" 
           color="primary"
-          disabled={!templateName.trim()}
+          disabled={!templateName.trim() || !!displayError || isSubmitting}
         >
-          Save Template
+          {isSubmitting ? 'Saving...' : 'Save Template'}
         </Button>
       </DialogActions>
     </Dialog>

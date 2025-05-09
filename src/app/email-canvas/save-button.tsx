@@ -41,7 +41,7 @@ export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
     }
   };
 
-  const handleSaveAs = async (templateName: string) => {
+  const handleSaveAs = async (templateName: string): Promise<boolean> => {
     try {
       if (saveAs) {
         // Use provided saveAs function
@@ -60,16 +60,27 @@ export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
 
         // Update URL
         window.location.hash = `#template/${templateId}`;
+        
+        return true; // Return true on success
       }
+      return false; // Return false if saveAs is not provided
     } catch (error) {
       console.error('Error saving template:', error);
       showMessage('Error saving template');
+      return false; // Return false on error
     }
   };
 
   return (
     <>
-      <IconButton onClick={handleSave}>
+      <IconButton onClick={handleSave}
+        sx={{
+          backgroundColor: 'grey.100',
+          '&:hover': {
+            backgroundColor: 'grey.200',
+          },
+        }}
+      >
         <Tooltip title="Save template">
           <SaveOutlined fontSize="small" />
         </Tooltip>

@@ -5,6 +5,8 @@ import { DeleteOutlined, ContentCopyOutlined } from '@mui/icons-material';
 import { useEmailEditor } from '../context';
 import { useDocument } from '@editor/editor-context';
 import BaseSidebarPanel from './configuration-panel/input-panels/helpers/base-sidebar-panel';
+import TemplateDownloadButton from './template-panel-download-button';
+import TemplateImportButton from './template-panel-import-button';
 
 export interface TemplatePanelProps {
   loadTemplates?: () => Promise<any[]>;
@@ -48,27 +50,35 @@ export default function TemplatePanel({ deleteTemplate, copyTemplate }: Template
   }
 
   return (
-    <BaseSidebarPanel title="Template">
-      <Stack spacing={2}>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<ContentCopyOutlined />}
-          onClick={handleCopyToSamples}
-          fullWidth
-        >
-          Save as Sample Template
-        </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          startIcon={<DeleteOutlined />}
-          onClick={handleDelete}
-          fullWidth
-        >
-          Delete Template
-        </Button>
-      </Stack>
-    </BaseSidebarPanel>
+    <>
+      <BaseSidebarPanel title="Template">
+        <Stack spacing={2}>
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<ContentCopyOutlined />}
+            onClick={handleCopyToSamples}
+            fullWidth
+          >
+            Save as Sample Template
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteOutlined />}
+            onClick={handleDelete}
+            fullWidth
+          >
+            Delete Template
+          </Button>
+        </Stack>
+      </BaseSidebarPanel>
+      <BaseSidebarPanel title="Import/Export">
+        <Stack spacing={2}>
+          <TemplateDownloadButton />
+          <TemplateImportButton />
+        </Stack>
+      </BaseSidebarPanel>
+    </>
   );
 }

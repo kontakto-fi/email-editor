@@ -11,6 +11,7 @@ import { TEditorConfiguration } from "@editor/core";
 import theme from "./theme";
 import { StoredTemplate } from "./app/context";
 import WELCOME from "@sample/welcome";
+import RESET_PASSWORD from "@sample/reset-password";
 import EMPTY_EMAIL_MESSAGE from "@sample/empty-email-message";
 
 // Wrapper component to handle sample loading and context initialization
@@ -147,6 +148,16 @@ const EmailEditorWrapper = () => {
         name: "Welcome email",
         description: "A simple welcome email template",
       },
+      {
+        id: "reset-password",
+        name: "Reset password",
+        description: "Password reset email template",
+      },
+      {
+        id: "empty-email",
+        name: "Empty email",
+        description: "A blank email template to start from scratch",
+      },
     ];
   };
 
@@ -156,6 +167,14 @@ const EmailEditorWrapper = () => {
   ): Promise<TEditorConfiguration | null> => {
     if (templateId === "welcome") {
       return WELCOME;
+    }
+    
+    if (templateId === "reset-password") {
+      return RESET_PASSWORD;
+    }
+    
+    if (templateId === "empty-email") {
+      return EMPTY_EMAIL_MESSAGE;
     }
 
     try {

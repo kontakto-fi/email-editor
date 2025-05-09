@@ -14,13 +14,12 @@ import {
 import ToggleInspectorPanelButton from '../inspector-drawer/toggle-inspector-panel-button';
 import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-button';
 
-import DownloadJson from './download-json';
 import HtmlPanel from './html-panel';
-import ImportJson from './import-json';
 import JsonPanel from './json-panel';
 import MainTabsGroup from './main-tabs-group';
 import ShareButton from './share-button';
 import SaveButton from './save-button';
+import NewTemplateButton from './new-template-button';
 import { useEmailEditor } from '../context';
 import { SampleTemplate } from '..';
 
@@ -104,8 +103,6 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
             <MainTabsGroup />
           </Stack>
           <Stack direction="row" spacing={2}>
-            <DownloadJson />
-            <ImportJson />
             <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
               <ToggleButton value="desktop">
                 <Tooltip title="Desktop view">
@@ -118,6 +115,7 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
                 </Tooltip>
               </ToggleButton>
             </ToggleButtonGroup>
+            <NewTemplateButton loadTemplates={loadTemplates} saveAs={saveAs} />
             <SaveButton loadTemplates={loadTemplates} saveAs={saveAs} />
           </Stack>
         </Stack>

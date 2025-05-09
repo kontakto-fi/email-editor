@@ -8,10 +8,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
 import { useSamplesDrawerOpen } from "@editor/editor-context";
 import { SampleTemplate } from "../index";
-import SaveTemplateDialog from "../email-canvas/save-template-dialog";
 import { TEditorConfiguration } from "@editor/core";
 import SidebarButton from "./sidebar-button";
 
@@ -58,11 +56,6 @@ export interface SamplesDrawerProps {
    * ID of the currently active template
    */
   currentTemplateId?: string | null;
-
-  /**
-   * Callback to create a new empty template
-   */
-  onCreateTemplate?: (templateName: string) => Promise<void>;
   
   /**
    * Callback to delete a template by ID
@@ -78,7 +71,6 @@ export default function SamplesDrawer({
   loadTemplates,
   loadTemplate,
   currentTemplateId,
-  onCreateTemplate,
   deleteTemplate,
 }: SamplesDrawerProps) {
   const samplesDrawerOpen = useSamplesDrawerOpen();
@@ -86,7 +78,6 @@ export default function SamplesDrawer({
   const [templates, setTemplates] = useState<SampleTemplate[]>([]);
   const [loadingSamples, setLoadingSamples] = useState(false);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
-  const [newTemplateDialogOpen, setNewTemplateDialogOpen] = useState(false);
 
   // Load samples
   useEffect(() => {
@@ -129,28 +120,6 @@ export default function SamplesDrawer({
     window.addEventListener('templateListUpdated', handleTemplateListUpdate as EventListener);
     return () => window.removeEventListener('templateListUpdated', handleTemplateListUpdate as EventListener);
   }, []);
-
-  // Handle opening the new template dialog
-  const handleNewTemplateClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setNewTemplateDialogOpen(true);
-  };
-
-  // Handle creating a new empty template with a name
-  const handleCreateNewTemplate = async (templateName: string) => {
-    try {
-      await onCreateTemplate?.(templateName);
-      setNewTemplateDialogOpen(false);
-      
-      // Refresh templates list
-      if (loadTemplates) {
-        const updatedTemplates = await loadTemplates();
-        setTemplates(updatedTemplates);
-      }
-    } catch (error) {
-      console.error("Error creating template:", error);
-    }
-  };
 
   if (!enabled) {
     return null;
@@ -201,25 +170,6 @@ export default function SamplesDrawer({
             <Typography variant="h6" component="h1" sx={{ p: 2 }}>
               Templates
             </Typography>
-
-            {/* New Template Button */}
-            {onCreateTemplate && (
-              <Button
-                onClick={handleNewTemplateClick}
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                sx={{
-                  mb: 1,
-                  borderRadius: 1,
-                  textTransform: "none",
-                  justifyContent: "flex-start",
-                  px: 2,
-                }}
-              >
-                Create New Template
-              </Button>
-            )}
 
             {/* Existing Templates Section */}
             {loadTemplates && (
@@ -310,13 +260,6 @@ export default function SamplesDrawer({
           </Stack>
         </Stack>
       </Drawer>
-
-      <SaveTemplateDialog
-        open={newTemplateDialogOpen}
-        onClose={() => setNewTemplateDialogOpen(false)}
-        onSave={handleCreateNewTemplate}
-        defaultName="New Template"
-      />
     </>
   );
 }
