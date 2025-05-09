@@ -103,4 +103,4 @@ export {
   type EmailEditorRef,
   type EmailEditorContextType,
   type EmailEditorProviderProps
-} from './app/email-editor-index'; 
+} from './app'; 

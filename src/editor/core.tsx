@@ -5,11 +5,11 @@ import {
   Avatar, AvatarPropsSchema,
   Button, ButtonPropsSchema,
   Divider, DividerPropsSchema,
-  Heading, HeadingPropsSchema,
+  HeadingPropsSchema,
   Html, HtmlPropsSchema,
   Image, ImagePropsSchema,
   Spacer, SpacerPropsSchema,
-  Text, TextPropsSchema
+  TextPropsSchema
 } from '@blocks';
 import {
   buildBlockComponent,

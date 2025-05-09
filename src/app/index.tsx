@@ -7,7 +7,6 @@ import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEdito
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
 import TemplatePanel from './email-canvas';
-import InspectorTemplatePanel from './inspector-drawer/template-panel';
 import { SnackbarProvider } from './email-canvas/snackbar-provider';
 
 // Define the SampleTemplate interface directly here
