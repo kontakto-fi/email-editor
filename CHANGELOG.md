@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/kontakto-fi/email-editor/compare/v1.0.0...v1.0.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* readme ([b56a706](https://github.com/kontakto-fi/email-editor/commit/b56a70625bf75ad393065fc68408362e8dcab382))
+
 # 1.0.0 (2025-05-09)
 
 
