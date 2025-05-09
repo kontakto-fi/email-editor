@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/kontakto-fi/email-editor/compare/v1.1.1...v1.2.0) (2025-05-09)
+
+
+### Features
+
+* **theming:** theming was improved ([7ba9194](https://github.com/kontakto-fi/email-editor/commit/7ba91944336ef1e1acef4aaec4c34cdd75912237))
+
 ## [1.1.1](https://github.com/kontakto-fi/email-editor/compare/v1.1.0...v1.1.1) (2025-05-09)
 
 
