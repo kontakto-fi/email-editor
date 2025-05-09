@@ -127,7 +127,10 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
         </Stack>
         <ToggleInspectorPanelButton />
       </Stack>
-      <Box sx={{ height: 'calc(100vh - 49px)', overflow: 'auto', minWidth: 370 }}>
+      <Box sx={{ 
+        paddingBottom: '50px',
+        minWidth: 370
+              }}>
         {renderMainPanel()}
       </Box>
     </>

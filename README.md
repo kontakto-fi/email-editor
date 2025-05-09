@@ -1,10 +1,10 @@
-# Kontakto Email Editor for React
+# Email Editor for React
 
 A React-based email template editor component that allows users to create and customize email templates through a visual interface. This component can be embedded in any React application.
 
 ## Overview
 
-Kontakto Email Editor is a comprehensive solution for creating email templates with a drag-and-drop interface. It's built as a reusable React component that can be easily integrated into your applications.
+React Email Editor is a comprehensive solution for creating email templates with a drag-and-drop interface. It's built as a reusable React component that can be easily integrated into your applications.
 
 ## Features
 
@@ -23,30 +23,94 @@ npm install kontakto-email-editor
 
 ## Usage
 
+### Embedding into existing project
+
+You can easily embed the EmailEditor into any React application:
+
 ```jsx
-import React, { useRef } from 'react';
 import { EmailEditor } from 'kontakto-email-editor';
 
-const MyApp = () => {
-  const editorRef = useRef(null);
-
-  const saveTemplate = () => {
-    const template = editorRef.current.saveTemplate();
-    console.log('Template saved', template);
-  };
-
+function MyApp() {
   return (
-    <div>
-      <button onClick={saveTemplate}>Save Template</button>
+    <div className="my-container">
       <EmailEditor 
-        ref={editorRef}
-        onSave={(template) => console.log('Template saved', template)}
-        onChange={(template) => console.log('Template changed', template)}
+        persistenceEnabled={true}
+        minHeight="80vh"
       />
     </div>
   );
-};
+}
 ```
+
+#### Available Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `minHeight` | string | '100vh' | Sets the minimum height of the editor container |
+| `persistenceEnabled` | boolean | false | When true, enables save functionality and shows save buttons. Requires callbacks for persistence operations. |
+| `samplesDrawerEnabled` | boolean | true | Controls whether the templates/samples drawer is shown |
+| `drawerEnterDuration` | number | 225 | Duration for drawer enter transition (ms) |
+| `drawerExitDuration` | number | 225 | Duration for drawer exit transition (ms) |
+| `initialTemplate` | object | - | Initial template to load when editor first mounts |
+| `initialTemplateId` | string | - | ID of the initial template |
+| `initialTemplateName` | string | - | Name of the initial template |
+| `onSave` | function | - | Callback when template is saved: `(template) => void` |
+| `onChange` | function | - | Callback when template changes: `(template) => void` |
+| `loadSamples` | function | - | Loads sample templates: `() => Promise<SampleTemplate[]>` |
+| `loadTemplates` | function | - | Loads user templates: `() => Promise<SampleTemplate[]>` |
+| `loadTemplate` | function | - | Loads specific template: `(id) => Promise<Template>` |
+| `deleteTemplate` | function | - | Deletes a template: `(id) => void` |
+| `copyTemplate` | function | - | Copies a template: `(name, content) => void` |
+| `saveAs` | function | - | Saves template with new name: `(name, content) => Promise<{id, name}>` |
+
+#### Imperative API
+
+You can access the EmailEditor's methods using a ref:
+
+```jsx
+import { EmailEditor } from 'kontakto-email-editor';
+import { useRef } from 'react';
+
+function MyApp() {
+  const editorRef = useRef(null);
+  
+  const handleSave = () => {
+    const template = editorRef.current.saveTemplate();
+    console.log('Saved template:', template);
+  };
+  
+  const handleLoad = (template) => {
+    editorRef.current.loadTemplate(template);
+  };
+  
+  const handleGetCurrent = () => {
+    const current = editorRef.current.getTemplate();
+    console.log('Current template:', current);
+  };
+  
+  return (
+    <div>
+      <button onClick={handleSave}>Save</button>
+      <button onClick={handleGetCurrent}>Get Current</button>
+      <EmailEditor ref={editorRef} minHeight="600px" />
+    </div>
+  );
+}
+```
+
+### Stand-alone version using Vite
+
+This project includes a standalone version that can be run using Vite:
+
+```bash
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev
+```
+
+This will start a development server with the EmailEditor running as a standalone application that uses browsers local storage to save and load templates.
 
 ## Theming
 

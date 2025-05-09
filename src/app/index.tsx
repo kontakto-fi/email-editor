@@ -65,6 +65,11 @@ export interface EmailEditorProps {
    */
   persistenceEnabled?: boolean;
   /**
+   * Minimum height of the editor container.
+   * @default '100vh'
+   */
+  minHeight?: string;
+  /**
    * Callback to load samples dynamically.
    * This will be called when the samples drawer is opened.
    */
@@ -107,6 +112,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
     drawerEnterDuration = 225,
     drawerExitDuration = 225,
     samplesDrawerEnabled = true,
+    minHeight = '100vh',
     loadSamples,
     loadTemplates,
     loadTemplate,
@@ -144,7 +150,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
   }));
 
   return (
-    <Stack position="relative" id="drawer-container">
+    <Stack position="relative" id="drawer-container" sx={{ minHeight }}>
       <InspectorDrawer 
         enterDuration={drawerEnterDuration}
         exitDuration={drawerExitDuration}
@@ -187,6 +193,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     drawerExitDuration,
     samplesDrawerEnabled,
     persistenceEnabled = false,
+    minHeight = '100vh',
     loadSamples,
     loadTemplates,
     loadTemplate,
@@ -206,28 +213,31 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
   }, [initialTemplate, persistenceEnabled]);
 
   return (
-    <SnackbarProvider>
-      <EmailEditorProvider 
-        initialTemplate={initialTemplate}
-        initialTemplateId={initialTemplateId}
-        initialTemplateName={initialTemplateName}
-        onSave={onSave}
-        onChange={onChange}
-      >
-        <EmailEditorInternal 
-          ref={ref} 
-          drawerEnterDuration={drawerEnterDuration}
-          drawerExitDuration={drawerExitDuration}
-          samplesDrawerEnabled={samplesDrawerEnabled}
-          loadSamples={loadSamples}
-          loadTemplates={loadTemplates}
-          loadTemplate={loadTemplate}
-          deleteTemplate={deleteTemplate}
-          copyTemplate={copyTemplate}
-          saveAs={saveAs}
-        />
-      </EmailEditorProvider>
-    </SnackbarProvider>
+    <div style={{ height: '100%', overflow: 'auto' }}>
+      <SnackbarProvider>
+        <EmailEditorProvider 
+          initialTemplate={initialTemplate}
+          initialTemplateId={initialTemplateId}
+          initialTemplateName={initialTemplateName}
+          onSave={onSave}
+          onChange={onChange}
+        >
+          <EmailEditorInternal 
+            ref={ref} 
+            drawerEnterDuration={drawerEnterDuration}
+            drawerExitDuration={drawerExitDuration}
+            samplesDrawerEnabled={samplesDrawerEnabled}
+            minHeight={minHeight}
+            loadSamples={loadSamples}
+            loadTemplates={loadTemplates}
+            loadTemplate={loadTemplate}
+            deleteTemplate={deleteTemplate}
+            copyTemplate={copyTemplate}
+            saveAs={saveAs}
+          />
+        </EmailEditorProvider>
+      </SnackbarProvider>
+    </div>
   );
 });
 
