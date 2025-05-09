@@ -9,6 +9,7 @@ type TValue = {
   selectedScreenSize: 'desktop' | 'mobile';
   inspectorDrawerOpen: boolean;
   samplesDrawerOpen: boolean;
+  persistenceEnabled: boolean;
 };
 
 // Initialize with an empty document
@@ -33,6 +34,7 @@ const editorStateStore = create<TValue>(() => ({
   selectedScreenSize: 'desktop',
   inspectorDrawerOpen: true,
   samplesDrawerOpen: true,
+  persistenceEnabled: false,
 }));
 
 export function useDocument() {
@@ -65,6 +67,10 @@ export function useInspectorDrawerOpen() {
 
 export function useSamplesDrawerOpen() {
   return editorStateStore((s) => s.samplesDrawerOpen);
+}
+
+export function usePersistenceEnabled() {
+  return editorStateStore((s) => s.persistenceEnabled);
 }
 
 export function setSelectedBlockId(selectedBlockId: TValue['selectedBlockId']) {
@@ -115,4 +121,8 @@ export function toggleSamplesDrawerOpen() {
 
 export function setSelectedScreenSize(selectedScreenSize: TValue['selectedScreenSize']) {
   return editorStateStore.setState({ selectedScreenSize });
+}
+
+export function setPersistenceEnabled(persistenceEnabled: boolean) {
+  return editorStateStore.setState({ persistenceEnabled });
 }

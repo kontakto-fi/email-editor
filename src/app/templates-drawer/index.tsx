@@ -12,8 +12,16 @@ import { useSamplesDrawerOpen } from "@editor/editor-context";
 import { SampleTemplate } from "../index";
 import { TEditorConfiguration } from "@editor/core";
 import SidebarButton from "./sidebar-button";
+import EMPTY_EMAIL_MESSAGE from "@sample/empty-email-message";
 
 export const SAMPLES_DRAWER_WIDTH = 240;
+
+// Empty template definition that will always be available
+const EMPTY_TEMPLATE: SampleTemplate = {
+  id: "empty-email",
+  name: "Empty email",
+  description: "A blank email template to start from scratch",
+};
 
 export interface SamplesDrawerProps {
   /**
@@ -74,10 +82,23 @@ export default function SamplesDrawer({
   deleteTemplate,
 }: SamplesDrawerProps) {
   const samplesDrawerOpen = useSamplesDrawerOpen();
-  const [samples, setSamples] = useState<SampleTemplate[]>([]);
+  const [samples, setSamples] = useState<SampleTemplate[]>([EMPTY_TEMPLATE]);
   const [templates, setTemplates] = useState<SampleTemplate[]>([]);
   const [loadingSamples, setLoadingSamples] = useState(false);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
+
+  // Special handler for empty template
+  const handleLoadTemplate = async (templateId: string) => {
+    if (templateId === "empty-email") {
+      return EMPTY_EMAIL_MESSAGE;
+    }
+    
+    if (loadTemplate) {
+      return loadTemplate(templateId);
+    }
+    
+    return null;
+  };
 
   // Load samples
   useEffect(() => {
@@ -85,11 +106,18 @@ export default function SamplesDrawer({
       setLoadingSamples(true);
       loadSamples()
         .then((results) => {
-          setSamples(results);
+          // Ensure we always have the empty template
+          const existingEmptyTemplate = results.find(sample => sample.id === "empty-email");
+          if (!existingEmptyTemplate) {
+            setSamples([EMPTY_TEMPLATE, ...results]);
+          } else {
+            setSamples(results);
+          }
           setLoadingSamples(false);
         })
         .catch((error) => {
           console.error("Failed to load samples:", error);
+          setSamples([EMPTY_TEMPLATE]); // Fallback to empty template
           setLoadingSamples(false);
         });
     }
@@ -206,7 +234,7 @@ export default function SamplesDrawer({
                       >
                         <SidebarButton
                           templateId={template.id}
-                          templateLoader={() => loadTemplate?.(template.id) ?? Promise.reject()}
+                          templateLoader={() => handleLoadTemplate(template.id)}
                           sx={{ flexGrow: 1 }}
                         >
                           {template.name}
@@ -228,35 +256,33 @@ export default function SamplesDrawer({
             )}
 
             {/* Sample Templates Section */}
-            {loadSamples && (
-              <>
-                <Typography
-                  variant="subtitle2"
-                  component="h2"
-                  sx={{ fontWeight: "bold", mt: 1 }}
-                >
-                  Sample Templates
-                </Typography>
+            <>
+              <Typography
+                variant="subtitle2"
+                component="h2"
+                sx={{ fontWeight: "bold", mt: 1 }}
+              >
+                Sample Templates
+              </Typography>
 
-                {loadingSamples ? (
-                  <Stack alignItems="center" width="100%" py={1}>
-                    <CircularProgress size={24} />
-                  </Stack>
-                ) : (
-                  <Stack alignItems="flex-start">
-                    {samples.map((sample) => (
-                      <SidebarButton
-                        key={sample.id}
-                        templateId={sample.id}
-                        templateLoader={() => loadTemplate?.(sample.id) ?? Promise.reject()}
-                      >
-                        {sample.name}
-                      </SidebarButton>
-                    ))}
-                  </Stack>
-                )}
-              </>
-            )}
+              {loadingSamples ? (
+                <Stack alignItems="center" width="100%" py={1}>
+                  <CircularProgress size={24} />
+                </Stack>
+              ) : (
+                <Stack alignItems="flex-start">
+                  {samples.map((sample) => (
+                    <SidebarButton
+                      key={sample.id}
+                      templateId={sample.id}
+                      templateLoader={() => handleLoadTemplate(sample.id)}
+                    >
+                      {sample.name}
+                    </SidebarButton>
+                  ))}
+                </Stack>
+              )}
+            </>
           </Stack>
         </Stack>
       </Drawer>

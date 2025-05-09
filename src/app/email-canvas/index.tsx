@@ -10,6 +10,7 @@ import {
   useDocument,
   useSelectedMainTab,
   useSelectedScreenSize,
+  usePersistenceEnabled
 } from '@editor/editor-context';
 import ToggleInspectorPanelButton from '../inspector-drawer/toggle-inspector-panel-button';
 import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-button';
@@ -17,11 +18,9 @@ import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-b
 import HtmlPanel from './html-panel';
 import JsonPanel from './json-panel';
 import MainTabsGroup from './main-tabs-group';
-import ShareButton from './share-button';
 import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
-import { useEmailEditor } from '../context';
-import { SampleTemplate } from '..';
+import { SampleTemplate } from '../index';
 
 interface TemplatePanelProps {
   loadTemplates?: () => Promise<SampleTemplate[]>;
@@ -32,7 +31,7 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
   const document = useDocument();
   const selectedMainTab = useSelectedMainTab();
   const selectedScreenSize = useSelectedScreenSize();
-  const { currentTemplateId } = useEmailEditor();
+  const persistenceEnabled = usePersistenceEnabled();
 
   let mainBoxSx: SxProps = {
     height: '100%',
@@ -44,7 +43,8 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
       width: 370,
       height: 800,
       boxShadow:
-        'rgba(33, 36, 67, 0.04) 0px 10px 20px, rgba(33, 36, 67, 0.04) 0px 2px 6px, rgba(33, 36, 67, 0.04) 0px 0px 1px',
+        'rgba(33, 36, 67, 0.04) 0px 10px 20px, rgba(33, 36, 67, 0.08) 0px 2px 4px',
+      borderRadius: '16px',
     };
   }
 
@@ -79,6 +79,8 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
         return <JsonPanel />;
     }
   };
+
+  const showSaveButtons = persistenceEnabled;
 
   return (
     <>
@@ -115,8 +117,12 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
                 </Tooltip>
               </ToggleButton>
             </ToggleButtonGroup>
-            <NewTemplateButton loadTemplates={loadTemplates} saveAs={saveAs} />
-            <SaveButton loadTemplates={loadTemplates} saveAs={saveAs} />
+            {showSaveButtons && (
+              <>
+                <NewTemplateButton loadTemplates={loadTemplates} saveAs={saveAs} />
+                <SaveButton loadTemplates={loadTemplates} saveAs={saveAs} />
+              </>
+            )}
           </Stack>
         </Stack>
         <ToggleInspectorPanelButton />

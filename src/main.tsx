@@ -334,6 +334,7 @@ const EmailEditorWrapper = () => {
 
   return (
     <EmailEditor
+      persistenceEnabled={true}
       initialTemplate={initialTemplate || undefined}
       initialTemplateId={initialTemplateId || undefined}
       initialTemplateName={initialTemplateName || undefined}
@@ -355,12 +356,7 @@ if (!root) {
 }
 
 ReactDOM.createRoot(root).render(
-  <div
-    style={{
-      width: "90%",
-      margin: "1% auto",
-    }}
-  >
+  <div>
     <ThemeProvider theme={theme}>
       <CssBaseline />
 

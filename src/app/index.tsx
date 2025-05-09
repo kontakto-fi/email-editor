@@ -2,7 +2,13 @@ import React, { forwardRef, useImperativeHandle, useEffect } from 'react';
 import { Stack, useTheme } from '@mui/material';
 
 import { TEditorConfiguration } from '@editor/core';
-import { useDocument, resetDocument, useInspectorDrawerOpen, useSamplesDrawerOpen } from '@editor/editor-context';
+import { 
+  useDocument, 
+  resetDocument, 
+  useInspectorDrawerOpen, 
+  useSamplesDrawerOpen,
+  setPersistenceEnabled
+} from '@editor/editor-context';
 import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEditorProviderProps } from './context';
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
@@ -48,6 +54,17 @@ export interface EmailEditorProps {
    */
   samplesDrawerEnabled?: boolean;
   /**
+   * Whether to enable template persistence functionality and show save buttons.
+   * When false (default), save functionality and related UI elements will be hidden.
+   * When true, make sure to provide the necessary callbacks (onSave, saveAs, etc.).
+   * 
+   * IMPORTANT: If you set this to true, you must provide callbacks to handle persistence
+   * operations (onSave, saveAs, etc.). Otherwise, the save buttons will appear but won't
+   * be functional.
+   * @default false
+   */
+  persistenceEnabled?: boolean;
+  /**
    * Callback to load samples dynamically.
    * This will be called when the samples drawer is opened.
    */
@@ -85,7 +102,7 @@ function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: 
 }
 
 // Internal component that connects the App with the EmailEditor context
-const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'initialTemplate' | 'initialTemplateId' | 'initialTemplateName' | 'onSave' | 'onChange'>>((props, ref) => {
+const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'initialTemplate' | 'initialTemplateId' | 'initialTemplateName' | 'onSave' | 'onChange' | 'persistenceEnabled'>>((props, ref) => {
   const { 
     drawerEnterDuration = 225,
     drawerExitDuration = 225,
@@ -169,6 +186,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     drawerEnterDuration,
     drawerExitDuration,
     samplesDrawerEnabled,
+    persistenceEnabled = false,
     loadSamples,
     loadTemplates,
     loadTemplate,
@@ -177,12 +195,15 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     saveAs,
   } = props;
 
-  // Initialize with the provided template
+  // Initialize with the provided template and settings
   useEffect(() => {
     if (initialTemplate) {
       resetDocument(initialTemplate);
     }
-  }, [initialTemplate]);
+    
+    // Set persistence mode
+    setPersistenceEnabled(persistenceEnabled);
+  }, [initialTemplate, persistenceEnabled]);
 
   return (
     <SnackbarProvider>

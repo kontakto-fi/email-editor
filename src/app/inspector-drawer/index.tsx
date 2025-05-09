@@ -36,13 +36,19 @@ export interface InspectorDrawerProps {
    * Callback to copy a template with a new name
    */
   copyTemplate?: (templateName: string, content: any) => void;
+
+  /**
+   * Indicates whether the template is saving enabled
+   */
+  savingEnabled?: boolean;
 }
 
 export default function InspectorDrawer({ 
   enterDuration = 225, 
   exitDuration = 225,
   deleteTemplate,
-  copyTemplate
+  copyTemplate,
+  savingEnabled = true
 }: InspectorDrawerProps = {}) {
   const selectedSidebarTab = useSelectedSidebarTab();
   const inspectorDrawerOpen = useInspectorDrawerOpen();
@@ -54,7 +60,10 @@ export default function InspectorDrawer({
       case 'styles':
         return <StylesPanel />;
       case 'template-settings':
-        return <TemplatePanel deleteTemplate={deleteTemplate} copyTemplate={copyTemplate} />;
+        return <TemplatePanel 
+          deleteTemplate={deleteTemplate} 
+          copyTemplate={copyTemplate}
+        />;
     }
   };
 
