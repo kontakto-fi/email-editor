@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/kontakto-fi/email-editor/compare/v1.0.1...v1.0.2) (2025-05-09)
+
+
+### Bug Fixes
+
+* **persistence:** disable saving by default ([d81aaa7](https://github.com/kontakto-fi/email-editor/commit/d81aaa7d16bd459d70b0e1379d8773e4d3a83412))
+
 ## [1.0.1](https://github.com/kontakto-fi/email-editor/compare/v1.0.0...v1.0.1) (2025-05-09)
 
 
