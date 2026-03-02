@@ -98,6 +98,10 @@ export function resetDocument(document: TValue['document']) {
   });
 }
 
+export function getDocument() {
+  return editorStateStore.getState().document;
+}
+
 export function setDocument(document: TValue['document']) {
   const originalDocument = editorStateStore.getState().document;
   

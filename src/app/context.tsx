@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, useRef } from 'react';
 import { TEditorConfiguration } from '@editor/core';
+import { getDocument } from '@editor/editor-context';
 
 // Type for stored template
 export interface StoredTemplate {
@@ -11,10 +12,8 @@ export interface StoredTemplate {
 }
 
 export interface EmailEditorContextType {
-  template: TEditorConfiguration;
   currentTemplateId: string | null;
   currentTemplateName: string | null;
-  updateTemplate: (template: TEditorConfiguration) => void;
   saveTemplate: () => TEditorConfiguration;
   loadTemplate: (template: TEditorConfiguration, templateId?: string, templateName?: string) => void;
   registerSaveListener: (callback: (template: TEditorConfiguration) => void) => () => void;
@@ -34,48 +33,36 @@ export interface EmailEditorProviderProps {
 
 export const EmailEditorProvider: React.FC<EmailEditorProviderProps> = ({
   children,
-  initialTemplate,
   initialTemplateId = null,
   initialTemplateName = null,
   onSave,
-  onChange,
 }) => {
-  const [template, setTemplate] = useState<TEditorConfiguration>(initialTemplate || {});
   const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(initialTemplateId);
   const [currentTemplateName, setCurrentTemplateName] = useState<string | null>(initialTemplateName);
-  const [saveListeners, setSaveListeners] = useState<((template: TEditorConfiguration) => void)[]>([]);
+  const saveListenersRef = useRef<((template: TEditorConfiguration) => void)[]>([]);
 
-  const updateTemplate = useCallback((newTemplate: TEditorConfiguration) => {
-    setTemplate(newTemplate);
-    if (onChange) {
-      onChange(newTemplate);
-    }
-  }, [onChange]);
+  // Use ref for onSave callback to keep context value stable
+  const onSaveRef = useRef(onSave);
+  onSaveRef.current = onSave;
 
   const saveTemplate = useCallback(() => {
-    // Call all registered save listeners
-    saveListeners.forEach(listener => listener(template));
-    if (onSave) {
-      onSave(template);
+    const currentDoc = getDocument();
+    saveListenersRef.current.forEach(listener => listener(currentDoc));
+    if (onSaveRef.current) {
+      onSaveRef.current(currentDoc);
     }
-    return template;
-  }, [template, saveListeners, onSave]);
+    return currentDoc;
+  }, []);
 
   const loadTemplate = useCallback((newTemplate: TEditorConfiguration, templateId?: string, templateName?: string) => {
-    setTemplate(newTemplate);
-    
     if (templateId !== undefined) {
       setCurrentTemplateId(templateId);
     }
-    
+
     if (templateName !== undefined) {
       setCurrentTemplateName(templateName);
     }
-    
-    if (onChange) {
-      onChange(newTemplate);
-    }
-  }, [onChange]);
+  }, []);
 
   const setCurrentTemplate = useCallback((templateId: string | null, templateName: string | null) => {
     setCurrentTemplateId(templateId);
@@ -83,22 +70,20 @@ export const EmailEditorProvider: React.FC<EmailEditorProviderProps> = ({
   }, []);
 
   const registerSaveListener = useCallback((callback: (template: TEditorConfiguration) => void) => {
-    setSaveListeners(prev => [...prev, callback]);
+    saveListenersRef.current = [...saveListenersRef.current, callback];
     return () => {
-      setSaveListeners(prev => prev.filter(listener => listener !== callback));
+      saveListenersRef.current = saveListenersRef.current.filter(listener => listener !== callback);
     };
   }, []);
 
-  const value = {
-    template,
+  const value = useMemo(() => ({
     currentTemplateId,
     currentTemplateName,
-    updateTemplate,
     saveTemplate,
     loadTemplate,
     registerSaveListener,
     setCurrentTemplate
-  };
+  }), [currentTemplateId, currentTemplateName, saveTemplate, loadTemplate, registerSaveListener, setCurrentTemplate]);
 
   return (
     <EmailEditorContext.Provider value={value}>
@@ -113,4 +98,4 @@ export const useEmailEditor = () => {
     throw new Error('useEmailEditor must be used within an EmailEditorProvider');
   }
   return context;
-}; 
+};
