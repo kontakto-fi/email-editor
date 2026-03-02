@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/kontakto-fi/email-editor/compare/v1.3.0...v1.3.1) (2026-03-02)
+
+
+### Bug Fixes
+
+* resolve all npm vulnerabilities ([ad27261](https://github.com/kontakto-fi/email-editor/commit/ad272614149cb339b70ed74b59d06576c2a9938c))
+
 # [1.3.0](https://github.com/kontakto-fi/email-editor/compare/v1.2.1...v1.3.0) (2026-03-02)
 
 
