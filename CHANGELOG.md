@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/kontakto-fi/email-editor/compare/v1.2.1...v1.3.0) (2026-03-02)
+
+
+### Bug Fixes
+
+* prevent focus loss on every keystroke when editing blocks ([e7124dd](https://github.com/kontakto-fi/email-editor/commit/e7124ddb9203227c492e5bd2fbdf7881c4ededb4))
+
+
+### Features
+
+* accept raw HTML string as initialTemplate ([a25ad98](https://github.com/kontakto-fi/email-editor/commit/a25ad98d076af5274021272de2d270b364322c28))
+
 ## [1.2.1](https://github.com/kontakto-fi/email-editor/compare/v1.2.0...v1.2.1) (2026-03-02)
 
 
