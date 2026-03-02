@@ -99,8 +99,9 @@ export {
   EmailEditor,
   EmailEditorProvider,
   useEmailEditor,
+  htmlToEditorConfig,
   type EmailEditorProps,
   type EmailEditorRef,
   type EmailEditorContextType,
   type EmailEditorProviderProps
-} from './app'; 
+} from './app';

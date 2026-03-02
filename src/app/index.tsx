@@ -1,14 +1,15 @@
-import React, { forwardRef, useImperativeHandle, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useRef } from 'react';
 import { Stack, useTheme, ThemeProvider } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import defaultTheme from '../theme';
 import { CssBaseline } from '@mui/material';
 
 import { TEditorConfiguration } from '@editor/core';
-import { 
-  useDocument, 
-  resetDocument, 
-  useInspectorDrawerOpen, 
+import {
+  useDocument,
+  getDocument,
+  resetDocument,
+  useInspectorDrawerOpen,
   useSamplesDrawerOpen,
   setPersistenceEnabled
 } from '@editor/editor-context';
@@ -17,6 +18,35 @@ import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
 import TemplatePanel from './email-canvas';
 import { SnackbarProvider } from './email-canvas/snackbar-provider';
+
+/**
+ * Wraps a raw HTML string in an editor config with an EmailLayout root + one Html block.
+ */
+function htmlToEditorConfig(html: string): TEditorConfiguration {
+  return {
+    root: {
+      type: 'EmailLayout',
+      data: {
+        backdropColor: '#F5F5F5',
+        canvasColor: '#FFFFFF',
+        textColor: '#262626',
+        fontFamily: 'MODERN_SANS',
+        childrenIds: ['block-html-import'],
+      },
+    },
+    'block-html-import': {
+      type: 'Html',
+      data: {
+        style: {
+          padding: { top: 0, bottom: 0, right: 0, left: 0 },
+        },
+        props: {
+          contents: html,
+        },
+      },
+    },
+  };
+}
 
 // Define the SampleTemplate interface directly here
 export interface SampleTemplate {
@@ -36,7 +66,12 @@ export interface EmailEditorRef {
 
 // Props for the EmailEditor component
 export interface EmailEditorProps {
-  initialTemplate?: TEditorConfiguration;
+  /**
+   * Initial template to load. Can be either:
+   * - A `TEditorConfiguration` object (the native editor format)
+   * - A raw HTML string, which will be auto-wrapped in an Html block
+   */
+  initialTemplate?: TEditorConfiguration | string;
   initialTemplateId?: string;
   initialTemplateName?: string;
   onSave?: (template: TEditorConfiguration) => void;
@@ -115,7 +150,7 @@ function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: 
 }
 
 // Internal component that connects the App with the EmailEditor context
-const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'initialTemplate' | 'initialTemplateId' | 'initialTemplateName' | 'onSave' | 'onChange' | 'persistenceEnabled'>>((props, ref) => {
+const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'initialTemplate' | 'initialTemplateId' | 'initialTemplateName' | 'onSave' | 'persistenceEnabled'>>((props, ref) => {
   const { 
     drawerEnterDuration = 225,
     drawerExitDuration = 225,
@@ -127,8 +162,9 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
     deleteTemplate,
     copyTemplate,
     saveAs,
+    onChange,
   } = props;
-  const { template, updateTemplate, saveTemplate, loadTemplate: contextLoadTemplate, currentTemplateId } = useEmailEditor();
+  const { saveTemplate, loadTemplate: contextLoadTemplate, currentTemplateId } = useEmailEditor();
   const currentDocument = useDocument();
   const inspectorDrawerOpen = useInspectorDrawerOpen();
   const samplesDrawerOpen = useSamplesDrawerOpen();
@@ -136,12 +172,17 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
   const marginLeftTransition = useDrawerTransition('margin-left', samplesDrawerOpen);
   const marginRightTransition = useDrawerTransition('margin-right', inspectorDrawerOpen);
 
-  // Sync the document state with our context
+  // Notify the consuming app of changes without triggering React state updates
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+  const prevDocJsonRef = useRef<string>('');
   useEffect(() => {
-    if (JSON.stringify(currentDocument) !== JSON.stringify(template)) {
-      updateTemplate(currentDocument);
+    const docJson = JSON.stringify(currentDocument);
+    if (docJson !== prevDocJsonRef.current) {
+      prevDocJsonRef.current = docJson;
+      onChangeRef.current?.(currentDocument);
     }
-  }, [currentDocument, template, updateTemplate]);
+  }, [currentDocument]);
 
   // Expose the API via ref
   useImperativeHandle(ref, () => ({
@@ -153,7 +194,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
       resetDocument(newTemplate);
     },
     getTemplate: () => {
-      return template;
+      return getDocument();
     }
   }));
 
@@ -191,11 +232,11 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
 
 // The main EmailEditor component that external apps will use
 const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) => {
-  const { 
-    initialTemplate, 
+  const {
+    initialTemplate: initialTemplateProp,
     initialTemplateId,
     initialTemplateName,
-    onSave, 
+    onSave,
     onChange,
     drawerEnterDuration,
     drawerExitDuration,
@@ -211,30 +252,41 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     theme,
   } = props;
 
-  // Initialize with the provided template and settings
+  // Resolve: if it's a raw HTML string, wrap it in an editor config
+  const resolvedTemplate = typeof initialTemplateProp === 'string'
+    ? htmlToEditorConfig(initialTemplateProp)
+    : initialTemplateProp;
+
+  // Initialize with the provided template on mount only
+  const initializedRef = useRef(false);
   useEffect(() => {
-    if (initialTemplate) {
-      resetDocument(initialTemplate);
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      if (resolvedTemplate) {
+        resetDocument(resolvedTemplate);
+      }
     }
-    
-    // Set persistence mode
+  }, [resolvedTemplate]);
+
+  // Update persistence mode when it changes
+  useEffect(() => {
     setPersistenceEnabled(persistenceEnabled);
-  }, [initialTemplate, persistenceEnabled]);
+  }, [persistenceEnabled]);
 
   return (
     <ThemeProvider theme={theme || defaultTheme}>
             <CssBaseline />
       <div style={{ height: '100%', overflow: 'auto' }}>
         <SnackbarProvider>
-          <EmailEditorProvider 
-            initialTemplate={initialTemplate}
+          <EmailEditorProvider
+            initialTemplate={resolvedTemplate}
             initialTemplateId={initialTemplateId}
             initialTemplateName={initialTemplateName}
             onSave={onSave}
             onChange={onChange}
           >
-            <EmailEditorInternal 
-              ref={ref} 
+            <EmailEditorInternal
+              ref={ref}
               drawerEnterDuration={drawerEnterDuration}
               drawerExitDuration={drawerExitDuration}
               samplesDrawerEnabled={samplesDrawerEnabled}
@@ -245,6 +297,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
               deleteTemplate={deleteTemplate}
               copyTemplate={copyTemplate}
               saveAs={saveAs}
+              onChange={onChange}
             />
           </EmailEditorProvider>
         </SnackbarProvider>
@@ -266,4 +319,7 @@ export {
   useEmailEditor,
   type EmailEditorContextType,
   type EmailEditorProviderProps
-}; 
+};
+
+// Export utility
+export { htmlToEditorConfig }; 
