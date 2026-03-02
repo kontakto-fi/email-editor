@@ -11,3 +11,10 @@ yarn-debug.log*
 yarn-error.log*
 
 dist
+
+# playwright
+test-results/
+playwright-report/
+
+# mcp
+.mcp.json
