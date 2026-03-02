@@ -1,10 +1,10 @@
-import insane, { AllowedTags } from 'insane';
+import DOMPurify from 'dompurify';
 import { marked, Renderer } from 'marked';
 import React, { CSSProperties, useMemo } from 'react';
 import { z } from 'zod';
 
 // EmailMarkdown Component
-const ALLOWED_TAGS: AllowedTags[] = [
+const ALLOWED_TAGS = [
   'a',
   'article',
   'b',
@@ -47,24 +47,24 @@ const ALLOWED_TAGS: AllowedTags[] = [
   'u',
   'ul',
 ];
-const GENERIC_ALLOWED_ATTRIBUTES = ['style', 'title'];
+const ALLOWED_ATTR = [
+  'style',
+  'title',
+  'src',
+  'srcset',
+  'alt',
+  'width',
+  'height',
+  'href',
+  'target',
+  'align',
+  'start',
+];
 
 function sanitizer(html: string): string {
-  return insane(html, {
-    allowedTags: ALLOWED_TAGS,
-    allowedAttributes: {
-      ...ALLOWED_TAGS.reduce<Record<string, string[]>>((res, tag) => {
-        res[tag] = [...GENERIC_ALLOWED_ATTRIBUTES];
-        return res;
-      }, {}),
-      img: ['src', 'srcset', 'alt', 'width', 'height', ...GENERIC_ALLOWED_ATTRIBUTES],
-      table: ['width', ...GENERIC_ALLOWED_ATTRIBUTES],
-      td: ['align', 'width', ...GENERIC_ALLOWED_ATTRIBUTES],
-      th: ['align', 'width', ...GENERIC_ALLOWED_ATTRIBUTES],
-      a: ['href', 'target', ...GENERIC_ALLOWED_ATTRIBUTES],
-      ol: ['start', ...GENERIC_ALLOWED_ATTRIBUTES],
-      ul: ['start', ...GENERIC_ALLOWED_ATTRIBUTES],
-    },
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS,
+    ALLOWED_ATTR,
   });
 }
 
