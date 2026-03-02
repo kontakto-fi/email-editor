@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useEffect, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
 import { Stack, useTheme, ThemeProvider } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import defaultTheme from '../theme';
@@ -252,19 +252,21 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     theme,
   } = props;
 
-  // Resolve: if it's a raw HTML string, wrap it in an editor config
-  const resolvedTemplate = typeof initialTemplateProp === 'string'
-    ? htmlToEditorConfig(initialTemplateProp)
-    : initialTemplateProp;
+  // Resolve: if it's a raw HTML string, wrap it in an editor config.
+  // Memoize so a string prop doesn't create a new object every render.
+  const resolvedTemplate = useMemo(
+    () => typeof initialTemplateProp === 'string'
+      ? htmlToEditorConfig(initialTemplateProp)
+      : initialTemplateProp,
+    [initialTemplateProp],
+  );
 
-  // Initialize with the provided template on mount only
-  const initializedRef = useRef(false);
+  // Reset the editor when a different template is provided
+  const prevTemplateRef = useRef<TEditorConfiguration | undefined>(undefined);
   useEffect(() => {
-    if (!initializedRef.current) {
-      initializedRef.current = true;
-      if (resolvedTemplate) {
-        resetDocument(resolvedTemplate);
-      }
+    if (resolvedTemplate && resolvedTemplate !== prevTemplateRef.current) {
+      prevTemplateRef.current = resolvedTemplate;
+      resetDocument(resolvedTemplate);
     }
   }, [resolvedTemplate]);
 
