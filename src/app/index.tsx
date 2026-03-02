@@ -261,14 +261,14 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     [initialTemplateProp],
   );
 
-  // Reset the editor when a different template is provided
+  // Reset the editor synchronously during render (not in an effect) so the
+  // Zustand store is up-to-date before child components mount / effects fire.
+  // This prevents the onChange callback from emitting a stale empty document.
   const prevTemplateRef = useRef<TEditorConfiguration | undefined>(undefined);
-  useEffect(() => {
-    if (resolvedTemplate && resolvedTemplate !== prevTemplateRef.current) {
-      prevTemplateRef.current = resolvedTemplate;
-      resetDocument(resolvedTemplate);
-    }
-  }, [resolvedTemplate]);
+  if (resolvedTemplate && resolvedTemplate !== prevTemplateRef.current) {
+    prevTemplateRef.current = resolvedTemplate;
+    resetDocument(resolvedTemplate);
+  }
 
   // Update persistence mode when it changes
   useEffect(() => {
