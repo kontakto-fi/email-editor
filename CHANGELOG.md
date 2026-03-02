@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/kontakto-fi/email-editor/compare/v1.3.2...v1.3.3) (2026-03-02)
+
+
+### Bug Fixes
+
+* **session:** reset document synchronously during render ([847d431](https://github.com/kontakto-fi/email-editor/commit/847d43119fe6ccdba8b0f9e5b9580a4fbb75555f))
+
 ## [1.3.2](https://github.com/kontakto-fi/email-editor/compare/v1.3.1...v1.3.2) (2026-03-02)
 
 
