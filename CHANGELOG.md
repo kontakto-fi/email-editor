@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/kontakto-fi/email-editor/compare/v1.3.1...v1.3.2) (2026-03-02)
+
+
+### Bug Fixes
+
+* **session:** reset editor when initialTemplate prop changes ([d13d80a](https://github.com/kontakto-fi/email-editor/commit/d13d80ad222f45f6d6f171cd19f814a9487a165e))
+
 ## [1.3.1](https://github.com/kontakto-fi/email-editor/compare/v1.3.0...v1.3.1) (2026-03-02)
 
 
