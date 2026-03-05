@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/kontakto-fi/email-editor/compare/v1.5.0...v1.5.1) (2026-03-05)
+
+
+### Bug Fixes
+
+* simplify getPadding type to fix TS2345 error ([1cfea90](https://github.com/kontakto-fi/email-editor/commit/1cfea90b066a7e754b859887f77c39ef31862ac9))
+
 # [1.5.0](https://github.com/kontakto-fi/email-editor/compare/v1.4.0...v1.5.0) (2026-03-05)
 
 
