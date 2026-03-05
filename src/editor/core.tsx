@@ -8,6 +8,7 @@ import {
   HeadingPropsSchema,
   Html, HtmlPropsSchema,
   Image, ImagePropsSchema,
+  SignaturePropsSchema,
   Spacer, SpacerPropsSchema,
   TextPropsSchema
 } from '@blocks';
@@ -24,7 +25,10 @@ import ContainerPropsSchema from '@editor/blocks/container/container-props-schem
 import EmailLayoutEditor from '@editor/blocks/email-layout/email-layout-editor';
 import EmailLayoutPropsSchema from '@editor/blocks/email-layout/email-layout-props-schema';
 import EditorBlockWrapper from '@editor/blocks/helpers/block-wrappers/editor-block-wrapper';
+import ButtonEditor from '@editor/blocks/button/button-editor';
 import HeadingEditor from '@editor/blocks/heading/heading-editor';
+import HtmlEditor from '@editor/blocks/html/html-editor';
+import SignatureEditor from '@editor/blocks/signature/signature-editor';
 import TextEditor from '@editor/blocks/text/text-editor';
 
 const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
@@ -40,7 +44,7 @@ const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
     schema: ButtonPropsSchema,
     Component: (props) => (
       <EditorBlockWrapper>
-        <Button {...props} />
+        <ButtonEditor {...props} />
       </EditorBlockWrapper>
     ),
   },
@@ -72,7 +76,7 @@ const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
     schema: HtmlPropsSchema,
     Component: (props) => (
       <EditorBlockWrapper>
-        <Html {...props} />
+        <HtmlEditor {...props} />
       </EditorBlockWrapper>
     ),
   },
@@ -84,6 +88,7 @@ const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
         props: {
           ...data.props,
           url: data.props?.url ?? 'https://placehold.co/600x400@2x/F8F8F8/CCC?text=Your%20image',
+          linkHref: null,
         },
       };
       return (
@@ -118,6 +123,14 @@ const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
     Component: (props) => (
       <EditorBlockWrapper>
         <Divider {...props} />
+      </EditorBlockWrapper>
+    ),
+  },
+  Signature: {
+    schema: SignaturePropsSchema,
+    Component: (props) => (
+      <EditorBlockWrapper>
+        <SignatureEditor {...props} />
       </EditorBlockWrapper>
     ),
   },
