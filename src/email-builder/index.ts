@@ -1,5 +1,5 @@
 // Export renderer
-export { renderToStaticMarkup } from './renderers';
+export { renderToStaticMarkup, renderToText } from './renderers';
 
 // Export Reader and related types
 export {

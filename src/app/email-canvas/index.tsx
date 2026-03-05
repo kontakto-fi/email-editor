@@ -17,6 +17,7 @@ import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-b
 
 import HtmlPanel from './html-panel';
 import JsonPanel from './json-panel';
+import TextPanel from './text-panel';
 import MainTabsGroup from './main-tabs-group';
 import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
@@ -75,6 +76,8 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
         );
       case 'html':
         return <HtmlPanel />;
+      case 'text':
+        return <TextPanel />;
       case 'json':
         return <JsonPanel />;
     }

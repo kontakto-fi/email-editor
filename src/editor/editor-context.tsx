@@ -5,7 +5,7 @@ type TValue = {
   document: TEditorConfiguration;
   selectedBlockId: string | null;
   selectedSidebarTab: 'block-configuration' | 'styles' | 'template-settings';
-  selectedMainTab: 'editor' | 'preview' | 'json' | 'html';
+  selectedMainTab: 'editor' | 'preview' | 'json' | 'html' | 'text';
   selectedScreenSize: 'desktop' | 'mobile';
   inspectorDrawerOpen: boolean;
   samplesDrawerOpen: boolean;

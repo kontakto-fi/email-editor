@@ -73,6 +73,7 @@ export {
 // Export email-builder
 export {
   renderToStaticMarkup,
+  renderToText,
   Reader,
   ReaderBlock,
   ReaderBlockSchema,
