@@ -3,10 +3,10 @@ import { z } from 'zod';
 
 import {
   Avatar, AvatarPropsSchema,
-  Button, ButtonPropsSchema,
+  ButtonPropsSchema,
   Divider, DividerPropsSchema,
   HeadingPropsSchema,
-  Html, HtmlPropsSchema,
+  HtmlPropsSchema,
   Image, ImagePropsSchema,
   SignaturePropsSchema,
   Spacer, SpacerPropsSchema,

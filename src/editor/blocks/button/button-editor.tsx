@@ -75,7 +75,6 @@ export default function ButtonEditor({ style, props }: ButtonProps) {
   }, [text]);
 
   const padding = getButtonSizePadding(props);
-  const textRaise = (padding[1] * 2 * 3) / 4;
 
   const wrapperStyle: CSSProperties = {
     backgroundColor: style?.backgroundColor ?? undefined,
