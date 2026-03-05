@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ArrowDownwardOutlined, ArrowUpwardOutlined, DeleteOutlined } from '@mui/icons-material';
+import { ArrowDownwardOutlined, ArrowUpwardOutlined, ContentCopyOutlined, DeleteOutlined } from '@mui/icons-material';
 import { IconButton, Paper, Stack, SxProps, Tooltip } from '@mui/material';
 
 import { TEditorBlock } from '@editor/core';
@@ -16,6 +16,37 @@ const sx: SxProps = {
   paddingY: 1,
   zIndex: 'fab',
 };
+
+function collectBlock(blockId: string, document: Record<string, any>): Record<string, any> {
+  const block = document[blockId] as TEditorBlock;
+  if (!block) return {};
+  const result: Record<string, any> = { [blockId]: block };
+
+  // Collect children from Container
+  if (block.type === 'Container') {
+    const childrenIds = block.data.props?.childrenIds ?? [];
+    for (const childId of childrenIds) {
+      Object.assign(result, collectBlock(childId, document));
+    }
+  }
+  // Collect children from ColumnsContainer
+  if (block.type === 'ColumnsContainer') {
+    const columns = block.data.props?.columns ?? [];
+    for (const col of columns) {
+      for (const childId of col.childrenIds ?? []) {
+        Object.assign(result, collectBlock(childId, document));
+      }
+    }
+  }
+  // Collect children from EmailLayout
+  if (block.type === 'EmailLayout') {
+    const childrenIds = block.data.childrenIds ?? [];
+    for (const childId of childrenIds) {
+      Object.assign(result, collectBlock(childId, document));
+    }
+  }
+  return result;
+}
 
 type Props = {
   blockId: string;
@@ -78,6 +109,12 @@ export default function TuneMenu({ blockId }: Props) {
     }
     delete nDocument[blockId];
     resetDocument(nDocument);
+  };
+
+  const handleCopyClick = () => {
+    const blocks = collectBlock(blockId, document);
+    const payload = JSON.stringify({ __emailEditorBlocks: true, rootBlockId: blockId, blocks });
+    navigator.clipboard.writeText(payload);
   };
 
   const handleMoveClick = (direction: 'up' | 'down') => {
@@ -159,6 +196,11 @@ export default function TuneMenu({ blockId }: Props) {
         <Tooltip title="Move down" placement="left-start">
           <IconButton onClick={() => handleMoveClick('down')} sx={{ color: 'text.primary' }}>
             <ArrowDownwardOutlined fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Copy block" placement="left-start">
+          <IconButton onClick={handleCopyClick} sx={{ color: 'text.primary' }}>
+            <ContentCopyOutlined fontSize="small" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete" placement="left-start">
