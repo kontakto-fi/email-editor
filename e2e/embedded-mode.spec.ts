@@ -24,8 +24,8 @@ test('embedded mode allows inline HTML editing', async ({ page }) => {
   // Click on the HTML content to select the block
   await page.locator('text=Welcome to our service').click();
 
-  // The HtmlEditor shows a monospace textarea when selected
-  const textarea = page.locator('textarea');
+  // The HtmlEditor shows a monospace textarea when selected — use the one inside the canvas (td)
+  const textarea = page.locator('td textarea');
   await expect(textarea).toBeVisible({ timeout: 5_000 });
 
   // The textarea should contain the raw HTML source
