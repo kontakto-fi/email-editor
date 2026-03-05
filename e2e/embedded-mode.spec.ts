@@ -6,22 +6,29 @@ test('embedded mode hides samples drawer toggle', async ({ page }) => {
   await expect(page.locator('#drawer-container')).toBeVisible({ timeout: 10_000 });
 
   // The samples drawer toggle (menu icon) should NOT be visible
-  const menuButton = page.locator('button:has(svg[data-testid="MenuOutlinedIcon"])');
-  await expect(menuButton).not.toBeVisible();
+  const menuIcon = page.locator('[data-testid="MenuOutlinedIcon"]');
+  await expect(menuIcon).not.toBeVisible();
 
-  // The first-page icon (collapse) should also not be visible
-  const collapseButton = page.locator('button:has(svg[data-testid="FirstPageOutlinedIcon"])');
-  await expect(collapseButton).not.toBeVisible();
+  // The collapse icon should also not be visible
+  const collapseIcon = page.locator('[data-testid="FirstPageOutlinedIcon"]');
+  await expect(collapseIcon).not.toBeVisible();
 });
 
-test('embedded mode still allows inline editing', async ({ page }) => {
+test('embedded mode allows inline HTML editing', async ({ page }) => {
   await page.goto('/e2e/test-html-import.html');
   await expect(page.locator('#drawer-container')).toBeVisible({ timeout: 10_000 });
+
+  // The HTML content should be rendered
+  await expect(page.locator('text=Welcome to our service')).toBeVisible({ timeout: 5_000 });
 
   // Click on the HTML content to select the block
   await page.locator('text=Welcome to our service').click();
 
-  // A textarea should appear for editing the HTML source
+  // The HtmlEditor shows a monospace textarea when selected
   const textarea = page.locator('textarea');
   await expect(textarea).toBeVisible({ timeout: 5_000 });
+
+  // The textarea should contain the raw HTML source
+  const value = await textarea.inputValue();
+  expect(value).toContain('Welcome to our service');
 });
