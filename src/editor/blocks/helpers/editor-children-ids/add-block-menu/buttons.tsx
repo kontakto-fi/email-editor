@@ -2,6 +2,8 @@ import React from 'react';
 
 import {
   AccountCircleOutlined,
+  BusinessOutlined,
+  ContactMailOutlined,
   Crop32Outlined,
   HMobiledataOutlined,
   HorizontalRuleOutlined,
@@ -88,6 +90,48 @@ export const BUTTONS: TButtonProps[] = [
         props: {
           imageUrl: 'https://ui-avatars.com/api/?size=128',
           shape: 'circle',
+        },
+        style: { padding: { top: 16, bottom: 16, left: 24, right: 24 } },
+      },
+    }),
+  },
+  {
+    label: 'Personal Signature',
+    icon: <ContactMailOutlined />,
+    block: () => ({
+      type: 'Signature',
+      data: {
+        props: {
+          greeting: 'Best regards,',
+          name: 'John Doe',
+          title: 'Software Engineer',
+          company: 'Acme Inc.',
+          email: 'john@example.com',
+          phone: '+1 234 567 890',
+          imageUrl: 'https://ui-avatars.com/api/?name=John+Doe&size=128',
+          imageSize: 64,
+          imageShape: 'circle',
+          layout: 'horizontal',
+        },
+        style: { padding: { top: 16, bottom: 16, left: 24, right: 24 } },
+      },
+    }),
+  },
+  {
+    label: 'Company Signature',
+    icon: <BusinessOutlined />,
+    block: () => ({
+      type: 'Signature',
+      data: {
+        props: {
+          company: 'Acme Inc.',
+          address: '123 Main Street, City, Country',
+          email: 'support@example.com',
+          website: 'www.example.com',
+          imageUrl: 'https://placehold.co/128x128/EEE/999?text=Logo',
+          imageSize: 48,
+          imageShape: 'rounded',
+          layout: 'horizontal',
         },
         style: { padding: { top: 16, bottom: 16, left: 24, right: 24 } },
       },

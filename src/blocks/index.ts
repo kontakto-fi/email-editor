@@ -42,11 +42,17 @@ export {
   HtmlPropsSchema,
   HtmlProps
 } from './html';
-export { 
+export {
   default as Image,
   ImagePropsSchema,
   ImageProps
 } from './image';
+export {
+  default as Signature,
+  SignaturePropsSchema,
+  SignatureProps,
+  SignaturePropsDefaults
+} from './signature';
 export { 
   default as Spacer,
   SpacerPropsSchema,

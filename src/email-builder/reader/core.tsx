@@ -9,6 +9,7 @@ import {
   Heading, HeadingPropsSchema,
   Html, HtmlPropsSchema,
   Image, ImagePropsSchema,
+  Signature, SignaturePropsSchema,
   Spacer, SpacerPropsSchema,
   Text, TextPropsSchema
 } from '../../blocks';
@@ -99,6 +100,10 @@ const READER_DICTIONARY = buildBlockConfigurationDictionary({
   Text: {
     schema: TextPropsSchema,
     Component: Text,
+  },
+  Signature: {
+    schema: SignaturePropsSchema,
+    Component: Signature,
   },
 });
 

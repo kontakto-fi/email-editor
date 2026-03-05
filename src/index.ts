@@ -50,7 +50,13 @@ export {
   Image,
   ImagePropsSchema,
   ImageProps,
-  
+
+  // From signature
+  Signature,
+  SignaturePropsSchema,
+  SignatureProps,
+  SignaturePropsDefaults,
+
   // From spacer
   Spacer,
   SpacerPropsSchema,
