@@ -48,7 +48,6 @@ export default function EditorBlockWrapper({ children }: TEditorBlockWrapperProp
       onClick={(ev) => {
         setSelectedBlockId(blockId);
         ev.stopPropagation();
-        ev.preventDefault();
       }}
     >
       {renderMenu()}
