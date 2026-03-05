@@ -1,9 +1,7 @@
 name: Release to NPMjs
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,25 +18,25 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
           registry-url: 'https://registry.npmjs.org'
+          cache: npm
 
-      - name: Remove package-lock.json and node_modules (npm bug workaround)
-        run: |
-          rm -rf package-lock.json node_modules
-          
       - name: Install dependencies
-        run: npm install --no-optional
-
-      - name: Add platform-specific Rollup dependencies
-        run: npm install --save-dev @rollup/rollup-linux-x64-gnu
+        run: npm ci
 
       - name: Build
         run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        run: npx playwright test
 
       - name: Install semantic-release plugins
         run: npm install -g semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/github @semantic-release/npm @semantic-release/release-notes-generator
@@ -48,4 +46,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_ACCESS: public
-        run: npx semantic-release 
+        run: npx semantic-release
