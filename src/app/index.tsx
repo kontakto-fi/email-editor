@@ -224,7 +224,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
           transition: [marginLeftTransition, marginRightTransition].join(', '),
         }}
       >
-        <TemplatePanel loadTemplates={loadTemplates} saveAs={saveAs} />
+        <TemplatePanel loadTemplates={loadTemplates} saveAs={saveAs} samplesDrawerEnabled={samplesDrawerEnabled} />
       </Stack>
     </Stack>
   );

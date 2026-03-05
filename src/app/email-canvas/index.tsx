@@ -26,9 +26,10 @@ import { SampleTemplate } from '../index';
 interface TemplatePanelProps {
   loadTemplates?: () => Promise<SampleTemplate[]>;
   saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
+  samplesDrawerEnabled?: boolean;
 }
 
-export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelProps) {
+export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnabled = true }: TemplatePanelProps) {
   const document = useDocument();
   const selectedMainTab = useSelectedMainTab();
   const selectedScreenSize = useSelectedScreenSize();
@@ -102,7 +103,7 @@ export default function TemplatePanel({ loadTemplates, saveAs }: TemplatePanelPr
         justifyContent="space-between"
         alignItems="center"
       >
-        <ToggleSamplesPanelButton />
+        {samplesDrawerEnabled && <ToggleSamplesPanelButton />}
         <Stack px={2} direction="row" gap={2} width="100%" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={2}>
             <MainTabsGroup />
