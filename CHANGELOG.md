@@ -1,3 +1,23 @@
+# [1.5.0](https://github.com/kontakto-fi/email-editor/compare/v1.4.0...v1.5.0) (2026-03-05)
+
+
+### Bug Fixes
+
+* allow inline text editing by removing preventDefault from block wrapper ([7513973](https://github.com/kontakto-fi/email-editor/commit/751397327db41d032f7b3f0de8d3c2eb693188f3))
+* hide samples drawer toggle when samplesDrawerEnabled is false ([e568c0e](https://github.com/kontakto-fi/email-editor/commit/e568c0eccbe8d1f5c8ac30da97478df33bf03921))
+* remove platform-specific @rollup/rollup-linux-x64-gnu dependency ([bb05e6e](https://github.com/kontakto-fi/email-editor/commit/bb05e6ea4a5026391dcb9943f1e770f04bdc223a))
+* remove unused imports and variables breaking DTS build ([addbf39](https://github.com/kontakto-fi/email-editor/commit/addbf395fbeb771a14081e37fc55f89afbcf1101))
+* reorder package.json exports so types condition is checked first ([53bc320](https://github.com/kontakto-fi/email-editor/commit/53bc320062a0b73bdaf5ebf724cb45ad49722f7a))
+* **test:** fix flaky e2e tests and remove unreliable ones ([bdc7e6e](https://github.com/kontakto-fi/email-editor/commit/bdc7e6e2534f5c69cdb7f0dc18dd26f3a58eab5c))
+* **test:** update e2e test selectors for reliability ([4096eac](https://github.com/kontakto-fi/email-editor/commit/4096eac865a5ab33ca1b2b9d2b6d2b7a891ae4ae))
+
+
+### Features
+
+* add block copy/paste and delete keyboard shortcuts ([f817036](https://github.com/kontakto-fi/email-editor/commit/f817036c598beae5c2609971e320375384c32589))
+* add inline editors for Button, Html, and Signature blocks ([fe07818](https://github.com/kontakto-fi/email-editor/commit/fe07818f7efc7ff422baf131b6d996cb22f8f967))
+* add Signature block with personal and company presets ([3e56130](https://github.com/kontakto-fi/email-editor/commit/3e561301372dfef84d05a89d02f3e1829c8a4a5b))
+
 # [1.4.0](https://github.com/kontakto-fi/email-editor/compare/v1.3.3...v1.4.0) (2026-03-05)
 
 
