@@ -27,8 +27,8 @@ function getFontFamily(fontFamily: string | null | undefined) {
   return undefined;
 }
 
-const getPadding = (padding: ButtonProps['style'] extends { padding?: infer P } ? P : never) =>
-  padding ? `${(padding as any).top}px ${(padding as any).right}px ${(padding as any).bottom}px ${(padding as any).left}px` : undefined;
+const getPadding = (padding: { top: number; right: number; bottom: number; left: number } | null | undefined) =>
+  padding ? `${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px` : undefined;
 
 function getRoundedCorners(props: ButtonProps['props']) {
   const buttonStyle = props?.buttonStyle ?? ButtonPropsDefaults.buttonStyle;
