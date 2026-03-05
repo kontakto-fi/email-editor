@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5443",
     "build": "vite build && tsup",
     "preview": "vite preview",
     "test": "jest",
@@ -39,7 +39,6 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@playwright/test": "^1.58.2",
-    "@rollup/rollup-linux-x64-gnu": "^4.59.0",
     "@testing-library/react": "^14.2.1",
     "@types/dompurify": "^3.0.5",
     "@types/jest": "^29.5.12",
