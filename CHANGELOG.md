@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/kontakto-fi/email-editor/compare/v1.3.3...v1.4.0) (2026-03-05)
+
+
+### Features
+
+* add renderToText() and plain text preview tab ([c6b1869](https://github.com/kontakto-fi/email-editor/commit/c6b186957ab191c554d2cab7b1a3609d3dd850bf))
+
 ## [1.3.3](https://github.com/kontakto-fi/email-editor/compare/v1.3.2...v1.3.3) (2026-03-02)
 
 
