@@ -59,7 +59,7 @@ export const BUTTONS: TButtonProps[] = [
       data: {
         props: {
           text: 'Button',
-          url: 'https://www.usewaypoint.com',
+          url: 'https://example.com',
         },
         style: { padding: { top: 16, bottom: 16, left: 24, right: 24 } },
       },
@@ -72,7 +72,7 @@ export const BUTTONS: TButtonProps[] = [
       type: 'Image',
       data: {
         props: {
-          url: 'https://assets.usewaypoint.com/sample-image.jpg',
+          url: 'https://placehold.co/600x400/EEE/999?text=Sample+Image',
           alt: 'Sample product',
           contentAlignment: 'middle',
           linkHref: null,
