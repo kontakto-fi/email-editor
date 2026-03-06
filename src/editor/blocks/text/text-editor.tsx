@@ -149,8 +149,8 @@ export default function TextEditor({ style, props }: TextProps) {
     }
   };
 
-  // If the block is selected and not markdown, show a textarea
-  if (isSelected && !isMarkdown) {
+  // When selected, show a textarea for editing (both plain text and markdown source)
+  if (isSelected) {
     return (
       <textarea
         value={localText}
@@ -163,12 +163,11 @@ export default function TextEditor({ style, props }: TextProps) {
       />
     );
   }
-  
-  // Otherwise, just display the text as before
+
+  // When not selected, render markdown or plain text
   if (isMarkdown) {
-    // For markdown content, use the EmailMarkdown component
     return <EmailMarkdown style={wStyle} markdown={textContent} />;
   }
-  
+
   return <div style={wStyle}>{textContent}</div>;
 } 
