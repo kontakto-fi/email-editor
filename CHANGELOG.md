@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/kontakto-fi/email-editor/compare/v1.5.1...v1.6.0) (2026-03-25)
+
+
+### Bug Fixes
+
+* allow inline editing of markdown text blocks in editor ([5e4cc53](https://github.com/kontakto-fi/email-editor/commit/5e4cc53efa5716ff539c146f877434309d8abb60))
+* replace Waypoint placeholder URLs with generic ones ([b3de438](https://github.com/kontakto-fi/email-editor/commit/b3de4382b71ffe0ebb8cdabea96a8e68131912a1))
+
+
+### Features
+
+* add "Disable backdrop" option for native-looking emails ([b9f163a](https://github.com/kontakto-fi/email-editor/commit/b9f163a5db1439d4729ee840ead41c6b7eea3100))
+
 ## [1.5.1](https://github.com/kontakto-fi/email-editor/compare/v1.5.0...v1.5.1) (2026-03-05)
 
 
