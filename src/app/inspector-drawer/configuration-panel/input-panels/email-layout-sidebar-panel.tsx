@@ -7,6 +7,7 @@ import EmailLayoutPropsSchema, {
 } from '@editor/blocks/email-layout/email-layout-props-schema';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
+import BooleanInput from './helpers/inputs/boolean-input';
 import ColorInput, { NullableColorInput } from './helpers/inputs/color-input';
 import { NullableFontFamily } from './helpers/inputs/font-family';
 import SliderInput from './helpers/inputs/slider-input';
@@ -28,34 +29,45 @@ export default function EmailLayoutSidebarFields({ data, setData }: EmailLayoutS
     }
   };
 
+  const backdropDisabled = data.backdropDisabled ?? false;
+
   return (
     <BaseSidebarPanel title="Global">
-      <ColorInput
-        label="Backdrop color"
-        defaultValue={data.backdropColor ?? '#F5F5F5'}
-        onChange={(backdropColor) => updateData({ ...data, backdropColor })}
+      <BooleanInput
+        label="Disable backdrop"
+        defaultValue={backdropDisabled}
+        onChange={(backdropDisabled) => updateData({ ...data, backdropDisabled })}
       />
-      <ColorInput
-        label="Canvas color"
-        defaultValue={data.canvasColor ?? '#FFFFFF'}
-        onChange={(canvasColor) => updateData({ ...data, canvasColor })}
-      />
-      <NullableColorInput
-        label="Canvas border color"
-        defaultValue={data.borderColor ?? null}
-        onChange={(borderColor) => updateData({ ...data, borderColor })}
-      />
-      <SliderInput
-        iconLabel={<RoundedCornerOutlined />}
-        units="px"
-        step={4}
-        marks
-        min={0}
-        max={48}
-        label="Canvas border radius"
-        defaultValue={data.borderRadius ?? 0}
-        onChange={(borderRadius) => updateData({ ...data, borderRadius })}
-      />
+      {!backdropDisabled && (
+        <>
+          <ColorInput
+            label="Backdrop color"
+            defaultValue={data.backdropColor ?? '#F5F5F5'}
+            onChange={(backdropColor) => updateData({ ...data, backdropColor })}
+          />
+          <ColorInput
+            label="Canvas color"
+            defaultValue={data.canvasColor ?? '#FFFFFF'}
+            onChange={(canvasColor) => updateData({ ...data, canvasColor })}
+          />
+          <NullableColorInput
+            label="Canvas border color"
+            defaultValue={data.borderColor ?? null}
+            onChange={(borderColor) => updateData({ ...data, borderColor })}
+          />
+          <SliderInput
+            iconLabel={<RoundedCornerOutlined />}
+            units="px"
+            step={4}
+            marks
+            min={0}
+            max={48}
+            label="Canvas border radius"
+            defaultValue={data.borderRadius ?? 0}
+            onChange={(borderRadius) => updateData({ ...data, borderRadius })}
+          />
+        </>
+      )}
       <NullableFontFamily
         label="Font family"
         defaultValue="MODERN_SANS"

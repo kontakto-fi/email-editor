@@ -211,20 +211,62 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
     };
   }, [handleDelete, handleCopy, handlePaste]);
 
+  const baseStyle: React.CSSProperties = {
+    color: props.textColor ?? '#262626',
+    fontFamily: getFontFamily(props.fontFamily),
+    fontSize: '16px',
+    fontWeight: '400',
+    letterSpacing: '0.15008px',
+    lineHeight: '1.5',
+    margin: '0',
+  };
+
+  const editorChildren = (
+    <EditorChildrenIds
+      childrenIds={childrenIds}
+      onChange={({ block, blockId, childrenIds }) => {
+        setDocument({
+          [blockId]: block,
+          [currentBlockId]: {
+            type: 'EmailLayout',
+            data: {
+              ...document[currentBlockId].data,
+              childrenIds: childrenIds,
+            },
+          },
+        });
+        setSelectedBlockId(blockId);
+      }}
+    />
+  );
+
+  if (props.backdropDisabled) {
+    return (
+      <div
+        onClick={() => { setSelectedBlockId(null); }}
+        style={{
+          ...baseStyle,
+          backgroundColor: '#F5F5F5',
+          padding: '32px',
+          width: '100%',
+          minHeight: '100%',
+        }}
+      >
+        <div style={{ maxWidth: '600px' }}>
+          {editorChildren}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       onClick={() => {
         setSelectedBlockId(null);
       }}
       style={{
+        ...baseStyle,
         backgroundColor: props.backdropColor ?? '#F5F5F5',
-        color: props.textColor ?? '#262626',
-        fontFamily: getFontFamily(props.fontFamily),
-        fontSize: '16px',
-        fontWeight: '400',
-        letterSpacing: '0.15008px',
-        lineHeight: '1.5',
-        margin: '0',
         padding: '32px 0',
         width: '100%',
         minHeight: '100%',
@@ -238,6 +280,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
           maxWidth: '600px',
           backgroundColor: props.canvasColor ?? '#FFFFFF',
           borderRadius: props.borderRadius ?? undefined,
+          overflow: props.borderRadius ? 'hidden' : undefined,
           border: (() => {
             const v = props.borderColor;
             if (!v) {
@@ -254,22 +297,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
         <tbody>
           <tr style={{ width: '100%' }}>
             <td>
-              <EditorChildrenIds
-                childrenIds={childrenIds}
-                onChange={({ block, blockId, childrenIds }) => {
-                  setDocument({
-                    [blockId]: block,
-                    [currentBlockId]: {
-                      type: 'EmailLayout',
-                      data: {
-                        ...document[currentBlockId].data,
-                        childrenIds: childrenIds,
-                      },
-                    },
-                  });
-                  setSelectedBlockId(blockId);
-                }}
-              />
+              {editorChildren}
             </td>
           </tr>
         </tbody>

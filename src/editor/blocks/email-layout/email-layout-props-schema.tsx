@@ -23,6 +23,7 @@ const FONT_FAMILY_SCHEMA = z
 
 const EmailLayoutPropsSchema = z.object({
   backdropColor: COLOR_SCHEMA,
+  backdropDisabled: z.boolean().optional().nullable(),
   borderColor: COLOR_SCHEMA,
   borderRadius: z.number().optional().nullable(),
   canvasColor: COLOR_SCHEMA,

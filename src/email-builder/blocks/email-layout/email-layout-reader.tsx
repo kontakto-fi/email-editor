@@ -45,17 +45,31 @@ function getBorder({ borderColor }: EmailLayoutProps) {
 
 export default function EmailLayoutReader(props: EmailLayoutProps) {
   const childrenIds = props.childrenIds ?? [];
+  const baseStyle = {
+    color: props.textColor ?? '#262626',
+    fontFamily: getFontFamily(props.fontFamily),
+    fontSize: '16px',
+    fontWeight: '400',
+    letterSpacing: '0.15008px',
+    lineHeight: '1.5',
+    margin: '0',
+  };
+
+  if (props.backdropDisabled) {
+    return (
+      <div style={baseStyle}>
+        {childrenIds.map((childId) => (
+          <ReaderBlock key={childId} id={childId} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
+        ...baseStyle,
         backgroundColor: props.backdropColor ?? '#F5F5F5',
-        color: props.textColor ?? '#262626',
-        fontFamily: getFontFamily(props.fontFamily),
-        fontSize: '16px',
-        fontWeight: '400',
-        letterSpacing: '0.15008px',
-        lineHeight: '1.5',
-        margin: '0',
         padding: '32px 0',
         minHeight: '100%',
         width: '100%',
@@ -69,6 +83,7 @@ export default function EmailLayoutReader(props: EmailLayoutProps) {
           maxWidth: '600px',
           backgroundColor: props.canvasColor ?? '#FFFFFF',
           borderRadius: props.borderRadius ?? undefined,
+          overflow: props.borderRadius ? 'hidden' : undefined,
           border: getBorder(props),
         }}
         role="presentation"
