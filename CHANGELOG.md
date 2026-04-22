@@ -1,3 +1,31 @@
+# [2.0.0](https://github.com/kontakto-fi/email-editor/compare/v1.6.0...v2.0.0) (2026-04-22)
+
+
+* feat!: built-in templates browser with search, sort, and row actions ([36c75b1](https://github.com/kontakto-fi/email-editor/commit/36c75b134e4c5924b28b630d7931bf94e5ff46e1)), closes [#4](https://github.com/kontakto-fi/email-editor/issues/4)
+* feat!: save callbacks receive rendered HTML and text outputs ([b569894](https://github.com/kontakto-fi/email-editor/commit/b569894b8e912210e1d6a561ec16428fce5324bb)), closes [#5](https://github.com/kontakto-fi/email-editor/issues/5) [#5](https://github.com/kontakto-fi/email-editor/issues/5) [#6](https://github.com/kontakto-fi/email-editor/issues/6)
+* feat!: unify samples and templates behind a kind discriminator ([6e1ec49](https://github.com/kontakto-fi/email-editor/commit/6e1ec49f820ad248ef42c67af67042ea3759c550)), closes [#8](https://github.com/kontakto-fi/email-editor/issues/8)
+
+
+### Features
+
+* editor owns subject line and variables metadata ([2a83b0a](https://github.com/kontakto-fi/email-editor/commit/2a83b0af080919cbfde583b07db2a37a408362d4)), closes [#5](https://github.com/kontakto-fi/email-editor/issues/5)
+
+
+### BREAKING CHANGES
+
+* `onSave(template)` → `onSave(payload: SavePayload)`.
+`saveAs(name, content)` → `saveAs(name, payload: SavePayload)` returning
+* `TemplateListItem` gains a required `kind` field.
+Consumers must return `kind: 'template' | 'sample'` from their
+`loadTemplates` and `loadSamples` callbacks. See README for the new
+contract and suggested DB schema (`kind text not null default
+'template'`).
+* `loadTemplates` and `loadSamples` now return
+`TemplateListItem[]` instead of `SampleTemplate[]`. The primary label
+field renames from `name` to `slug`. Consumers must update their list
+endpoints to return the new shape; see README for the new type and the
+suggested DB schema changes.
+
 # [1.6.0](https://github.com/kontakto-fi/email-editor/compare/v1.5.1...v1.6.0) (2026-03-25)
 
 
