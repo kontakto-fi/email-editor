@@ -23,3 +23,6 @@ export {
   EmailLayoutReader,
   TemplateVariableSchema
 } from './blocks';
+
+// Export Handlebars helpers for consumers who want to render outside the save flow
+export { editorHandlebars, evaluateHandlebars, type HandlebarsContext } from './handlebars';

@@ -123,6 +123,34 @@ type SavePayload = {
 
 The `renderToStaticMarkup` and `renderToText` utilities are also exposed publicly for consumers that need to re-render outside the save flow (e.g. batch jobs).
 
+#### Handlebars render pipeline
+
+`renderToStaticMarkup(doc, { rootBlockId, variables? })` and `renderToText(doc, { rootBlockId, variables? })` both accept an optional `variables` context. When omitted (the default — including `buildSavePayload`), the output keeps raw `{{name}}` placeholders in place so the consumer's sending pipeline can evaluate them at send time with the recipient's actual data. When provided, the rendered output is compiled and evaluated as a [Handlebars](https://handlebarsjs.com/) template:
+
+```ts
+renderToStaticMarkup(doc, {
+  rootBlockId: 'root',
+  variables: { name: 'Alice', premium: true, amount: 19.99, next_bill: '2026-05-01' },
+});
+// → "<!DOCTYPE html>...Hi Alice! Premium user. Next bill: 5/1/2026, total €19.99..."
+```
+
+Built-in block helpers are whatever Handlebars ships with: `{{#if}}`, `{{#unless}}`, `{{#each}}`, `{{#with}}`, `{{else}}`. The editor registers two extra formatters on a scoped Handlebars instance:
+
+- `{{formatDate value "date"|"time"|"datetime"|"iso"}}` — formats a Date or ISO string via the user's locale.
+- `{{formatNumber value currency="EUR" style="currency" maximumFractionDigits=0}}` — wraps `Intl.NumberFormat`.
+
+The scoped instance is exported as `editorHandlebars` for consumers who want to register additional helpers or partials without polluting the global `Handlebars` default instance:
+
+```ts
+import { editorHandlebars, evaluateHandlebars } from '@kontakto/email-template-editor';
+
+editorHandlebars.registerHelper('upper', (s: string) => (s ?? '').toUpperCase());
+evaluateHandlebars('Hello {{upper name}}', { name: 'world' }); // → "Hello WORLD"
+```
+
+Backwards compat: templates using only simple `{{placeholder}}` substitution render identically whether Handlebars is invoked or not, so existing consumers can opt in gradually.
+
 #### Image upload and library (BYO backend)
 
 The editor delegates image storage to the consumer through three optional callbacks. When omitted, the corresponding UI is hidden and URL paste remains the fallback.

@@ -1,14 +1,18 @@
+import { evaluateHandlebars, type HandlebarsContext } from '../handlebars';
 import { type TReaderDocument } from '../reader';
 
 type TOptions = {
   rootBlockId: string;
+  variables?: HandlebarsContext;
 };
 
-export default function renderToText(document: TReaderDocument, { rootBlockId }: TOptions): string {
+export default function renderToText(document: TReaderDocument, { rootBlockId, variables }: TOptions): string {
   const lines: string[] = [];
   renderBlock(document, rootBlockId, lines);
   // Collapse 3+ consecutive blank lines into 2, then trim
-  return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  if (!variables) return text;
+  return evaluateHandlebars(text, variables);
 }
 
 function renderBlock(document: TReaderDocument, blockId: string, lines: string[]): void {

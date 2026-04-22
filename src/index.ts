@@ -84,14 +84,19 @@ export {
   ReaderBlock,
   ReaderBlockSchema,
   ReaderDocumentSchema,
-  
+
   // Specialized blocks from email-builder
   ColumnsContainerReader,
   ContainerReader,
   EmailLayoutPropsSchema,
   EmailLayoutReader,
   TemplateVariableSchema,
-  
+
+  // Handlebars
+  editorHandlebars,
+  evaluateHandlebars,
+  type HandlebarsContext,
+
   // Types
   type TReaderBlock,
   type TReaderBlockProps,
