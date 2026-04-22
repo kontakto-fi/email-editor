@@ -32,6 +32,7 @@ const FONT_FAMILY_SCHEMA = z
 export const TemplateVariableSchema = z.object({
   name: z.string(),
   description: z.string().optional().nullable(),
+  sampleValue: z.string().optional().nullable(),
 });
 
 export const EmailLayoutPropsSchema = z.object({

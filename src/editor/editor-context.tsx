@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 import { TEditorConfiguration } from './core';
 
+export type TFocusedEditable = {
+  blockId: string; // 'subject' for the EmailLayout subject input
+  field: 'text' | 'contents' | 'subject';
+  selectionStart: number;
+  selectionEnd: number;
+};
+
 type TValue = {
   document: TEditorConfiguration;
   selectedBlockId: string | null;
@@ -10,6 +17,7 @@ type TValue = {
   inspectorDrawerOpen: boolean;
   samplesDrawerOpen: boolean;
   persistenceEnabled: boolean;
+  lastFocusedEditable: TFocusedEditable | null;
 };
 
 // Initialize with an empty document
@@ -35,6 +43,7 @@ const editorStateStore = create<TValue>(() => ({
   inspectorDrawerOpen: true,
   samplesDrawerOpen: true,
   persistenceEnabled: false,
+  lastFocusedEditable: null,
 }));
 
 export function useDocument() {
@@ -129,4 +138,16 @@ export function setSelectedScreenSize(selectedScreenSize: TValue['selectedScreen
 
 export function setPersistenceEnabled(persistenceEnabled: boolean) {
   return editorStateStore.setState({ persistenceEnabled });
+}
+
+export function useLastFocusedEditable() {
+  return editorStateStore((s) => s.lastFocusedEditable);
+}
+
+export function getLastFocusedEditable() {
+  return editorStateStore.getState().lastFocusedEditable;
+}
+
+export function setLastFocusedEditable(lastFocusedEditable: TFocusedEditable | null) {
+  return editorStateStore.setState({ lastFocusedEditable });
 }

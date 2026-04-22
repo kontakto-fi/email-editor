@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import { TextProps, TextPropsDefaults, EmailMarkdown } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
-import { setDocument, useDocument, useSelectedBlockId } from '@editor/editor-context';
+import { setDocument, setLastFocusedEditable, useDocument, useSelectedBlockId } from '@editor/editor-context';
 
 // Helper function to get font family from existing Text component
 function getFontFamily(fontFamily: string | null | undefined) {
@@ -149,17 +149,33 @@ export default function TextEditor({ style, props }: TextProps) {
     }
   };
 
+  const trackFocus = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+    const el = e.currentTarget;
+    setLastFocusedEditable({
+      blockId,
+      field: 'text',
+      selectionStart: el.selectionStart ?? el.value.length,
+      selectionEnd: el.selectionEnd ?? el.value.length,
+    });
+  };
+
   // When selected, show a textarea for editing (both plain text and markdown source)
   if (isSelected) {
     return (
       <textarea
         value={localText}
         onChange={handleTextChange}
+        onFocus={trackFocus}
+        onSelect={trackFocus}
+        onKeyUp={trackFocus}
+        onClick={(e) => {
+          e.stopPropagation();
+          trackFocus(e);
+        }}
         style={textareaStyle}
         rows={1}
         onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
         ref={(el) => el && adjustTextareaHeight(el)}
-        onClick={(e) => e.stopPropagation()}
       />
     );
   }

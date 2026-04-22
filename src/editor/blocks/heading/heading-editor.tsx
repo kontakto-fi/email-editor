@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import { HeadingProps, HeadingPropsDefaults } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
-import { setDocument, useDocument, useSelectedBlockId } from '@editor/editor-context';
+import { setDocument, setLastFocusedEditable, useDocument, useSelectedBlockId } from '@editor/editor-context';
 
 // Helper function to get font family from existing Heading component
 function getFontFamily(fontFamily: string | null | undefined) {
@@ -159,17 +159,33 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     }
   };
 
+  const trackFocus = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+    const el = e.currentTarget;
+    setLastFocusedEditable({
+      blockId,
+      field: 'text',
+      selectionStart: el.selectionStart ?? el.value.length,
+      selectionEnd: el.selectionEnd ?? el.value.length,
+    });
+  };
+
   // If the block is selected, show a textarea
   if (isSelected) {
     return (
       <textarea
         value={localText}
         onChange={handleTextChange}
+        onFocus={trackFocus}
+        onSelect={trackFocus}
+        onKeyUp={trackFocus}
+        onClick={(e) => {
+          e.stopPropagation();
+          trackFocus(e);
+        }}
         style={textareaStyle}
         rows={1}
         onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
         ref={(el) => el && adjustTextareaHeight(el)}
-        onClick={(e) => e.stopPropagation()}
       />
     );
   }

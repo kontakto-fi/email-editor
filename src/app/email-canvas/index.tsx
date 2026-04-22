@@ -22,8 +22,14 @@ import MainTabsGroup from './main-tabs-group';
 import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
 import SubjectInput from './subject-input';
+import SubjectPreview from './subject-preview';
 import { TemplateListItem } from '../index';
 import type { SavePayload } from '../save-payload';
+import {
+  applySampleValuesToDocument,
+  buildSampleValueMap,
+  TemplateVariable,
+} from '../variables/variable-utils';
 
 interface TemplatePanelProps {
   loadTemplates?: () => Promise<TemplateListItem[]>;
@@ -71,12 +77,20 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
             <EditorBlock id="root" />
           </Box>
         );
-      case 'preview':
+      case 'preview': {
+        const rootBlock = document.root;
+        const layoutData =
+          rootBlock && rootBlock.type === 'EmailLayout' ? (rootBlock.data as any) : undefined;
+        const samples = buildSampleValueMap(
+          (layoutData?.variables ?? []) as TemplateVariable[]
+        );
+        const previewDoc = applySampleValuesToDocument(document, samples);
         return (
           <Box sx={mainBoxSx}>
-            <Reader document={document} rootBlockId="root" />
+            <Reader document={previewDoc} rootBlockId="root" />
           </Box>
         );
+      }
       case 'html':
         return <HtmlPanel />;
       case 'text':
@@ -134,6 +148,7 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
         <ToggleInspectorPanelButton />
       </Stack>
       {selectedMainTab === 'editor' && <SubjectInput />}
+      {selectedMainTab === 'preview' && <SubjectPreview />}
       <Box sx={{
         paddingBottom: '50px',
         minWidth: 370

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, InputBase } from '@mui/material';
-import { setDocument, useDocument } from '@editor/editor-context';
+import { setDocument, setLastFocusedEditable, useDocument } from '@editor/editor-context';
 import type { EmailLayoutProps } from '@editor/blocks/email-layout/email-layout-props-schema';
 
 export default function SubjectInput() {
@@ -13,6 +13,17 @@ export default function SubjectInput() {
   const handleChange = (value: string) => {
     setDocument({
       root: { ...root, data: { ...data, subject: value } },
+    });
+  };
+
+  const trackFocus = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLInputElement | null;
+    if (!target || typeof target.value !== 'string') return;
+    setLastFocusedEditable({
+      blockId: 'subject',
+      field: 'subject',
+      selectionStart: target.selectionStart ?? target.value.length,
+      selectionEnd: target.selectionEnd ?? target.value.length,
     });
   };
 
@@ -38,6 +49,10 @@ export default function SubjectInput() {
         placeholder="Email subject — supports {{variables}}"
         value={subject}
         onChange={(e) => handleChange(e.target.value)}
+        onFocus={trackFocus}
+        onSelect={trackFocus}
+        onKeyUp={trackFocus}
+        onClick={trackFocus}
         sx={{ fontSize: 14 }}
       />
     </Box>

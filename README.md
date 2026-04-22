@@ -91,11 +91,18 @@ Email subject and template variables are stored on the `EmailLayout` block's dat
 type EmailLayoutData = {
   // ...style fields
   subject?: string;
-  variables?: Array<{ name: string; description?: string }>;
+  variables?: Array<{ name: string; description?: string; sampleValue?: string }>;
 };
 ```
 
 The editor renders a subject input above the canvas (always visible, supports `{{variable}}` syntax) and a Variables tab in the right inspector panel for declaring variables. Both persist via the standard save flow — consumers who previously stored `subject` in a separate DB column can read it from the saved `editor_config` instead.
+
+The Variables tab supports Handlebars-aware management:
+
+- **Add/rename/delete**. Names follow Handlebars identifier rules (`[A-Za-z_][A-Za-z0-9_]*`, max 64 chars, reserved words rejected). Renaming a declared variable rewrites all `{{oldName}}` and `{{oldName.*}}` tokens in the subject and in text/heading/button/html blocks — including inside block helpers (`{{#if}}`, `{{#each}}`, `{{#unless}}`, `{{#with}}`).
+- **Usage indicators.** Each row shows how many times the variable is referenced, or "Unused in body" if the declared name never appears. Tokens found in the body that aren't declared surface at the top of the panel with a one-click "add as variable" action.
+- **Insert at cursor.** Focus a text/heading/button/html editor or the subject input, then click the Insert button next to a variable to splice `{{name}}` at the caret.
+- **Sample values.** Each row has an optional `sampleValue` field that travels with the template (persisted on `editor_config.root.data.variables[].sampleValue`). In Preview mode, `{{name}}` and `{{name.*}}` tokens in the subject and in text/heading/button/html blocks render with the sample value substituted in; block helpers (`{{#if}}`, `{{#each}}`, …) are stripped so their content renders inline, but the control flow is not evaluated. Edit mode always shows the raw tokens.
 
 #### Save payload
 

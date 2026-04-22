@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import { ButtonProps, ButtonPropsDefaults } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
-import { setDocument, useSelectedBlockId } from '@editor/editor-context';
+import { setDocument, setLastFocusedEditable, useSelectedBlockId } from '@editor/editor-context';
 
 function getFontFamily(fontFamily: string | null | undefined) {
   switch (fontFamily) {
@@ -121,14 +121,30 @@ export default function ButtonEditor({ style, props }: ButtonProps) {
       textAlign: 'center',
     };
 
+    const trackFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
+      const el = e.currentTarget;
+      setLastFocusedEditable({
+        blockId,
+        field: 'text',
+        selectionStart: el.selectionStart ?? el.value.length,
+        selectionEnd: el.selectionEnd ?? el.value.length,
+      });
+    };
+
     return (
       <div style={wrapperStyle}>
         <input
           type="text"
           value={localText}
           onChange={handleTextChange}
+          onFocus={trackFocus}
+          onSelect={trackFocus}
+          onKeyUp={trackFocus}
+          onClick={(e) => {
+            e.stopPropagation();
+            trackFocus(e);
+          }}
           style={inputStyle}
-          onClick={(e) => e.stopPropagation()}
         />
       </div>
     );

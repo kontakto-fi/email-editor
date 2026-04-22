@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import { HtmlProps } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
-import { setDocument, useSelectedBlockId } from '@editor/editor-context';
+import { setDocument, setLastFocusedEditable, useSelectedBlockId } from '@editor/editor-context';
 
 export default function HtmlEditor({ style, props }: HtmlProps) {
   const blockId = useCurrentBlockId();
@@ -65,16 +65,32 @@ export default function HtmlEditor({ style, props }: HtmlProps) {
       backgroundColor: 'transparent',
     };
 
+    const trackFocus = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+      const el = e.currentTarget;
+      setLastFocusedEditable({
+        blockId,
+        field: 'contents',
+        selectionStart: el.selectionStart ?? el.value.length,
+        selectionEnd: el.selectionEnd ?? el.value.length,
+      });
+    };
+
     return (
       <div style={cssStyle}>
         <textarea
           value={localContents}
           onChange={handleChange}
+          onFocus={trackFocus}
+          onSelect={trackFocus}
+          onKeyUp={trackFocus}
+          onClick={(e) => {
+            e.stopPropagation();
+            trackFocus(e);
+          }}
           style={textareaStyle}
           rows={3}
           onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
           ref={(el) => el && adjustTextareaHeight(el)}
-          onClick={(e) => e.stopPropagation()}
         />
       </div>
     );

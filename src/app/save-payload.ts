@@ -4,6 +4,8 @@ import { renderToStaticMarkup, renderToText } from '@email-builder';
 export type TemplateVariable = {
   name: string;
   description?: string;
+  /** Optional sample value used by the editor's Preview mode to substitute `{{name}}` tokens. */
+  sampleValue?: string;
 };
 
 /**
