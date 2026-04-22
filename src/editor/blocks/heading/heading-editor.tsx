@@ -1,7 +1,10 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
-import { HeadingProps, HeadingPropsDefaults } from '@blocks';
+import { HeadingProps, HeadingPropsDefaults, renderInlineMarkdownString } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
 import { setDocument, setLastFocusedEditable, useDocument, useSelectedBlockId } from '@editor/editor-context';
+
+import { useMarkdownToolbar } from '../helpers/use-markdown-toolbar';
+import InlineFormattingToolbar from '../text/inline-formatting-toolbar';
 
 // Helper function to get font family from existing Heading component
 function getFontFamily(fontFamily: string | null | undefined) {
@@ -35,13 +38,13 @@ function getFontFamily(fontFamily: string | null | undefined) {
 // Helper function to get padding from existing utils
 function getPadding(padding: any) {
   if (!padding) return undefined;
-  
+
   // Object format from the schema (matching the original blocks)
-  if (typeof padding === 'object' && !Array.isArray(padding) && 
+  if (typeof padding === 'object' && !Array.isArray(padding) &&
       'top' in padding && 'right' in padding && 'bottom' in padding && 'left' in padding) {
     return `${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px`;
   }
-  
+
   // For backward compatibility with the array format
   if (Array.isArray(padding)) {
     if (padding.length === 1) {
@@ -57,12 +60,12 @@ function getPadding(padding: any) {
       return `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`;
     }
   }
-  
+
   // For single number
   if (typeof padding === 'number') {
     return `${padding}px`;
   }
-  
+
   return undefined;
 }
 
@@ -83,27 +86,23 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
   const selectedBlockId = useSelectedBlockId();
   const document = useDocument();
   const isSelected = selectedBlockId === blockId;
-  
-  // Get the current text and level from props
+
   const level = props?.level ?? HeadingPropsDefaults.level;
   const textContent = props?.text ?? HeadingPropsDefaults.text;
   const [localText, setLocalText] = useState(textContent);
-  
-  // Get email root settings for inherited font
+  const isMarkdown = props?.markdown ?? false;
+
   const rootBlock = document.root;
-  const rootFontFamily = rootBlock && rootBlock.type === 'EmailLayout' 
-    ? getFontFamily(rootBlock.data.fontFamily) 
+  const rootFontFamily = rootBlock && rootBlock.type === 'EmailLayout'
+    ? getFontFamily(rootBlock.data.fontFamily)
     : '"Helvetica Neue", Arial, sans-serif';
-  
-  // Update local state when text changes from other sources
+
   useEffect(() => {
     setLocalText(textContent);
   }, [textContent]);
-  
-  // Determine the actual font family to use
+
   const fontFamily = getFontFamily(style?.fontFamily) || rootFontFamily;
-  
-  // Create styles for displaying the heading
+
   const hStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
@@ -118,8 +117,7 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     width: '100%',
     minHeight: '1em',
   };
-  
-  // Additional styles for the textarea
+
   const textareaStyle: CSSProperties = {
     ...hStyle,
     border: 'none',
@@ -132,13 +130,9 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     display: 'block',
     width: '100%'
   };
-  
-  // Handle text changes
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newText = e.target.value;
+
+  const commitText = (newText: string, opts?: { enableMarkdown?: boolean }) => {
     setLocalText(newText);
-    
-    // Update the document with the new text
     setDocument({
       [blockId]: {
         type: 'Heading',
@@ -146,14 +140,18 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
           style,
           props: {
             ...props,
-            text: newText
-          }
-        }
-      }
+            text: newText,
+            ...(opts?.enableMarkdown ? { markdown: true } : {}),
+          },
+        },
+      },
     });
   };
-  
-  // Auto-resize textarea based on content
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    commitText(e.target.value);
+  };
+
   const adjustTextareaHeight = (element: HTMLTextAreaElement) => {
     if (element) {
       element.style.height = 'auto';
@@ -161,44 +159,58 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     }
   };
 
-  const trackFocus = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    const el = e.currentTarget;
-    setLastFocusedEditable({
-      blockId,
-      field: 'text',
-      selectionStart: el.selectionStart ?? el.value.length,
-      selectionEnd: el.selectionEnd ?? el.value.length,
-    });
-  };
+  const { textareaRef, trackFocus, handleKeyDown, toolbarProps } = useMarkdownToolbar({
+    text: localText,
+    isSelected,
+    commitText: (newText) => commitText(newText, { enableMarkdown: true }),
+    trackSelection: (sel) => {
+      setLastFocusedEditable({
+        blockId,
+        field: 'text',
+        selectionStart: sel.start,
+        selectionEnd: sel.end,
+      });
+    },
+  });
 
-  // If the block is selected, show a textarea
+  useEffect(() => {
+    if (textareaRef.current) adjustTextareaHeight(textareaRef.current);
+  }, [localText, textareaRef]);
+
   if (isSelected) {
     return (
-      <textarea
-        value={localText}
-        onChange={handleTextChange}
-        onFocus={trackFocus}
-        onSelect={trackFocus}
-        onKeyUp={trackFocus}
-        onClick={(e) => {
-          e.stopPropagation();
-          trackFocus(e);
-        }}
-        style={textareaStyle}
-        rows={1}
-        onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
-        ref={(el) => el && adjustTextareaHeight(el)}
-      />
+      <>
+        <textarea
+          ref={textareaRef}
+          value={localText}
+          onChange={handleTextChange}
+          onFocus={trackFocus}
+          onSelect={trackFocus}
+          onKeyUp={trackFocus}
+          onKeyDown={handleKeyDown}
+          onClick={(e) => {
+            e.stopPropagation();
+            trackFocus(e);
+          }}
+          style={textareaStyle}
+          rows={1}
+          onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
+        />
+        <InlineFormattingToolbar anchorEl={textareaRef.current} {...toolbarProps} />
+      </>
     );
   }
-  
-  // Otherwise, render the appropriate heading level
+
+  const headingProps: React.HTMLAttributes<HTMLHeadingElement> = isMarkdown
+    ? { style: hStyle, dangerouslySetInnerHTML: { __html: renderInlineMarkdownString(textContent) } }
+    : { style: hStyle, children: textContent };
+
   switch (level) {
     case 'h1':
-      return <h1 style={hStyle}>{textContent}</h1>;
+      return <h1 {...headingProps} />;
     case 'h2':
-      return <h2 style={hStyle}>{textContent}</h2>;
+      return <h2 {...headingProps} />;
     case 'h3':
-      return <h3 style={hStyle}>{textContent}</h3>;
+      return <h3 {...headingProps} />;
   }
-} 
+}

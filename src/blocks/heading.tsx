@@ -1,5 +1,7 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 import { z } from 'zod';
+
+import { renderInlineMarkdownString } from './text';
 
 const COLOR_SCHEMA = z
   .string()
@@ -64,6 +66,7 @@ export const HeadingPropsSchema = z.object({
     .object({
       text: z.string().optional().nullable(),
       level: z.enum(['h1', 'h2', 'h3']).optional().nullable(),
+      markdown: z.boolean().optional().nullable(),
     })
     .optional()
     .nullable(),
@@ -95,6 +98,7 @@ export const HeadingPropsDefaults = {
 export function Heading({ props, style }: HeadingProps) {
   const level = props?.level ?? HeadingPropsDefaults.level;
   const text = props?.text ?? HeadingPropsDefaults.text;
+  const isMarkdown = props?.markdown ?? false;
   const hStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
@@ -107,13 +111,17 @@ export function Heading({ props, style }: HeadingProps) {
     fontSize: getFontSize(level),
     padding: getPadding(style?.padding),
   };
+  const html = useMemo(() => (isMarkdown ? renderInlineMarkdownString(text) : null), [isMarkdown, text]);
+  const renderProps = isMarkdown
+    ? { style: hStyle, dangerouslySetInnerHTML: { __html: html ?? '' } }
+    : { style: hStyle, children: text };
   switch (level) {
     case 'h1':
-      return <h1 style={hStyle}>{text}</h1>;
+      return <h1 {...renderProps} />;
     case 'h2':
-      return <h2 style={hStyle}>{text}</h2>;
+      return <h2 {...renderProps} />;
     case 'h3':
-      return <h3 style={hStyle}>{text}</h3>;
+      return <h3 {...renderProps} />;
   }
 }
 

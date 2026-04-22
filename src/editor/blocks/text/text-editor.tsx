@@ -3,6 +3,9 @@ import { TextProps, TextPropsDefaults, EmailMarkdown } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
 import { setDocument, setLastFocusedEditable, useDocument, useSelectedBlockId } from '@editor/editor-context';
 
+import { useMarkdownToolbar } from '../helpers/use-markdown-toolbar';
+import InlineFormattingToolbar from './inline-formatting-toolbar';
+
 // Helper function to get font family from existing Text component
 function getFontFamily(fontFamily: string | null | undefined) {
   switch (fontFamily) {
@@ -35,13 +38,13 @@ function getFontFamily(fontFamily: string | null | undefined) {
 // Helper function to get padding from existing utils
 function getPadding(padding: any) {
   if (!padding) return undefined;
-  
+
   // Object format from the schema (matching the original blocks)
-  if (typeof padding === 'object' && !Array.isArray(padding) && 
+  if (typeof padding === 'object' && !Array.isArray(padding) &&
       'top' in padding && 'right' in padding && 'bottom' in padding && 'left' in padding) {
     return `${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px`;
   }
-  
+
   // For backward compatibility with the array format
   if (Array.isArray(padding)) {
     if (padding.length === 1) {
@@ -57,12 +60,12 @@ function getPadding(padding: any) {
       return `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`;
     }
   }
-  
+
   // For single number
   if (typeof padding === 'number') {
     return `${padding}px`;
   }
-  
+
   return undefined;
 }
 
@@ -71,27 +74,22 @@ export default function TextEditor({ style, props }: TextProps) {
   const selectedBlockId = useSelectedBlockId();
   const document = useDocument();
   const isSelected = selectedBlockId === blockId;
-  
-  // Get the current text from props
+
   const textContent = props?.text ?? TextPropsDefaults.text;
   const [localText, setLocalText] = useState(textContent);
   const isMarkdown = props?.markdown ?? false;
-  
-  // Get email root settings for inherited font
+
   const rootBlock = document.root;
-  const rootFontFamily = rootBlock && rootBlock.type === 'EmailLayout' 
-    ? getFontFamily(rootBlock.data.fontFamily) 
+  const rootFontFamily = rootBlock && rootBlock.type === 'EmailLayout'
+    ? getFontFamily(rootBlock.data.fontFamily)
     : '"Helvetica Neue", Arial, sans-serif';
-  
-  // Update local state when text changes from other sources
+
   useEffect(() => {
     setLocalText(textContent);
   }, [textContent]);
-  
-  // Determine the actual font family to use
+
   const fontFamily = getFontFamily(style?.fontFamily) || rootFontFamily;
-  
-  // Create styles for displaying the text
+
   const wStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
@@ -105,8 +103,7 @@ export default function TextEditor({ style, props }: TextProps) {
     width: '100%',
     minHeight: '1em'
   };
-  
-  // Additional styles for the textarea
+
   const textareaStyle: CSSProperties = {
     ...wStyle,
     border: 'none',
@@ -122,13 +119,9 @@ export default function TextEditor({ style, props }: TextProps) {
     fontWeight: wStyle.fontWeight,
     textAlign: wStyle.textAlign
   };
-  
-  // Handle text changes
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newText = e.target.value;
+
+  const commitText = (newText: string, opts?: { enableMarkdown?: boolean }) => {
     setLocalText(newText);
-    
-    // Update the document with the new text
     setDocument({
       [blockId]: {
         type: 'Text',
@@ -136,14 +129,18 @@ export default function TextEditor({ style, props }: TextProps) {
           style,
           props: {
             ...props,
-            text: newText
-          }
-        }
-      }
+            text: newText,
+            ...(opts?.enableMarkdown ? { markdown: true } : {}),
+          },
+        },
+      },
     });
   };
-  
-  // Auto-resize textarea based on content
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    commitText(e.target.value);
+  };
+
   const adjustTextareaHeight = (element: HTMLTextAreaElement) => {
     if (element) {
       element.style.height = 'auto';
@@ -151,41 +148,51 @@ export default function TextEditor({ style, props }: TextProps) {
     }
   };
 
-  const trackFocus = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    const el = e.currentTarget;
-    setLastFocusedEditable({
-      blockId,
-      field: 'text',
-      selectionStart: el.selectionStart ?? el.value.length,
-      selectionEnd: el.selectionEnd ?? el.value.length,
-    });
-  };
+  const { textareaRef, trackFocus, handleKeyDown, toolbarProps } = useMarkdownToolbar({
+    text: localText,
+    isSelected,
+    commitText: (newText) => commitText(newText, { enableMarkdown: true }),
+    trackSelection: (sel) => {
+      setLastFocusedEditable({
+        blockId,
+        field: 'text',
+        selectionStart: sel.start,
+        selectionEnd: sel.end,
+      });
+    },
+  });
 
-  // When selected, show a textarea for editing (both plain text and markdown source)
+  useEffect(() => {
+    if (textareaRef.current) adjustTextareaHeight(textareaRef.current);
+  }, [localText, textareaRef]);
+
   if (isSelected) {
     return (
-      <textarea
-        value={localText}
-        onChange={handleTextChange}
-        onFocus={trackFocus}
-        onSelect={trackFocus}
-        onKeyUp={trackFocus}
-        onClick={(e) => {
-          e.stopPropagation();
-          trackFocus(e);
-        }}
-        style={textareaStyle}
-        rows={1}
-        onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
-        ref={(el) => el && adjustTextareaHeight(el)}
-      />
+      <>
+        <textarea
+          ref={textareaRef}
+          value={localText}
+          onChange={handleTextChange}
+          onFocus={trackFocus}
+          onSelect={trackFocus}
+          onKeyUp={trackFocus}
+          onKeyDown={handleKeyDown}
+          onClick={(e) => {
+            e.stopPropagation();
+            trackFocus(e);
+          }}
+          style={textareaStyle}
+          rows={1}
+          onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
+        />
+        <InlineFormattingToolbar anchorEl={textareaRef.current} {...toolbarProps} />
+      </>
     );
   }
 
-  // When not selected, render markdown or plain text
   if (isMarkdown) {
     return <EmailMarkdown style={wStyle} markdown={textContent} />;
   }
 
   return <div style={wStyle}>{textContent}</div>;
-} 
+}

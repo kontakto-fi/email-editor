@@ -101,6 +101,21 @@ function renderMarkdownString(str: string): string {
   return sanitizer(html);
 }
 
+export function renderInlineMarkdownString(str: string): string {
+  const html = marked.parseInline(str, {
+    async: false,
+    breaks: true,
+    gfm: true,
+    pedantic: false,
+    silent: false,
+    renderer: new CustomRenderer(),
+  });
+  if (typeof html !== 'string') {
+    throw new Error('marked.parseInline did not return a string');
+  }
+  return sanitizer(html);
+}
+
 type EmailMarkdownProps = {
   style: CSSProperties;
   markdown: string;
