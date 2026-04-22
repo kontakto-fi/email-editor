@@ -29,6 +29,11 @@ const FONT_FAMILY_SCHEMA = z
   .nullable()
   .optional();
 
+export const TemplateVariableSchema = z.object({
+  name: z.string(),
+  description: z.string().optional().nullable(),
+});
+
 export const EmailLayoutPropsSchema = z.object({
   backdropColor: COLOR_SCHEMA,
   backdropDisabled: z.boolean().optional().nullable(),
@@ -38,6 +43,8 @@ export const EmailLayoutPropsSchema = z.object({
   textColor: COLOR_SCHEMA,
   fontFamily: FONT_FAMILY_SCHEMA,
   childrenIds: z.array(z.string()).optional().nullable(),
+  subject: z.string().optional().nullable(),
+  variables: z.array(TemplateVariableSchema).optional().nullable(),
 });
 
 export type EmailLayoutProps = z.infer<typeof EmailLayoutPropsSchema>; 

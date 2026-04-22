@@ -21,6 +21,7 @@ import TextPanel from './text-panel';
 import MainTabsGroup from './main-tabs-group';
 import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
+import SubjectInput from './subject-input';
 import { TemplateListItem } from '../index';
 
 interface TemplatePanelProps {
@@ -131,7 +132,8 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
         </Stack>
         <ToggleInspectorPanelButton />
       </Stack>
-      <Box sx={{ 
+      {selectedMainTab === 'editor' && <SubjectInput />}
+      <Box sx={{
         paddingBottom: '50px',
         minWidth: 370
               }}>

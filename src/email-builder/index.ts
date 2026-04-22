@@ -20,5 +20,6 @@ export {
   ContainerPropsSchema,
   ContainerReader,
   EmailLayoutPropsSchema,
-  EmailLayoutReader
-} from './blocks'; 
+  EmailLayoutReader,
+  TemplateVariableSchema
+} from './blocks';

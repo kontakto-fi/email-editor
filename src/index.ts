@@ -90,6 +90,7 @@ export {
   ContainerReader,
   EmailLayoutPropsSchema,
   EmailLayoutReader,
+  TemplateVariableSchema,
   
   // Types
   type TReaderBlock,

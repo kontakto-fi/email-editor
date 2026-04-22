@@ -82,6 +82,21 @@ type TemplateListItem = {
 The drawer groups rows by `kind`, not by which callback returned them. Both `loadTemplates` and `loadSamples` should return their items with the correct `kind`; backends typically scope the two endpoints differently (per-user vs. org-wide), but the `kind` field is what determines the section a row appears in.
 
 Samples are read-only starting points: Save on a loaded sample is disabled — the user must use Save As, which creates a fresh row with `kind='template'`.
+
+#### Subject and variables
+
+Email subject and template variables are stored on the `EmailLayout` block's data and round-trip with the editor configuration:
+
+```ts
+type EmailLayoutData = {
+  // ...style fields
+  subject?: string;
+  variables?: Array<{ name: string; description?: string }>;
+};
+```
+
+The editor renders a subject input above the canvas (always visible, supports `{{variable}}` syntax) and a Variables tab in the right inspector panel for declaring variables. Both persist via the standard save flow — consumers who previously stored `subject` in a separate DB column can read it from the saved `editor_config` instead.
+
 | `theme` | object | theme.ts | Custom theme for the EmailEditor, must be a Material UI theme object |
 
 #### Imperative API

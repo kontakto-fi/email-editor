@@ -4,7 +4,7 @@ import { TEditorConfiguration } from './core';
 type TValue = {
   document: TEditorConfiguration;
   selectedBlockId: string | null;
-  selectedSidebarTab: 'block-configuration' | 'styles' | 'template-settings';
+  selectedSidebarTab: 'block-configuration' | 'styles' | 'template-settings' | 'variables';
   selectedMainTab: 'editor' | 'preview' | 'json' | 'html' | 'text';
   selectedScreenSize: 'desktop' | 'mobile';
   inspectorDrawerOpen: boolean;

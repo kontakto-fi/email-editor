@@ -11,6 +11,7 @@ import {
 import ConfigurationPanel from './configuration-panel';
 import StylesPanel from './styles-panel';
 import TemplatePanel from './template-panel';
+import VariablesPanel from './variables-panel';
 
 export const INSPECTOR_DRAWER_WIDTH = 320;
 
@@ -59,9 +60,11 @@ export default function InspectorDrawer({
         return <ConfigurationPanel />;
       case 'styles':
         return <StylesPanel />;
+      case 'variables':
+        return <VariablesPanel />;
       case 'template-settings':
-        return <TemplatePanel 
-          deleteTemplate={deleteTemplate} 
+        return <TemplatePanel
+          deleteTemplate={deleteTemplate}
           copyTemplate={copyTemplate}
         />;
     }
@@ -89,10 +92,16 @@ export default function InspectorDrawer({
       }}
     >
       <Box sx={{ width: INSPECTOR_DRAWER_WIDTH, height: 49, borderBottom: 1, borderColor: 'divider' }}>
-        <Box px={2}>
-          <Tabs value={selectedSidebarTab} onChange={(_, v) => setSidebarTab(v)}>
+        <Box px={1}>
+          <Tabs
+            value={selectedSidebarTab}
+            onChange={(_, v) => setSidebarTab(v)}
+            variant="fullWidth"
+            sx={{ '& .MuiTab-root': { minWidth: 0, px: 1, fontSize: 13 } }}
+          >
             <Tab value="styles" label="Styles" />
             <Tab value="block-configuration" label="Inspect" />
+            <Tab value="variables" label="Variables" />
             <Tab value="template-settings" label="Settings" />
           </Tabs>
         </Box>
