@@ -19,11 +19,10 @@ import {
   SearchOutlined,
 } from '@mui/icons-material';
 import { useSamplesDrawerOpen, resetDocument } from '@editor/editor-context';
-import { TemplateListItem } from '../index';
+import { TemplateKind, TemplateListItem } from '../index';
 import { TEditorConfiguration } from '@editor/core';
 import { useEmailEditor } from '../context';
 import { useSnackbar } from '../email-canvas/snackbar-provider';
-import SidebarButton from './sidebar-button';
 import TemplateRow from './template-row';
 import RenameDialog from './rename-dialog';
 import SaveTemplateDialog from '../email-canvas/save-template-dialog';
@@ -35,6 +34,7 @@ export const SAMPLES_DRAWER_WIDTH = 320;
 const EMPTY_TEMPLATE: TemplateListItem = {
   id: 'empty-email',
   slug: 'Empty email',
+  kind: 'sample',
   description: 'A blank email template to start from scratch',
 };
 
@@ -69,6 +69,7 @@ export interface SamplesDrawerProps {
   deleteTemplate?: (templateId: string) => void;
   copyTemplate?: (templateName: string, content: any) => void;
   renameTemplate?: (templateId: string, newSlug: string) => void | Promise<void>;
+  setTemplateKind?: (templateId: string, kind: TemplateKind) => void | Promise<void>;
   saveAs?: (templateName: string, content: any) => Promise<{ id: string; name: string }>;
 }
 
@@ -83,6 +84,7 @@ export default function SamplesDrawer({
   deleteTemplate,
   copyTemplate,
   renameTemplate,
+  setTemplateKind,
   saveAs,
 }: SamplesDrawerProps) {
   const samplesDrawerOpen = useSamplesDrawerOpen();
@@ -100,7 +102,7 @@ export default function SamplesDrawer({
   const [activeTags, setActiveTags] = useState<string[]>([]);
 
   const [renameTarget, setRenameTarget] = useState<TemplateListItem | null>(null);
-  const [newDialogOpen, setNewDialogOpen] = useState(false);
+  const [pendingSaveAs, setPendingSaveAs] = useState<{ content: TEditorConfiguration; defaultName: string } | null>(null);
   const [newError, setNewError] = useState<string | null>(null);
 
   // Handler for the empty template + delegation
@@ -114,14 +116,19 @@ export default function SamplesDrawer({
     return null;
   };
 
+  // Defensive kind coercion so older consumers that don't send `kind` still partition correctly.
+  const withKind = (items: TemplateListItem[], fallback: TemplateKind): TemplateListItem[] =>
+    items.map((item) => (item.kind ? item : { ...item, kind: fallback }));
+
   // Load samples
   useEffect(() => {
     if (!enabled || !samplesDrawerOpen || !loadSamples) return;
     setLoadingSamples(true);
     loadSamples()
       .then((results) => {
-        const existingEmpty = results.find((s) => s.id === 'empty-email');
-        setSamples(existingEmpty ? results : [EMPTY_TEMPLATE, ...results]);
+        const normalized = withKind(results, 'sample');
+        const existingEmpty = normalized.find((s) => s.id === 'empty-email');
+        setSamples(existingEmpty ? normalized : [EMPTY_TEMPLATE, ...normalized]);
       })
       .catch((error) => {
         console.error('Failed to load samples:', error);
@@ -137,7 +144,7 @@ export default function SamplesDrawer({
     setTemplatesError(null);
     try {
       const results = await loadTemplates();
-      setTemplates(results);
+      setTemplates(withKind(results, 'template'));
     } catch (error) {
       console.error('Failed to load templates:', error);
       setTemplatesError('Could not load templates');
@@ -156,19 +163,32 @@ export default function SamplesDrawer({
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<TemplateListItem[]>).detail;
-      if (Array.isArray(detail)) setTemplates(detail);
+      if (Array.isArray(detail)) setTemplates(withKind(detail, 'template'));
     };
     window.addEventListener('templateListUpdated', handler);
     return () => window.removeEventListener('templateListUpdated', handler);
   }, []);
 
+  // Partition by kind — an item's section is determined by `kind`, not by which callback returned it.
+  // If an id appears in both lists, the most recent state wins (templates list wins ties).
+  const { templateRows, sampleRows } = useMemo(() => {
+    const byId = new Map<string, TemplateListItem>();
+    for (const s of samples) byId.set(s.id, s);
+    for (const t of templates) byId.set(t.id, t);
+    const all = Array.from(byId.values());
+    return {
+      templateRows: all.filter((t) => t.kind === 'template'),
+      sampleRows: all.filter((t) => t.kind === 'sample'),
+    };
+  }, [samples, templates]);
+
   const allTags = useMemo(() => {
     const set = new Set<string>();
-    for (const t of templates) {
+    for (const t of templateRows) {
       t.tags?.forEach((tag) => set.add(tag));
     }
     return Array.from(set).sort();
-  }, [templates]);
+  }, [templateRows]);
 
   const filteredTemplates = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -185,10 +205,10 @@ export default function SamplesDrawer({
       if (!t.tags || t.tags.length === 0) return false;
       return activeTags.every((tag) => t.tags!.includes(tag));
     };
-    return templates.filter((t) => matchSearch(t) && matchTags(t))
+    return templateRows.filter((t) => matchSearch(t) && matchTags(t))
       .slice()
       .sort((a, b) => compareTemplates(a, b, sortKey));
-  }, [templates, search, activeTags, sortKey]);
+  }, [templateRows, search, activeTags, sortKey]);
 
   const toggleTag = (tag: string) => {
     setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
@@ -234,18 +254,59 @@ export default function SamplesDrawer({
     showMessage('Template renamed');
   };
 
-  const handleCreateNew = async (templateName: string): Promise<boolean> => {
-    if (!saveAs) return false;
-    const taken = templates.some((t) => t.slug.toLowerCase() === templateName.toLowerCase());
+  const flipKindLocally = (id: string, kind: TemplateKind) => {
+    setTemplates((prev) => prev.map((t) => (t.id === id ? { ...t, kind } : t)));
+    setSamples((prev) => prev.map((t) => (t.id === id ? { ...t, kind } : t)));
+  };
+
+  const handleSetKind = (template: TemplateListItem, kind: TemplateKind) => {
+    if (!setTemplateKind) return;
+    (async () => {
+      try {
+        await setTemplateKind(template.id, kind);
+        flipKindLocally(template.id, kind);
+        if (currentTemplateId === template.id) {
+          setCurrentTemplate(template.id, template.slug, kind);
+        }
+        showMessage(kind === 'sample' ? 'Promoted to sample' : 'Demoted to template');
+      } catch (e) {
+        console.error('Error updating template kind:', e);
+        showMessage('Error updating template kind');
+      }
+    })();
+  };
+
+  const handleDuplicateAsTemplate = (sample: TemplateListItem) => {
+    if (!saveAs) return;
+    (async () => {
+      try {
+        const content = await handleLoadTemplate(sample.id);
+        if (!content) {
+          showMessage('Could not load sample');
+          return;
+        }
+        resetDocument(content);
+        setPendingSaveAs({ content, defaultName: `${sample.slug} (Copy)` });
+      } catch (e) {
+        console.error('Error duplicating sample:', e);
+        showMessage('Error duplicating sample');
+      }
+    })();
+  };
+
+  const handleSaveAsSubmit = async (templateName: string): Promise<boolean> => {
+    if (!saveAs || !pendingSaveAs) return false;
+    const taken = templateRows.some((t) => t.slug.toLowerCase() === templateName.toLowerCase());
     if (taken) {
       setNewError('A template with this name already exists');
       return false;
     }
     try {
-      const { id, name } = await saveAs(templateName, EMPTY_EMAIL_MESSAGE);
-      resetDocument(EMPTY_EMAIL_MESSAGE);
-      setCurrentTemplate(id, name);
-      ctxLoadTemplate(EMPTY_EMAIL_MESSAGE, id, name);
+      const content = pendingSaveAs.content;
+      const { id, name } = await saveAs(templateName, content);
+      resetDocument(content);
+      setCurrentTemplate(id, name, 'template');
+      ctxLoadTemplate(content, id, name, 'template');
       showMessage('New template created!');
       window.location.hash = `#template/${id}`;
       await refreshTemplates();
@@ -255,6 +316,11 @@ export default function SamplesDrawer({
       showMessage('Error creating template');
       return false;
     }
+  };
+
+  const openNewTemplateDialog = () => {
+    setNewError(null);
+    setPendingSaveAs({ content: EMPTY_EMAIL_MESSAGE, defaultName: 'New Template' });
   };
 
   if (!enabled) {
@@ -294,10 +360,7 @@ export default function SamplesDrawer({
               <Tooltip title="New template">
                 <IconButton
                   size="small"
-                  onClick={() => {
-                    setNewError(null);
-                    setNewDialogOpen(true);
-                  }}
+                  onClick={openNewTemplateDialog}
                   aria-label="New template"
                 >
                   <AddOutlined fontSize="small" />
@@ -376,12 +439,13 @@ export default function SamplesDrawer({
                         onDuplicate={copyTemplate ? () => handleDuplicate(template) : undefined}
                         onRename={renameTemplate ? () => setRenameTarget(template) : undefined}
                         onDelete={deleteTemplate ? () => handleDelete(template) : undefined}
+                        onPromote={setTemplateKind ? () => handleSetKind(template, 'sample') : undefined}
                       />
                     ))}
                   </Stack>
                 ) : (
                   <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
-                    {templates.length === 0
+                    {templateRows.length === 0
                       ? 'No saved templates yet'
                       : 'No templates match your filters'}
                   </Typography>
@@ -401,18 +465,23 @@ export default function SamplesDrawer({
               <Stack alignItems="center" width="100%" py={2}>
                 <CircularProgress size={24} />
               </Stack>
-            ) : (
-              <Stack alignItems="flex-start" sx={{ '& .MuiButtonBase-root': { width: '100%', justifyContent: 'flex-start' } }}>
-                {samples.map((sample) => (
-                  <SidebarButton
+            ) : sampleRows.length > 0 ? (
+              <Stack spacing={0.25} sx={{ width: '100%' }}>
+                {sampleRows.map((sample) => (
+                  <TemplateRow
                     key={sample.id}
-                    templateId={sample.id}
+                    template={sample}
+                    isCurrent={currentTemplateId === sample.id}
                     templateLoader={() => handleLoadTemplate(sample.id)}
-                  >
-                    {sample.slug}
-                  </SidebarButton>
+                    onDuplicateAsTemplate={saveAs ? () => handleDuplicateAsTemplate(sample) : undefined}
+                    onDemote={setTemplateKind && sample.id !== 'empty-email' ? () => handleSetKind(sample, 'template') : undefined}
+                  />
                 ))}
               </Stack>
+            ) : (
+              <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
+                No samples available
+              </Typography>
             )}
           </Box>
         </Stack>
@@ -429,14 +498,14 @@ export default function SamplesDrawer({
       )}
 
       <SaveTemplateDialog
-        open={newDialogOpen}
+        open={!!pendingSaveAs}
         onClose={() => {
-          setNewDialogOpen(false);
+          setPendingSaveAs(null);
           setNewError(null);
         }}
-        onSave={handleCreateNew}
+        onSave={handleSaveAsSubmit}
         onNameChange={() => setNewError(null)}
-        defaultName="New Template"
+        defaultName={pendingSaveAs?.defaultName ?? 'New Template'}
         error={newError}
       />
     </>

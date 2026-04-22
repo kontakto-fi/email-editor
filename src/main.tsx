@@ -13,6 +13,7 @@ function storedToListItem(t: StoredTemplate): TemplateListItem {
   return {
     id: t.id,
     slug: t.name,
+    kind: t.kind ?? "template",
     description: t.description,
     subject: t.subject,
     tags: t.tags,
@@ -132,27 +133,31 @@ const EmailEditorWrapper = () => {
     }
   };
 
-  // Load available templates (list endpoint — lean, no editor_config)
+  // Load available templates (list endpoint — lean, no editor_config).
+  // Returns every user-scoped row regardless of kind; the drawer partitions by `kind`.
   const handleLoadTemplates = async (): Promise<TemplateListItem[]> => {
     return readStoredTemplates().map(storedToListItem);
   };
 
-  // Load sample templates
+  // Load sample templates — only the built-in fixtures. User-promoted rows live in loadTemplates.
   const handleLoadSamples = async (): Promise<TemplateListItem[]> => {
     return [
       {
         id: "welcome",
         slug: "Welcome email",
+        kind: "sample",
         description: "A simple welcome email template",
       },
       {
         id: "reset-password",
         slug: "Reset password",
+        kind: "sample",
         description: "Password reset email template",
       },
       {
         id: "empty-email",
         slug: "Empty email",
+        kind: "sample",
         description: "A blank email template to start from scratch",
       },
     ];
@@ -222,6 +227,29 @@ const EmailEditorWrapper = () => {
       broadcastTemplateList(existing);
     } catch (error) {
       console.error("Error copying template:", error);
+    }
+  };
+
+  // Handle promote/demote — flips the stored kind.
+  // Built-in samples ('welcome', 'reset-password', 'empty-email') aren't stored locally
+  // so promote/demote is a no-op for them in the dev app.
+  const handleSetTemplateKind = (
+    templateId: string,
+    kind: "template" | "sample",
+  ) => {
+    try {
+      const existing = readStoredTemplates();
+      const index = existing.findIndex((t) => t.id === templateId);
+      if (index < 0) return;
+      existing[index] = {
+        ...existing[index],
+        kind,
+        updatedAt: new Date().toISOString(),
+      };
+      writeStoredTemplates(existing);
+      broadcastTemplateList(existing);
+    } catch (error) {
+      console.error("Error setting template kind:", error);
     }
   };
 
@@ -310,6 +338,7 @@ const EmailEditorWrapper = () => {
       deleteTemplate={handleDeleteTemplate}
       copyTemplate={handleCopyTemplate}
       renameTemplate={handleRenameTemplate}
+      setTemplateKind={handleSetTemplateKind}
       saveAs={handleSaveAs}
     />
   );

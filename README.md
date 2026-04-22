@@ -57,14 +57,18 @@ function MyApp() {
 | `deleteTemplate` | function | - | Deletes a template: `(id) => void` |
 | `copyTemplate` | function | - | Copies a template: `(name, content) => void` |
 | `renameTemplate` | function | - | Renames a template: `(id, newSlug) => void \| Promise<void>` |
+| `setTemplateKind` | function | - | Promotes/demotes a row between template and sample: `(id, kind) => void \| Promise<void>`. When omitted, promote/demote menu items are hidden. |
 | `saveAs` | function | - | Saves template with new name: `(name, content) => Promise<{id, name}>` |
 
 `TemplateListItem` is the lean list-endpoint shape (no `editor_config`):
 
 ```ts
+type TemplateKind = 'template' | 'sample';
+
 type TemplateListItem = {
   id: string;
   slug: string;                 // primary label
+  kind: TemplateKind;           // 'template' (editable) or 'sample' (read-only starting point)
   description?: string;         // secondary line
   subject?: string;
   variables?: Array<{ name: string; description?: string }>;
@@ -74,6 +78,10 @@ type TemplateListItem = {
   updatedAt?: string;
 };
 ```
+
+The drawer groups rows by `kind`, not by which callback returned them. Both `loadTemplates` and `loadSamples` should return their items with the correct `kind`; backends typically scope the two endpoints differently (per-user vs. org-wide), but the `kind` field is what determines the section a row appears in.
+
+Samples are read-only starting points: Save on a loaded sample is disabled — the user must use Save As, which creates a fresh row with `kind='template'`.
 | `theme` | object | theme.ts | Custom theme for the EmailEditor, must be a Material UI theme object |
 
 #### Imperative API

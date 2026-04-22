@@ -11,6 +11,9 @@ import {
   ContentCopyOutlined,
   DeleteOutlined,
   DriveFileRenameOutlineOutlined,
+  FileDownloadOutlined,
+  FileUploadOutlined,
+  LibraryAddOutlined,
 } from '@mui/icons-material';
 import { resetDocument } from '@editor/editor-context';
 import { TEditorConfiguration } from '@editor/core';
@@ -24,6 +27,9 @@ export interface TemplateRowProps {
   onDuplicate?: () => void;
   onRename?: () => void;
   onDelete?: () => void;
+  onPromote?: () => void;
+  onDemote?: () => void;
+  onDuplicateAsTemplate?: () => void;
 }
 
 function relativeTime(iso?: string): string | null {
@@ -52,6 +58,9 @@ export default function TemplateRow({
   onDuplicate,
   onRename,
   onDelete,
+  onPromote,
+  onDemote,
+  onDuplicateAsTemplate,
 }: TemplateRowProps) {
   const { setCurrentTemplate } = useEmailEditor();
   const [hover, setHover] = useState(false);
@@ -61,7 +70,7 @@ export default function TemplateRow({
       const content = await templateLoader();
       if (content) {
         resetDocument(content);
-        setCurrentTemplate(template.id, template.slug);
+        setCurrentTemplate(template.id, template.slug, template.kind);
       }
     } catch (error) {
       console.error('Error loading template:', error);
@@ -73,7 +82,9 @@ export default function TemplateRow({
   };
 
   const updated = relativeTime(template.updatedAt);
-  const hasActions = Boolean(onDuplicate || onRename || onDelete);
+  const hasActions = Boolean(
+    onDuplicate || onRename || onDelete || onPromote || onDemote || onDuplicateAsTemplate,
+  );
 
   return (
     <Box
@@ -170,6 +181,19 @@ export default function TemplateRow({
             p: 0.25,
           }}
         >
+          {onDuplicateAsTemplate && (
+            <Tooltip title="Duplicate as template">
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  stop(e);
+                  onDuplicateAsTemplate();
+                }}
+              >
+                <LibraryAddOutlined fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
           {onDuplicate && (
             <Tooltip title="Duplicate">
               <IconButton
@@ -193,6 +217,32 @@ export default function TemplateRow({
                 }}
               >
                 <DriveFileRenameOutlineOutlined fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+          {onPromote && (
+            <Tooltip title="Promote to sample">
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  stop(e);
+                  onPromote();
+                }}
+              >
+                <FileUploadOutlined fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+          {onDemote && (
+            <Tooltip title="Demote to template">
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  stop(e);
+                  onDemote();
+                }}
+              >
+                <FileDownloadOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
           )}

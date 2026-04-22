@@ -15,24 +15,25 @@ interface SaveButtonProps {
 }
 
 export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
-  const { saveTemplate, currentTemplateId, setCurrentTemplate } = useEmailEditor();
+  const { saveTemplate, currentTemplateId, currentTemplateKind, setCurrentTemplate } = useEmailEditor();
   const { showMessage } = useSnackbar();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const document = useDocument();
 
+  const isSample = currentTemplateKind === 'sample';
+
   const handleSave = async () => {
     try {
-      // If it's a sample template or no template is selected, show the save dialog
-      if (!currentTemplateId || currentTemplateId === 'welcome' || currentTemplateId.startsWith('sample/')) {
+      // Samples are read-only: route Save to Save-As so the user creates a new template.
+      // Also fall through to Save-As when nothing is selected yet.
+      if (!currentTemplateId || isSample) {
         setSaveDialogOpen(true);
         return;
       }
 
-      // Otherwise, save the template directly
       saveTemplate();
       showMessage('Template saved successfully!');
 
-      // Refresh templates list
       if (loadTemplates) {
         await loadTemplates();
       }
@@ -82,7 +83,7 @@ export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
           },
         }}
       >
-        <Tooltip title="Save template">
+        <Tooltip title={isSample ? 'Save as new template' : 'Save template'}>
           <SaveOutlined fontSize="small" />
         </Tooltip>
       </IconButton>
@@ -91,8 +92,8 @@ export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
         open={saveDialogOpen}
         onClose={() => setSaveDialogOpen(false)}
         onSave={handleSaveAs}
-        defaultName={currentTemplateId === 'welcome' ? 'Welcome Template' : 'New Template'}
+        defaultName={isSample ? 'New Template' : 'New Template'}
       />
     </>
   );
-} 
+}

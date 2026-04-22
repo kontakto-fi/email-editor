@@ -48,11 +48,14 @@ function htmlToEditorConfig(html: string): TEditorConfiguration {
   };
 }
 
+export type TemplateKind = 'template' | 'sample';
+
 // List-endpoint contract for templates and samples. Kept intentionally lean —
 // `loadTemplate(id)` is what fetches the heavy `TEditorConfiguration`.
 export interface TemplateListItem {
   id: string;
   slug: string;
+  kind: TemplateKind;
   description?: string;
   subject?: string;
   variables?: Array<{ name: string; description?: string }>;
@@ -140,6 +143,11 @@ export interface EmailEditorProps {
    */
   renameTemplate?: (templateId: string, newSlug: string) => void | Promise<void>;
   /**
+   * Callback to promote/demote a row between `template` and `sample`.
+   * When omitted, promote/demote menu items are hidden.
+   */
+  setTemplateKind?: (templateId: string, kind: TemplateKind) => void | Promise<void>;
+  /**
    * Callback to save a template with a new name.
    */
   saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
@@ -171,6 +179,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
     deleteTemplate,
     copyTemplate,
     renameTemplate,
+    setTemplateKind,
     saveAs,
     onChange,
   } = props;
@@ -227,6 +236,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
         deleteTemplate={deleteTemplate}
         copyTemplate={copyTemplate}
         renameTemplate={renameTemplate}
+        setTemplateKind={setTemplateKind}
         saveAs={saveAs}
       />
 
@@ -262,6 +272,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     deleteTemplate,
     copyTemplate,
     renameTemplate,
+    setTemplateKind,
     saveAs,
     theme,
   } = props;
@@ -313,6 +324,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
               deleteTemplate={deleteTemplate}
               copyTemplate={copyTemplate}
               renameTemplate={renameTemplate}
+              setTemplateKind={setTemplateKind}
               saveAs={saveAs}
               onChange={onChange}
             />
