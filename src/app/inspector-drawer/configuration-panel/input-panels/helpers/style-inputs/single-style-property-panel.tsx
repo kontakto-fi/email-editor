@@ -7,6 +7,8 @@ import { NullableColorInput } from '../inputs/color-input/index';
 import { NullableFontFamily } from '../inputs/font-family';
 import FontSizeInput from '../inputs/font-size-input';
 import FontWeightInput from '../inputs/font-weight-input';
+import LetterSpacingInput from '../inputs/letter-spacing-input';
+import LineHeightInput from '../inputs/line-height-input';
 import PaddingInput from '../inputs/padding-input';
 import SliderInput from '../inputs/slider-input';
 import TextAlignInput from '../inputs/text-align-input';
@@ -50,6 +52,10 @@ export default function SingleStylePropertyPanel({ name, value, onChange }: Styl
       return <FontSizeInput label="Font size" defaultValue={defaultValue} onChange={handleChange} />;
     case 'fontWeight':
       return <FontWeightInput label="Font weight" defaultValue={defaultValue} onChange={handleChange} />;
+    case 'lineHeight':
+      return <LineHeightInput label="Line height" defaultValue={defaultValue} onChange={handleChange} />;
+    case 'letterSpacing':
+      return <LetterSpacingInput label="Letter spacing" defaultValue={defaultValue} onChange={handleChange} />;
     case 'textAlign':
       return <TextAlignInput label="Alignment" defaultValue={defaultValue} onChange={handleChange} />;
     case 'padding':

@@ -178,6 +178,8 @@ export const TextPropsSchema = z.object({
       fontSize: z.number().gte(0).optional().nullable(),
       fontFamily: FONT_FAMILY_SCHEMA,
       fontWeight: z.enum(['bold', 'normal']).optional().nullable(),
+      lineHeight: z.number().gte(0).optional().nullable(),
+      letterSpacing: z.number().optional().nullable(),
       textAlign: z.enum(['left', 'center', 'right']).optional().nullable(),
       padding: PADDING_SCHEMA,
     })
@@ -207,6 +209,8 @@ export function Text({ style, props }: TextProps) {
     fontSize: style?.fontSize ?? undefined,
     fontFamily: getFontFamily(style?.fontFamily),
     fontWeight: style?.fontWeight ?? undefined,
+    lineHeight: style?.lineHeight ?? undefined,
+    letterSpacing: style?.letterSpacing != null ? `${style.letterSpacing}px` : undefined,
     textAlign: style?.textAlign ?? undefined,
     padding: getPadding(style?.padding),
   };

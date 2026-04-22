@@ -47,7 +47,16 @@ export default function HeadingSidebarPanel({ data, setData }: HeadingSidebarPan
         <ToggleButton value="h3">H3</ToggleButton>
       </RadioGroupInput>
       <MultiStylePropertyPanel
-        names={['color', 'backgroundColor', 'fontFamily', 'fontWeight', 'textAlign', 'padding']}
+        names={[
+          'color',
+          'backgroundColor',
+          'fontFamily',
+          'fontWeight',
+          'lineHeight',
+          'letterSpacing',
+          'textAlign',
+          'padding',
+        ]}
         value={data.style}
         onChange={(style) => updateData({ ...data, style })}
       />

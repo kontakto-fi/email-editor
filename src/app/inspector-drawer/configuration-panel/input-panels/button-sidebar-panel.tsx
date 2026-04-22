@@ -85,7 +85,16 @@ export default function ButtonSidebarPanel({ data, setData }: ButtonSidebarPanel
         onChange={(buttonBackgroundColor) => updateData({ ...data, props: { ...data.props, buttonBackgroundColor } })}
       />
       <MultiStylePropertyPanel
-        names={['backgroundColor', 'fontFamily', 'fontSize', 'fontWeight', 'textAlign', 'padding']}
+        names={[
+          'backgroundColor',
+          'fontFamily',
+          'fontSize',
+          'fontWeight',
+          'lineHeight',
+          'letterSpacing',
+          'textAlign',
+          'padding',
+        ]}
         value={data.style}
         onChange={(style) => updateData({ ...data, style })}
       />

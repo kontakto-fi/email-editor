@@ -108,6 +108,8 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
     fontWeight: style?.fontWeight ?? 'bold',
+    lineHeight: style?.lineHeight ?? undefined,
+    letterSpacing: style?.letterSpacing != null ? `${style.letterSpacing}px` : undefined,
     textAlign: style?.textAlign ?? undefined,
     margin: 0,
     fontFamily,
@@ -125,7 +127,7 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     resize: 'none',
     backgroundColor: 'transparent',
     overflow: 'hidden',
-    lineHeight: 'inherit',
+    lineHeight: hStyle.lineHeight ?? 'inherit',
     margin: 0,
     display: 'block',
     width: '100%'

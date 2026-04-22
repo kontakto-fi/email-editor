@@ -66,6 +66,8 @@ export const ButtonPropsSchema = z.object({
       fontSize: z.number().min(0).optional().nullable(),
       fontFamily: FONT_FAMILY_SCHEMA,
       fontWeight: z.enum(['bold', 'normal']).optional().nullable(),
+      lineHeight: z.number().gte(0).optional().nullable(),
+      letterSpacing: z.number().optional().nullable(),
       textAlign: z.enum(['left', 'center', 'right']).optional().nullable(),
       padding: PADDING_SCHEMA,
     })
@@ -147,6 +149,8 @@ export function Button({ style, props }: ButtonProps) {
     fontSize: style?.fontSize ?? 16,
     fontFamily: getFontFamily(style?.fontFamily),
     fontWeight: style?.fontWeight ?? 'bold',
+    lineHeight: style?.lineHeight ?? undefined,
+    letterSpacing: style?.letterSpacing != null ? `${style.letterSpacing}px` : undefined,
     backgroundColor: buttonBackgroundColor,
     borderRadius: getRoundedCorners(props),
     display: fullWidth ? 'block' : 'inline-block',
