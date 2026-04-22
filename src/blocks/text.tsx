@@ -84,6 +84,14 @@ ${body}</tbody>
     }
     return `<a href="${href}" title="${title}" target="_blank">${text}</a>`;
   }
+
+  // Give paragraphs an explicit bottom margin that matches a blank line in the
+  // raw source. Without this, click-to-edit swaps the rendered div (flattened
+  // by ambient CSS) for a textarea whose blank lines take a full line-height,
+  // causing a visible layout jump.
+  paragraph(text: string) {
+    return `<p style="margin:0 0 1em 0">${text}</p>`;
+  }
 }
 
 export function renderMarkdownString(str: string): string {
