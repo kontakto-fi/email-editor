@@ -4,12 +4,13 @@ import {
   Box,
   Chip,
   CircularProgress,
-  Divider,
   Drawer,
   IconButton,
   InputAdornment,
   MenuItem,
   Stack,
+  Tab,
+  Tabs,
   TextField,
   Tooltip,
   Typography,
@@ -25,6 +26,7 @@ import { useEmailEditor } from '../context';
 import { useSnackbar } from '../email-canvas/snackbar-provider';
 import { buildSavePayload, SavePayload } from '../save-payload';
 import TemplateRow from './template-row';
+import OutlinePanel from './outline-panel';
 import RenameDialog from './rename-dialog';
 import SaveTemplateDialog from '../email-canvas/save-template-dialog';
 import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
@@ -98,6 +100,7 @@ export default function SamplesDrawer({
   const [loadingTemplates, setLoadingTemplates] = useState(false);
   const [templatesError, setTemplatesError] = useState<string | null>(null);
 
+  const [activeLeftTab, setActiveLeftTab] = useState<'templates' | 'samples' | 'outline'>('templates');
   const [search, setSearch] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('updatedAt');
   const [activeTags, setActiveTags] = useState<string[]>([]);
@@ -362,9 +365,9 @@ export default function SamplesDrawer({
         >
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ pt: 1 }}>
             <Typography variant="h6" component="h1">
-              Templates
+              Library
             </Typography>
-            {saveAs && (
+            {saveAs && activeLeftTab === 'templates' && (
               <Tooltip title="New template">
                 <IconButton
                   size="small"
@@ -377,11 +380,24 @@ export default function SamplesDrawer({
             )}
           </Stack>
 
-          {loadTemplates && (
+          <Tabs
+            value={activeLeftTab}
+            onChange={(_, v) => setActiveLeftTab(v)}
+            variant="fullWidth"
+            sx={{ minHeight: 36, '& .MuiTab-root': { minHeight: 36, minWidth: 0, px: 1, fontSize: 13 } }}
+          >
+            <Tab value="templates" label="Templates" disabled={!loadTemplates} />
+            <Tab value="samples" label="Samples" />
+            <Tab value="outline" label="Outline" />
+          </Tabs>
+
+          {activeLeftTab === 'outline' ? (
+            <OutlinePanel />
+          ) : (
             <>
               <TextField
                 size="small"
-                placeholder="Search templates"
+                placeholder={activeLeftTab === 'templates' ? 'Search templates' : 'Search samples'}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 InputProps={{
@@ -431,75 +447,67 @@ export default function SamplesDrawer({
                 </Stack>
               )}
 
-              <Box>
-                <Typography variant="subtitle2" component="h2" sx={{ fontWeight: 'bold', mb: 0.5 }}>
-                  Your Templates
-                </Typography>
-
-                {loadingTemplates ? (
-                  <Stack alignItems="center" width="100%" py={2}>
-                    <CircularProgress size={24} />
-                  </Stack>
-                ) : templatesError ? (
-                  <Alert severity="error" sx={{ my: 1 }}>
-                    {templatesError}
-                  </Alert>
-                ) : filteredTemplates.length > 0 ? (
-                  <Stack spacing={0.25} sx={{ width: '100%' }}>
-                    {filteredTemplates.map((template) => (
-                      <TemplateRow
-                        key={template.id}
-                        template={template}
-                        isCurrent={currentTemplateId === template.id}
-                        templateLoader={() => handleLoadTemplate(template.id)}
-                        onDuplicate={copyTemplate ? () => handleDuplicate(template) : undefined}
-                        onRename={renameTemplate ? () => setRenameTarget(template) : undefined}
-                        onDelete={deleteTemplate ? () => handleDelete(template) : undefined}
-                        onPromote={setTemplateKind ? () => handleSetKind(template, 'sample') : undefined}
-                      />
-                    ))}
-                  </Stack>
-                ) : (
-                  <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
-                    {templateRows.length === 0
-                      ? 'No saved templates yet'
-                      : 'No templates match your filters'}
-                  </Typography>
-                )}
-              </Box>
-
-              <Divider />
+              {activeLeftTab === 'templates' ? (
+                <Box>
+                  {loadingTemplates ? (
+                    <Stack alignItems="center" width="100%" py={2}>
+                      <CircularProgress size={24} />
+                    </Stack>
+                  ) : templatesError ? (
+                    <Alert severity="error" sx={{ my: 1 }}>
+                      {templatesError}
+                    </Alert>
+                  ) : filteredTemplates.length > 0 ? (
+                    <Stack spacing={0.25} sx={{ width: '100%' }}>
+                      {filteredTemplates.map((template) => (
+                        <TemplateRow
+                          key={template.id}
+                          template={template}
+                          isCurrent={currentTemplateId === template.id}
+                          templateLoader={() => handleLoadTemplate(template.id)}
+                          onDuplicate={copyTemplate ? () => handleDuplicate(template) : undefined}
+                          onRename={renameTemplate ? () => setRenameTarget(template) : undefined}
+                          onDelete={deleteTemplate ? () => handleDelete(template) : undefined}
+                          onPromote={setTemplateKind ? () => handleSetKind(template, 'sample') : undefined}
+                        />
+                      ))}
+                    </Stack>
+                  ) : (
+                    <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
+                      {templateRows.length === 0
+                        ? 'No saved templates yet'
+                        : 'No templates match your filters'}
+                    </Typography>
+                  )}
+                </Box>
+              ) : (
+                <Box>
+                  {loadingSamples ? (
+                    <Stack alignItems="center" width="100%" py={2}>
+                      <CircularProgress size={24} />
+                    </Stack>
+                  ) : filteredSamples.length > 0 ? (
+                    <Stack spacing={0.25} sx={{ width: '100%' }}>
+                      {filteredSamples.map((sample) => (
+                        <TemplateRow
+                          key={sample.id}
+                          template={sample}
+                          isCurrent={currentTemplateId === sample.id}
+                          templateLoader={() => handleLoadTemplate(sample.id)}
+                          onDuplicateAsTemplate={saveAs ? () => handleDuplicateAsTemplate(sample) : undefined}
+                          onDemote={setTemplateKind && sample.id !== 'empty-email' ? () => handleSetKind(sample, 'template') : undefined}
+                        />
+                      ))}
+                    </Stack>
+                  ) : (
+                    <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
+                      {sampleRows.length === 0 ? 'No samples available' : 'No samples match your filters'}
+                    </Typography>
+                  )}
+                </Box>
+              )}
             </>
           )}
-
-          <Box>
-            <Typography variant="subtitle2" component="h2" sx={{ fontWeight: 'bold', mb: 0.5 }}>
-              Sample Templates
-            </Typography>
-
-            {loadingSamples ? (
-              <Stack alignItems="center" width="100%" py={2}>
-                <CircularProgress size={24} />
-              </Stack>
-            ) : filteredSamples.length > 0 ? (
-              <Stack spacing={0.25} sx={{ width: '100%' }}>
-                {filteredSamples.map((sample) => (
-                  <TemplateRow
-                    key={sample.id}
-                    template={sample}
-                    isCurrent={currentTemplateId === sample.id}
-                    templateLoader={() => handleLoadTemplate(sample.id)}
-                    onDuplicateAsTemplate={saveAs ? () => handleDuplicateAsTemplate(sample) : undefined}
-                    onDemote={setTemplateKind && sample.id !== 'empty-email' ? () => handleSetKind(sample, 'template') : undefined}
-                  />
-                ))}
-              </Stack>
-            ) : (
-              <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
-                {sampleRows.length === 0 ? 'No samples available' : 'No samples match your filters'}
-              </Typography>
-            )}
-          </Box>
         </Stack>
       </Drawer>
 

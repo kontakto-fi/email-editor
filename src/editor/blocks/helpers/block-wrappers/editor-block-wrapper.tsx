@@ -3,7 +3,7 @@ import React, { CSSProperties, useState } from 'react';
 import { Box } from '@mui/material';
 
 import { useCurrentBlockId } from '@editor/editor-block';
-import { setSelectedBlockId, useSelectedBlockId } from '@editor/editor-context';
+import { setSelectedBlockId, useHoveredBlockId, useSelectedBlockId } from '@editor/editor-context';
 
 import TuneMenu from './tune-menu';
 
@@ -13,13 +13,14 @@ type TEditorBlockWrapperProps = {
 
 export default function EditorBlockWrapper({ children }: TEditorBlockWrapperProps) {
   const selectedBlockId = useSelectedBlockId();
+  const hoveredBlockId = useHoveredBlockId();
   const [mouseInside, setMouseInside] = useState(false);
   const blockId = useCurrentBlockId();
 
   let outline: CSSProperties['outline'];
   if (selectedBlockId === blockId) {
     outline = '2px solid rgba(0,121,204, 1)';
-  } else if (mouseInside) {
+  } else if (mouseInside || hoveredBlockId === blockId) {
     outline = '2px solid rgba(0,121,204, 0.3)';
   }
 

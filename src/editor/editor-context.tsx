@@ -18,6 +18,7 @@ type TValue = {
   samplesDrawerOpen: boolean;
   persistenceEnabled: boolean;
   lastFocusedEditable: TFocusedEditable | null;
+  hoveredBlockId: string | null;
 };
 
 // Initialize with an empty document
@@ -44,6 +45,7 @@ const editorStateStore = create<TValue>(() => ({
   samplesDrawerOpen: true,
   persistenceEnabled: false,
   lastFocusedEditable: null,
+  hoveredBlockId: null,
 }));
 
 export function useDocument() {
@@ -146,6 +148,14 @@ export function useLastFocusedEditable() {
 
 export function getLastFocusedEditable() {
   return editorStateStore.getState().lastFocusedEditable;
+}
+
+export function useHoveredBlockId() {
+  return editorStateStore((s) => s.hoveredBlockId);
+}
+
+export function setHoveredBlockId(hoveredBlockId: TValue['hoveredBlockId']) {
+  return editorStateStore.setState({ hoveredBlockId });
 }
 
 export function setLastFocusedEditable(lastFocusedEditable: TFocusedEditable | null) {
