@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite --port 5443",
+    "dev": "vite",
     "build": "vite build && tsup",
     "preview": "vite preview",
     "test": "playwright test",
