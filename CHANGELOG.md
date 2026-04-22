@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/kontakto-fi/email-editor/compare/v2.2.0...v2.2.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* keep editable textarea at least as tall as the rendered block ([b61b883](https://github.com/kontakto-fi/email-editor/commit/b61b883a8587a2f3add92a32d83c338015515575))
+
 # [2.2.0](https://github.com/kontakto-fi/email-editor/compare/v2.1.0...v2.2.0) (2026-04-22)
 
 
