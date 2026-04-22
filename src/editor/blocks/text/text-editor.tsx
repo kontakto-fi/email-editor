@@ -1,5 +1,5 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
-import { TextProps, TextPropsDefaults, EmailMarkdown } from '@blocks';
+import React, { useState, useEffect, useLayoutEffect, useRef, CSSProperties } from 'react';
+import { TextProps, TextPropsDefaults, renderMarkdownString } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
 import { setDocument, setLastFocusedEditable, useDocument, useSelectedBlockId } from '@editor/editor-context';
 
@@ -141,11 +141,26 @@ export default function TextEditor({ style, props }: TextProps) {
     commitText(e.target.value);
   };
 
-  const adjustTextareaHeight = (element: HTMLTextAreaElement) => {
-    if (element) {
-      element.style.height = 'auto';
-      element.style.height = `${element.scrollHeight}px`;
+  // When the block is rendered as a div (not selected), remember its height so
+  // the textarea can seed itself with at least that tall on the next select.
+  // Markdown's <p> margins make the rendered div taller than textarea.scrollHeight
+  // for identical text, which otherwise causes a visible shrink on click-to-edit.
+  const displayRef = useRef<HTMLDivElement | null>(null);
+  const lastDisplayHeightRef = useRef<number>(0);
+
+  useLayoutEffect(() => {
+    if (!isSelected && displayRef.current) {
+      const h = displayRef.current.offsetHeight;
+      if (h > 0) lastDisplayHeightRef.current = h;
     }
+  }, [isSelected, textContent, isMarkdown]);
+
+  const adjustTextareaHeight = (element: HTMLTextAreaElement) => {
+    if (!element) return;
+    element.style.height = 'auto';
+    const scrollH = element.scrollHeight;
+    const floor = lastDisplayHeightRef.current;
+    element.style.height = `${Math.max(scrollH, floor)}px`;
   };
 
   const { textareaRef, trackFocus, handleKeyDown, toolbarProps } = useMarkdownToolbar({
@@ -162,9 +177,9 @@ export default function TextEditor({ style, props }: TextProps) {
     },
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (textareaRef.current) adjustTextareaHeight(textareaRef.current);
-  }, [localText, textareaRef]);
+  }, [localText, isSelected]);
 
   if (isSelected) {
     return (
@@ -191,8 +206,18 @@ export default function TextEditor({ style, props }: TextProps) {
   }
 
   if (isMarkdown) {
-    return <EmailMarkdown style={wStyle} markdown={textContent} />;
+    return (
+      <div
+        ref={displayRef}
+        style={wStyle}
+        dangerouslySetInnerHTML={{ __html: renderMarkdownString(textContent) }}
+      />
+    );
   }
 
-  return <div style={wStyle}>{textContent}</div>;
+  return (
+    <div ref={displayRef} style={wStyle}>
+      {textContent}
+    </div>
+  );
 }

@@ -86,7 +86,7 @@ ${body}</tbody>
   }
 }
 
-function renderMarkdownString(str: string): string {
+export function renderMarkdownString(str: string): string {
   const html = marked.parse(str, {
     async: false,
     breaks: true,

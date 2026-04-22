@@ -1,4 +1,4 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, CSSProperties } from 'react';
 import { HeadingProps, HeadingPropsDefaults, renderInlineMarkdownString } from '@blocks';
 import { useCurrentBlockId } from '@editor/editor-block';
 import { setDocument, setLastFocusedEditable, useDocument, useSelectedBlockId } from '@editor/editor-context';
@@ -152,11 +152,24 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     commitText(e.target.value);
   };
 
-  const adjustTextareaHeight = (element: HTMLTextAreaElement) => {
-    if (element) {
-      element.style.height = 'auto';
-      element.style.height = `${element.scrollHeight}px`;
+  // See text-editor.tsx: seed the textarea with at least the rendered heading's
+  // height so the click-to-edit transition doesn't shrink.
+  const displayRef = useRef<HTMLHeadingElement | null>(null);
+  const lastDisplayHeightRef = useRef<number>(0);
+
+  useLayoutEffect(() => {
+    if (!isSelected && displayRef.current) {
+      const h = displayRef.current.offsetHeight;
+      if (h > 0) lastDisplayHeightRef.current = h;
     }
+  }, [isSelected, textContent, isMarkdown, level]);
+
+  const adjustTextareaHeight = (element: HTMLTextAreaElement) => {
+    if (!element) return;
+    element.style.height = 'auto';
+    const scrollH = element.scrollHeight;
+    const floor = lastDisplayHeightRef.current;
+    element.style.height = `${Math.max(scrollH, floor)}px`;
   };
 
   const { textareaRef, trackFocus, handleKeyDown, toolbarProps } = useMarkdownToolbar({
@@ -173,9 +186,9 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     },
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (textareaRef.current) adjustTextareaHeight(textareaRef.current);
-  }, [localText, textareaRef]);
+  }, [localText, isSelected]);
 
   if (isSelected) {
     return (
@@ -201,9 +214,15 @@ export default function HeadingEditor({ style, props }: HeadingProps) {
     );
   }
 
-  const headingProps: React.HTMLAttributes<HTMLHeadingElement> = isMarkdown
-    ? { style: hStyle, dangerouslySetInnerHTML: { __html: renderInlineMarkdownString(textContent) } }
-    : { style: hStyle, children: textContent };
+  const headingProps: React.HTMLAttributes<HTMLHeadingElement> & {
+    ref: React.RefObject<HTMLHeadingElement>;
+  } = isMarkdown
+    ? {
+        ref: displayRef,
+        style: hStyle,
+        dangerouslySetInnerHTML: { __html: renderInlineMarkdownString(textContent) },
+      }
+    : { ref: displayRef, style: hStyle, children: textContent };
 
   switch (level) {
     case 'h1':
