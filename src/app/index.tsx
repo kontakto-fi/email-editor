@@ -14,6 +14,7 @@ import {
   setPersistenceEnabled
 } from '@editor/editor-context';
 import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEditorProviderProps } from './context';
+import { ImageCallbacksProvider, type ImageCallbacks, type LibraryImage, type UploadedImage } from './image-context';
 import type { SavePayload } from './save-payload';
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
@@ -159,6 +160,22 @@ export interface EmailEditorProps {
    */
   saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
   /**
+   * Uploads a single image file and returns its public URL plus optional
+   * intrinsic dimensions. When omitted, upload UI (button, drag-drop,
+   * paste-to-insert) is hidden; URL paste still works.
+   */
+  uploadImage?: (file: File) => Promise<UploadedImage>;
+  /**
+   * Returns previously uploaded images for the library picker. When omitted,
+   * the "Pick from library" button is hidden.
+   */
+  loadImages?: () => Promise<LibraryImage[]>;
+  /**
+   * Deletes an image from the library by URL. When omitted, the delete button
+   * on library rows is hidden.
+   */
+  deleteImage?: (url: string) => Promise<void>;
+  /**
    * Optional theme override. If not provided, the default theme will be used.
    * This allows for easy styling without requiring a separate ThemeProvider.
    */
@@ -281,6 +298,9 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     renameTemplate,
     setTemplateKind,
     saveAs,
+    uploadImage,
+    loadImages,
+    deleteImage,
     theme,
   } = props;
 
@@ -307,35 +327,42 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     setPersistenceEnabled(persistenceEnabled);
   }, [persistenceEnabled]);
 
+  const imageCallbacks = useMemo<ImageCallbacks>(
+    () => ({ uploadImage, loadImages, deleteImage }),
+    [uploadImage, loadImages, deleteImage]
+  );
+
   return (
     <ThemeProvider theme={theme || defaultTheme}>
             <CssBaseline />
       <div style={{ height: '100%', overflow: 'auto' }}>
         <SnackbarProvider>
-          <EmailEditorProvider
-            initialTemplate={resolvedTemplate}
-            initialTemplateId={initialTemplateId}
-            initialTemplateName={initialTemplateName}
-            onSave={onSave}
-            onChange={onChange}
-          >
-            <EmailEditorInternal
-              ref={ref}
-              drawerEnterDuration={drawerEnterDuration}
-              drawerExitDuration={drawerExitDuration}
-              samplesDrawerEnabled={samplesDrawerEnabled}
-              minHeight={minHeight}
-              loadSamples={loadSamples}
-              loadTemplates={loadTemplates}
-              loadTemplate={loadTemplate}
-              deleteTemplate={deleteTemplate}
-              copyTemplate={copyTemplate}
-              renameTemplate={renameTemplate}
-              setTemplateKind={setTemplateKind}
-              saveAs={saveAs}
+          <ImageCallbacksProvider callbacks={imageCallbacks}>
+            <EmailEditorProvider
+              initialTemplate={resolvedTemplate}
+              initialTemplateId={initialTemplateId}
+              initialTemplateName={initialTemplateName}
+              onSave={onSave}
               onChange={onChange}
-            />
-          </EmailEditorProvider>
+            >
+              <EmailEditorInternal
+                ref={ref}
+                drawerEnterDuration={drawerEnterDuration}
+                drawerExitDuration={drawerExitDuration}
+                samplesDrawerEnabled={samplesDrawerEnabled}
+                minHeight={minHeight}
+                loadSamples={loadSamples}
+                loadTemplates={loadTemplates}
+                loadTemplate={loadTemplate}
+                deleteTemplate={deleteTemplate}
+                copyTemplate={copyTemplate}
+                renameTemplate={renameTemplate}
+                setTemplateKind={setTemplateKind}
+                saveAs={saveAs}
+                onChange={onChange}
+              />
+            </EmailEditorProvider>
+          </ImageCallbacksProvider>
         </SnackbarProvider>
       </div>
     </ThemeProvider>
@@ -361,4 +388,7 @@ export {
 export { htmlToEditorConfig };
 
 // Re-export the save payload type so consumers typing their callbacks have one import path.
-export type { SavePayload, TemplateVariable } from './save-payload'; 
+export type { SavePayload, TemplateVariable } from './save-payload';
+
+// Image-callback types so consumers can type their handlers directly.
+export type { ImageCallbacks, LibraryImage, UploadedImage } from './image-context'; 

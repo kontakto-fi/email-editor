@@ -59,6 +59,9 @@ function MyApp() {
 | `renameTemplate` | function | - | Renames a template: `(id, newSlug) => void \| Promise<void>` |
 | `setTemplateKind` | function | - | Promotes/demotes a row between template and sample: `(id, kind) => void \| Promise<void>`. When omitted, promote/demote menu items are hidden. |
 | `saveAs` | function | - | Saves template with a new name: `(name, payload: SavePayload) => Promise<{ id, slug }>` |
+| `uploadImage` | function | - | Uploads a single image file: `(file: File) => Promise<UploadedImage>`. Enables the Upload button on the Image inspector, drag-and-drop on the canvas, and paste-image-to-insert. When omitted, all upload UI is hidden and URL paste remains the only way to set an image. |
+| `loadImages` | function | - | Lists previously uploaded images for the library picker: `() => Promise<LibraryImage[]>`. Enables the "Library" button on the Image inspector. When omitted, the library button is hidden. |
+| `deleteImage` | function | - | Deletes an image from the library by URL: `(url: string) => Promise<void>`. When omitted, the per-row delete button in the library is hidden. |
 
 `TemplateListItem` is the lean list-endpoint shape (no `editor_config`):
 
@@ -119,6 +122,41 @@ type SavePayload = {
 ```
 
 The `renderToStaticMarkup` and `renderToText` utilities are also exposed publicly for consumers that need to re-render outside the save flow (e.g. batch jobs).
+
+#### Image upload and library (BYO backend)
+
+The editor delegates image storage to the consumer through three optional callbacks. When omitted, the corresponding UI is hidden and URL paste remains the fallback.
+
+```ts
+type UploadedImage = {
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+};
+
+type LibraryImage = UploadedImage & {
+  thumbnailUrl?: string;
+  uploadedAt?: string;
+};
+```
+
+- **`uploadImage(file)`** — receives a single `File`, uploads it (S3, R2, Bunny, presigned PUT, etc.), and returns the public `url` plus optional intrinsic dimensions and alt text. Wires up: the Upload button in the Image inspector, drag-and-drop of an image file onto the canvas, and paste-image-from-clipboard.
+- **`loadImages()`** — returns the consumer's image list for the "Library" picker dialog (grid + filter by alt/URL).
+- **`deleteImage(url)`** — removes an image from the library; surfaces a delete button on hover in the picker.
+
+Reference upload handler:
+
+```ts
+const uploadImage = async (file: File) => {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch('/api/images', { method: 'POST', body: form });
+  return res.json(); // { url, width, height }
+};
+```
+
+Newly uploaded images get their `width` / `height` set on the resulting Image block — important for Outlook, which needs explicit dimensions to lay the email out before images load.
 
 | `theme` | object | theme.ts | Custom theme for the EmailEditor, must be a Material UI theme object |
 

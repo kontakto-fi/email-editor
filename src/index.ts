@@ -114,5 +114,8 @@ export {
   type EmailEditorProviderProps,
   type TemplateListItem,
   type TemplateKind,
-  type SavePayload
+  type SavePayload,
+  type ImageCallbacks,
+  type LibraryImage,
+  type UploadedImage
 } from './app';

@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
+  CloudUploadOutlined,
+  CollectionsOutlined,
+  ErrorOutlineOutlined,
   VerticalAlignBottomOutlined,
   VerticalAlignCenterOutlined,
   VerticalAlignTopOutlined,
 } from '@mui/icons-material';
-import { Stack, ToggleButton } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Stack, ToggleButton, Tooltip } from '@mui/material';
 import { ImageProps, ImagePropsSchema } from '@blocks';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
@@ -13,13 +16,26 @@ import RadioGroupInput from './helpers/inputs/radio-group-input';
 import TextDimensionInput from './helpers/inputs/text-dimension-input';
 import TextInput from './helpers/inputs/text-input';
 import MultiStylePropertyPanel from './helpers/style-inputs/multi-style-property-panel';
+import ImageLibraryDialog from './image-library-dialog';
+import { useImageCallbacks, type LibraryImage, type UploadedImage } from '../../../image-context';
 
 type ImageSidebarPanelProps = {
   data: ImageProps;
   setData: (v: ImageProps) => void;
 };
+
+function isHttpUrl(value: string | null | undefined): boolean {
+  if (!value) return false;
+  return /^http:\/\//i.test(value.trim());
+}
+
 export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelProps) {
   const [, setErrors] = useState<Zod.ZodError | null>(null);
+  const { uploadImage, loadImages } = useImageCallbacks();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [libraryOpen, setLibraryOpen] = useState(false);
 
   const updateData = (d: unknown) => {
     const res = ImagePropsSchema.safeParse(d);
@@ -31,16 +47,101 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
     }
   };
 
+  const applyUploadedImage = (uploaded: UploadedImage | LibraryImage) => {
+    updateData({
+      ...data,
+      props: {
+        ...data.props,
+        url: uploaded.url,
+        width: uploaded.width ?? data.props?.width ?? null,
+        height: uploaded.height ?? data.props?.height ?? null,
+        alt: uploaded.alt ?? data.props?.alt ?? '',
+      },
+    });
+  };
+
+  const handleFile = async (file: File) => {
+    if (!uploadImage) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const uploaded = await uploadImage(file);
+      applyUploadedImage(uploaded);
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const url = data.props?.url ?? '';
+  const showHttpWarning = isHttpUrl(url);
+
   return (
     <BaseSidebarPanel title="Image block">
+      {(uploadImage || loadImages) && (
+        <Stack direction="row" spacing={1}>
+          {uploadImage && (
+            <>
+              <Button
+                fullWidth
+                variant="outlined"
+                size="small"
+                startIcon={uploading ? <CircularProgress size={14} /> : <CloudUploadOutlined fontSize="small" />}
+                disabled={uploading}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {uploading ? 'Uploading…' : 'Upload'}
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = '';
+                  if (file) await handleFile(file);
+                }}
+              />
+            </>
+          )}
+          {loadImages && (
+            <Button
+              fullWidth
+              variant="outlined"
+              size="small"
+              startIcon={<CollectionsOutlined fontSize="small" />}
+              onClick={() => setLibraryOpen(true)}
+            >
+              Library
+            </Button>
+          )}
+        </Stack>
+      )}
+
+      {uploadError && (
+        <Alert severity="error" onClose={() => setUploadError(null)} sx={{ mt: 1 }}>
+          {uploadError}
+        </Alert>
+      )}
+
       <TextInput
         label="Source URL"
-        defaultValue={data.props?.url ?? ''}
+        defaultValue={url}
         onChange={(v) => {
-          const url = v.trim().length === 0 ? null : v.trim();
-          updateData({ ...data, props: { ...data.props, url } });
+          const next = v.trim().length === 0 ? null : v.trim();
+          updateData({ ...data, props: { ...data.props, url: next } });
         }}
       />
+      {showHttpWarning && (
+        <Box sx={{ mt: -1, mb: 1, display: 'flex', alignItems: 'flex-start', gap: 0.75 }}>
+          <ErrorOutlineOutlined fontSize="small" sx={{ color: 'warning.main', mt: '2px' }} />
+          <Box sx={{ fontSize: 12, color: 'warning.dark' }}>
+            Non-HTTPS URL: Gmail and other clients strip mixed content. Use https:// for reliable delivery.
+          </Box>
+        </Box>
+      )}
 
       <TextInput
         label="Alt text"
@@ -89,6 +190,17 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
         value={data.style}
         onChange={(style) => updateData({ ...data, style })}
       />
+
+      {loadImages && (
+        <ImageLibraryDialog
+          open={libraryOpen}
+          onClose={() => setLibraryOpen(false)}
+          onPick={(image) => {
+            applyUploadedImage(image);
+            setLibraryOpen(false);
+          }}
+        />
+      )}
     </BaseSidebarPanel>
   );
 }

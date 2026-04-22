@@ -23,6 +23,7 @@ import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
 import SubjectInput from './subject-input';
 import SubjectPreview from './subject-preview';
+import ImageDropPasteHandler from './image-drop-paste-handler';
 import { TemplateListItem } from '../index';
 import type { SavePayload } from '../save-payload';
 import {
@@ -149,12 +150,14 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
       </Stack>
       {selectedMainTab === 'editor' && <SubjectInput />}
       {selectedMainTab === 'preview' && <SubjectPreview />}
-      <Box sx={{
-        paddingBottom: '50px',
-        minWidth: 370
-              }}>
-        {renderMainPanel()}
-      </Box>
+      <ImageDropPasteHandler enabled={selectedMainTab === 'editor'}>
+        <Box sx={{
+          paddingBottom: '50px',
+          minWidth: 370
+                }}>
+          {renderMainPanel()}
+        </Box>
+      </ImageDropPasteHandler>
     </>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Box, CircularProgress } from "@mui/material";
 import EmailEditor, { TemplateListItem } from "./app";
+import type { LibraryImage, UploadedImage } from "./app/image-context";
 import type { SavePayload } from "./app/save-payload";
 import { TEditorConfiguration } from "@editor/core";
 import theme from "./theme";
@@ -330,6 +331,60 @@ const EmailEditorWrapper = () => {
     }
   };
 
+  // Image upload/library stubs. The real consumer would POST to its own image
+  // service; here we stash data URLs in localStorage so the round-trip is fully
+  // observable without a backend.
+  const handleUploadImage = async (file: File): Promise<UploadedImage> => {
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
+    const dims = await new Promise<{ width: number; height: number } | null>(
+      (resolve) => {
+        const img = new Image();
+        img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        img.onerror = () => resolve(null);
+        img.src = dataUrl;
+      },
+    );
+    const uploaded: UploadedImage = {
+      url: dataUrl,
+      width: dims?.width,
+      height: dims?.height,
+      alt: file.name.replace(/\.[^.]+$/, ""),
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem("uploadedImages") ?? "[]") as LibraryImage[];
+      existing.push({ ...uploaded, uploadedAt: new Date().toISOString() });
+      localStorage.setItem("uploadedImages", JSON.stringify(existing));
+    } catch (error) {
+      console.error("Error persisting uploaded image:", error);
+    }
+    return uploaded;
+  };
+
+  const handleLoadImages = async (): Promise<LibraryImage[]> => {
+    try {
+      return JSON.parse(localStorage.getItem("uploadedImages") ?? "[]") as LibraryImage[];
+    } catch {
+      return [];
+    }
+  };
+
+  const handleDeleteImage = async (url: string): Promise<void> => {
+    try {
+      const existing = JSON.parse(localStorage.getItem("uploadedImages") ?? "[]") as LibraryImage[];
+      localStorage.setItem(
+        "uploadedImages",
+        JSON.stringify(existing.filter((img) => img.url !== url)),
+      );
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+
   if (loading) {
     return (
       <Box
@@ -360,6 +415,9 @@ const EmailEditorWrapper = () => {
       renameTemplate={handleRenameTemplate}
       setTemplateKind={handleSetTemplateKind}
       saveAs={handleSaveAs}
+      uploadImage={handleUploadImage}
+      loadImages={handleLoadImages}
+      deleteImage={handleDeleteImage}
     />
   );
 };
