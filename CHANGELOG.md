@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/kontakto-fi/email-editor/compare/v2.0.0...v2.1.0) (2026-04-22)
+
+
+### Features
+
+* line-height and letter-spacing controls on text, heading, button ([c5421bd](https://github.com/kontakto-fi/email-editor/commit/c5421bdd274b0809682009ca7f89df230f99f642))
+* optional image upload, library, and canvas drop/paste ([0bd7d83](https://github.com/kontakto-fi/email-editor/commit/0bd7d838da492725013ff6d8a2ef295ff3f44a52)), closes [#12](https://github.com/kontakto-fi/email-editor/issues/12)
+* variables panel with rename rewrite, insert at cursor, and sample values ([630876f](https://github.com/kontakto-fi/email-editor/commit/630876fb9e171b86b310af5f999bc7f3eab3d98c)), closes [unless/#with](https://github.com/kontakto-fi/email-editor/issues/with) [#7](https://github.com/kontakto-fi/email-editor/issues/7)
+
 # [2.0.0](https://github.com/kontakto-fi/email-editor/compare/v1.6.0...v2.0.0) (2026-04-22)
 
 
