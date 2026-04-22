@@ -8,7 +8,7 @@ See `AGENTS.md` for file naming conventions, project structure, path aliases, an
 
 ## Common commands
 
-- `npm run dev` — Vite dev server (standalone app, port 5173)
+- `npm run dev` — Vite dev server (standalone app, port **6573**, strict — fails if occupied rather than auto-incrementing, so only one instance runs at a time)
 - `npm run build` — `vite build && tsup` (produces `dist/` for publishing)
 - `npm test` — Jest unit tests
 - `npx playwright test` — Playwright e2e tests (spins up Vite on port 5199)

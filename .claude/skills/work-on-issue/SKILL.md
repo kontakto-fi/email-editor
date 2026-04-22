@@ -12,7 +12,7 @@ description: Implement a GitHub issue end-to-end with visual verification via Pl
 3. **Verify** — `npm run build` and `npx playwright test` must pass.
 
 4. **Visual confirmation** — required for every issue; this is a client library, every change manifests in the UI. Requires Playwright MCP. If it's not configured, stop and ask the user to install it; don't substitute the e2e suite.
-   - Start dev server (`npm run dev`, port 5173)
+   - Start dev server (`npm run dev`, port 6573 — strictPort, only one instance can run)
    - Drive the feature via Playwright MCP
    - Save screenshots to project root as `<issue>-<short-description>-<seq>.png` (e.g. `4-templates-drawer-empty-1.png`)
    - Capture before, in-use, and after states

@@ -5,6 +5,10 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  server: {
+    port: 6573,
+    strictPort: true,
+  },
   resolve: {
     alias: {
       '@blocks': path.resolve(__dirname, './src/blocks'),
