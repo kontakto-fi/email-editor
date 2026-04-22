@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/kontakto-fi/email-editor/compare/v2.2.1...v2.2.2) (2026-04-22)
+
+
+### Bug Fixes
+
+* apply explicit paragraph margin in rendered markdown ([dbb7bd1](https://github.com/kontakto-fi/email-editor/commit/dbb7bd1cfb200e5b9898c9f620bf7beeef3d9232))
+
 ## [2.2.1](https://github.com/kontakto-fi/email-editor/compare/v2.2.0...v2.2.1) (2026-04-22)
 
 
