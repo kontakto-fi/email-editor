@@ -48,13 +48,18 @@ function htmlToEditorConfig(html: string): TEditorConfiguration {
   };
 }
 
-// Define the SampleTemplate interface directly here
-export interface SampleTemplate {
+// List-endpoint contract for templates and samples. Kept intentionally lean —
+// `loadTemplate(id)` is what fetches the heavy `TEditorConfiguration`.
+export interface TemplateListItem {
   id: string;
-  name: string;
+  slug: string;
   description?: string;
-  category?: string;
-  thumbnail?: string;
+  subject?: string;
+  variables?: Array<{ name: string; description?: string }>;
+  tags?: string[];
+  thumbnailUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // The ref interface for imperative controls
@@ -111,12 +116,12 @@ export interface EmailEditorProps {
    * Callback to load samples dynamically.
    * This will be called when the samples drawer is opened.
    */
-  loadSamples?: () => Promise<SampleTemplate[]>;
+  loadSamples?: () => Promise<TemplateListItem[]>;
   /**
    * Callback to load existing templates dynamically.
    * This will be called when the samples drawer is opened.
    */
-  loadTemplates?: () => Promise<SampleTemplate[]>;
+  loadTemplates?: () => Promise<TemplateListItem[]>;
   /**
    * Callback to load a specific template by ID.
    * This will be called when a sample is selected from the drawer.
@@ -130,6 +135,10 @@ export interface EmailEditorProps {
    * Callback to copy a template with a new name.
    */
   copyTemplate?: (templateName: string, content: any) => void;
+  /**
+   * Callback to rename a template by ID. Receives the new slug.
+   */
+  renameTemplate?: (templateId: string, newSlug: string) => void | Promise<void>;
   /**
    * Callback to save a template with a new name.
    */
@@ -161,6 +170,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
     loadTemplate,
     deleteTemplate,
     copyTemplate,
+    renameTemplate,
     saveAs,
     onChange,
   } = props;
@@ -206,7 +216,7 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
         deleteTemplate={deleteTemplate}
         copyTemplate={copyTemplate}
       />
-      <SamplesDrawer 
+      <SamplesDrawer
         enterDuration={drawerEnterDuration}
         exitDuration={drawerExitDuration}
         enabled={samplesDrawerEnabled}
@@ -215,6 +225,9 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
         loadTemplate={loadTemplate}
         currentTemplateId={currentTemplateId}
         deleteTemplate={deleteTemplate}
+        copyTemplate={copyTemplate}
+        renameTemplate={renameTemplate}
+        saveAs={saveAs}
       />
 
       <Stack
@@ -248,6 +261,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     loadTemplate,
     deleteTemplate,
     copyTemplate,
+    renameTemplate,
     saveAs,
     theme,
   } = props;
@@ -298,6 +312,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
               loadTemplate={loadTemplate}
               deleteTemplate={deleteTemplate}
               copyTemplate={copyTemplate}
+              renameTemplate={renameTemplate}
               saveAs={saveAs}
               onChange={onChange}
             />

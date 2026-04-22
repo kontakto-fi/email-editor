@@ -51,12 +51,29 @@ function MyApp() {
 | `initialTemplateName` | string | - | Name of the initial template |
 | `onSave` | function | - | Callback when template is saved: `(template) => void` |
 | `onChange` | function | - | Callback when template changes: `(template) => void` |
-| `loadSamples` | function | - | Loads sample templates: `() => Promise<SampleTemplate[]>` |
-| `loadTemplates` | function | - | Loads user templates: `() => Promise<SampleTemplate[]>` |
+| `loadSamples` | function | - | Loads sample templates: `() => Promise<TemplateListItem[]>` |
+| `loadTemplates` | function | - | Loads user templates: `() => Promise<TemplateListItem[]>` |
 | `loadTemplate` | function | - | Loads specific template: `(id) => Promise<Template>` |
 | `deleteTemplate` | function | - | Deletes a template: `(id) => void` |
 | `copyTemplate` | function | - | Copies a template: `(name, content) => void` |
+| `renameTemplate` | function | - | Renames a template: `(id, newSlug) => void \| Promise<void>` |
 | `saveAs` | function | - | Saves template with new name: `(name, content) => Promise<{id, name}>` |
+
+`TemplateListItem` is the lean list-endpoint shape (no `editor_config`):
+
+```ts
+type TemplateListItem = {
+  id: string;
+  slug: string;                 // primary label
+  description?: string;         // secondary line
+  subject?: string;
+  variables?: Array<{ name: string; description?: string }>;
+  tags?: string[];
+  thumbnailUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+```
 | `theme` | object | theme.ts | Custom theme for the EmailEditor, must be a Material UI theme object |
 
 #### Imperative API

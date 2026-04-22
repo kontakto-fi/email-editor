@@ -110,5 +110,6 @@ export {
   type EmailEditorProps,
   type EmailEditorRef,
   type EmailEditorContextType,
-  type EmailEditorProviderProps
+  type EmailEditorProviderProps,
+  type TemplateListItem
 } from './app';

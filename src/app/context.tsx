@@ -9,6 +9,9 @@ export interface StoredTemplate {
   content: TEditorConfiguration;
   createdAt: string;
   updatedAt: string;
+  description?: string;
+  subject?: string;
+  tags?: string[];
 }
 
 export interface EmailEditorContextType {

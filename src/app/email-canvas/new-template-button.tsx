@@ -7,9 +7,10 @@ import { useSnackbar } from './snackbar-provider';
 import SaveTemplateDialog from './save-template-dialog';
 import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
 import { useEmailEditor } from '../context';
+import { TemplateListItem } from '../index';
 
 interface NewTemplateButtonProps {
-  loadTemplates?: () => Promise<any>;
+  loadTemplates?: () => Promise<TemplateListItem[]>;
   saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
 }
 
@@ -17,7 +18,7 @@ export default function NewTemplateButton({ loadTemplates, saveAs }: NewTemplate
   const { setCurrentTemplate, loadTemplate } = useEmailEditor();
   const { showMessage } = useSnackbar();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-  const [templates, setTemplates] = useState<{id: string, name: string}[]>([]);
+  const [templates, setTemplates] = useState<TemplateListItem[]>([]);
   const [nameError, setNameError] = useState<string | null>(null);
 
   // Load templates when component mounts or when needed for validation
@@ -42,16 +43,16 @@ export default function NewTemplateButton({ loadTemplates, saveAs }: NewTemplate
   };
 
   const validateTemplateName = (name: string): boolean => {
-    // Check if name already exists
-    const nameExists = templates.some(template => 
-      template.name.toLowerCase() === name.toLowerCase()
+    // Check if slug already exists
+    const nameExists = templates.some(template =>
+      template.slug.toLowerCase() === name.toLowerCase()
     );
-    
+
     if (nameExists) {
       setNameError('A template with this name already exists');
       return false;
     }
-    
+
     setNameError(null);
     return true;
   };

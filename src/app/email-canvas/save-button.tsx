@@ -7,9 +7,10 @@ import { useEmailEditor } from '../context';
 import { useSnackbar } from './snackbar-provider';
 import SaveTemplateDialog from './save-template-dialog';
 import { useDocument } from '@editor/editor-context';
+import { TemplateListItem } from '../index';
 
 interface SaveButtonProps {
-  loadTemplates?: () => Promise<any>;
+  loadTemplates?: () => Promise<TemplateListItem[]>;
   saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
 }
 

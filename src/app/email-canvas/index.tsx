@@ -21,10 +21,10 @@ import TextPanel from './text-panel';
 import MainTabsGroup from './main-tabs-group';
 import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
-import { SampleTemplate } from '../index';
+import { TemplateListItem } from '../index';
 
 interface TemplatePanelProps {
-  loadTemplates?: () => Promise<SampleTemplate[]>;
+  loadTemplates?: () => Promise<TemplateListItem[]>;
   saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
   samplesDrawerEnabled?: boolean;
 }

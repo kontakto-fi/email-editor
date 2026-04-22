@@ -1,13 +1,47 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Box, CircularProgress } from "@mui/material";
-import EmailEditor, { SampleTemplate } from "./app";
+import EmailEditor, { TemplateListItem } from "./app";
 import { TEditorConfiguration } from "@editor/core";
 import theme from "./theme";
 import { StoredTemplate } from "./app/context";
 import WELCOME from "@sample/welcome";
 import RESET_PASSWORD from "@sample/reset-password";
 import EMPTY_EMAIL_MESSAGE from "@sample/empty-email-message";
+
+function storedToListItem(t: StoredTemplate): TemplateListItem {
+  return {
+    id: t.id,
+    slug: t.name,
+    description: t.description,
+    subject: t.subject,
+    tags: t.tags,
+    createdAt: t.createdAt,
+    updatedAt: t.updatedAt,
+  };
+}
+
+function readStoredTemplates(): StoredTemplate[] {
+  try {
+    const raw = localStorage.getItem("savedTemplates");
+    if (!raw) return [];
+    return JSON.parse(raw) as StoredTemplate[];
+  } catch (error) {
+    console.error("Error reading savedTemplates:", error);
+    return [];
+  }
+}
+
+function writeStoredTemplates(items: StoredTemplate[]) {
+  localStorage.setItem("savedTemplates", JSON.stringify(items));
+}
+
+function broadcastTemplateList(items: StoredTemplate[]) {
+  const event = new CustomEvent<TemplateListItem[]>("templateListUpdated", {
+    detail: items.map(storedToListItem),
+  });
+  window.dispatchEvent(event);
+}
 
 // Wrapper component to handle sample loading and context initialization
 const EmailEditorWrapper = () => {
@@ -69,45 +103,28 @@ const EmailEditorWrapper = () => {
           updatedAt: currentTime,
         };
 
-        // Get existing templates and add the new one
-        const existingTemplatesJSON = localStorage.getItem("savedTemplates");
-        const existingTemplates: StoredTemplate[] = existingTemplatesJSON
-          ? JSON.parse(existingTemplatesJSON)
-          : [];
-        existingTemplates.push(newTemplate);
+        const existing = readStoredTemplates();
+        existing.push(newTemplate);
+        writeStoredTemplates(existing);
 
-        // Save updated templates list
-        localStorage.setItem(
-          "savedTemplates",
-          JSON.stringify(existingTemplates),
-        );
-
-        // Update current template info
         localStorage.setItem("lastEditedTemplateId", templateId);
         localStorage.setItem("lastEditedTemplateName", templateName);
+        broadcastTemplateList(existing);
         return;
       }
 
       // Otherwise update existing template
       if (currentId && currentName) {
-        const existingTemplatesJSON = localStorage.getItem("savedTemplates");
-        const existingTemplates: StoredTemplate[] = existingTemplatesJSON
-          ? JSON.parse(existingTemplatesJSON)
-          : [];
-        const templateIndex = existingTemplates.findIndex((t) =>
-          t.id === currentId
-        );
-
-        if (templateIndex >= 0) {
-          existingTemplates[templateIndex] = {
-            ...existingTemplates[templateIndex],
+        const existing = readStoredTemplates();
+        const index = existing.findIndex((t) => t.id === currentId);
+        if (index >= 0) {
+          existing[index] = {
+            ...existing[index],
             content: template,
             updatedAt: new Date().toISOString(),
           };
-          localStorage.setItem(
-            "savedTemplates",
-            JSON.stringify(existingTemplates),
-          );
+          writeStoredTemplates(existing);
+          broadcastTemplateList(existing);
         }
       }
     } catch (error) {
@@ -115,42 +132,27 @@ const EmailEditorWrapper = () => {
     }
   };
 
-  // Load available templates
-  const handleLoadTemplates = async (): Promise<SampleTemplate[]> => {
-    try {
-      const savedTemplatesJSON = localStorage.getItem("savedTemplates");
-      if (!savedTemplatesJSON) return [];
-
-      const savedTemplates: StoredTemplate[] = JSON.parse(savedTemplatesJSON);
-      return savedTemplates.map((template) => ({
-        id: template.id,
-        name: template.name,
-        description: `Last updated: ${
-          new Date(template.updatedAt).toLocaleString()
-        }`,
-      }));
-    } catch (error) {
-      console.error("Error loading templates:", error);
-      return [];
-    }
+  // Load available templates (list endpoint — lean, no editor_config)
+  const handleLoadTemplates = async (): Promise<TemplateListItem[]> => {
+    return readStoredTemplates().map(storedToListItem);
   };
 
   // Load sample templates
-  const handleLoadSamples = async (): Promise<SampleTemplate[]> => {
+  const handleLoadSamples = async (): Promise<TemplateListItem[]> => {
     return [
       {
         id: "welcome",
-        name: "Welcome email",
+        slug: "Welcome email",
         description: "A simple welcome email template",
       },
       {
         id: "reset-password",
-        name: "Reset password",
+        slug: "Reset password",
         description: "Password reset email template",
       },
       {
         id: "empty-email",
-        name: "Empty email",
+        slug: "Empty email",
         description: "A blank email template to start from scratch",
       },
     ];
@@ -160,27 +162,14 @@ const EmailEditorWrapper = () => {
   const handleLoadTemplate = async (
     templateId: string,
   ): Promise<TEditorConfiguration | null> => {
-    if (templateId === "welcome") {
-      return WELCOME;
-    }
-
-    if (templateId === "reset-password") {
-      return RESET_PASSWORD;
-    }
-
-    if (templateId === "empty-email") {
-      return EMPTY_EMAIL_MESSAGE;
-    }
+    if (templateId === "welcome") return WELCOME;
+    if (templateId === "reset-password") return RESET_PASSWORD;
+    if (templateId === "empty-email") return EMPTY_EMAIL_MESSAGE;
 
     try {
-      const savedTemplatesJSON = localStorage.getItem("savedTemplates");
-      if (!savedTemplatesJSON) return null;
-
-      const savedTemplates: StoredTemplate[] = JSON.parse(savedTemplatesJSON);
-      const template = savedTemplates.find((t) => t.id === templateId);
-
+      const existing = readStoredTemplates();
+      const template = existing.find((t) => t.id === templateId);
       if (template) {
-        // Update last edited template info
         localStorage.setItem(
           "lastEditedTemplate",
           JSON.stringify(template.content),
@@ -198,78 +187,65 @@ const EmailEditorWrapper = () => {
   // Handle template deletion
   const handleDeleteTemplate = (templateId: string) => {
     try {
-      const existingTemplatesJSON = localStorage.getItem("savedTemplates");
-      if (!existingTemplatesJSON) return;
-
-      const existingTemplates: StoredTemplate[] = JSON.parse(
-        existingTemplatesJSON,
-      );
-      const updatedTemplates = existingTemplates.filter((template) =>
-        template.id !== templateId
-      );
-      localStorage.setItem("savedTemplates", JSON.stringify(updatedTemplates));
+      const existing = readStoredTemplates();
+      const updated = existing.filter((t) => t.id !== templateId);
+      writeStoredTemplates(updated);
 
       // Clear current template if it was deleted
       const currentTemplateId = localStorage.getItem("lastEditedTemplateId");
       if (currentTemplateId === templateId) {
         localStorage.removeItem("lastEditedTemplateId");
         localStorage.removeItem("lastEditedTemplateName");
-        // If current template was deleted, load empty template
         setInitialTemplate(EMPTY_EMAIL_MESSAGE);
       }
 
-      // Dispatch event to notify components about template deletion
-      const templateListUpdatedEvent = new CustomEvent("templateListUpdated", {
-        detail: updatedTemplates.map((template: StoredTemplate) => ({
-          id: template.id,
-          name: template.name,
-          description: `Last updated: ${
-            new Date(template.updatedAt).toLocaleString()
-          }`,
-        })),
-      });
-      window.dispatchEvent(templateListUpdatedEvent);
+      broadcastTemplateList(updated);
     } catch (error) {
       console.error("Error deleting template:", error);
     }
   };
 
-  // Handle template copying
+  // Handle template copying (used by duplicate row action)
   const handleCopyTemplate = (templateName: string, content: any) => {
     try {
-      // Get existing templates
-      const existingTemplatesJSON = localStorage.getItem("savedTemplates");
-      const existingTemplates: StoredTemplate[] = existingTemplatesJSON
-        ? JSON.parse(existingTemplatesJSON)
-        : [];
-
-      // Create new template
-      const templateId = `template-${Date.now()}`;
+      const existing = readStoredTemplates();
+      const now = new Date().toISOString();
       const newTemplate: StoredTemplate = {
-        id: templateId,
+        id: `template-${Date.now()}`,
         name: templateName,
         content,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: now,
+        updatedAt: now,
       };
-
-      // Add to templates
-      existingTemplates.push(newTemplate);
-      localStorage.setItem("savedTemplates", JSON.stringify(existingTemplates));
-
-      // Dispatch event to notify components about the new template
-      const templateListUpdatedEvent = new CustomEvent("templateListUpdated", {
-        detail: existingTemplates.map((template: StoredTemplate) => ({
-          id: template.id,
-          name: template.name,
-          description: `Last updated: ${
-            new Date(template.updatedAt).toLocaleString()
-          }`,
-        })),
-      });
-      window.dispatchEvent(templateListUpdatedEvent);
+      existing.push(newTemplate);
+      writeStoredTemplates(existing);
+      broadcastTemplateList(existing);
     } catch (error) {
       console.error("Error copying template:", error);
+    }
+  };
+
+  // Handle template rename
+  const handleRenameTemplate = (templateId: string, newSlug: string) => {
+    try {
+      const existing = readStoredTemplates();
+      const index = existing.findIndex((t) => t.id === templateId);
+      if (index < 0) return;
+      existing[index] = {
+        ...existing[index],
+        name: newSlug,
+        updatedAt: new Date().toISOString(),
+      };
+      writeStoredTemplates(existing);
+
+      const currentTemplateId = localStorage.getItem("lastEditedTemplateId");
+      if (currentTemplateId === templateId) {
+        localStorage.setItem("lastEditedTemplateName", newSlug);
+      }
+
+      broadcastTemplateList(existing);
+    } catch (error) {
+      console.error("Error renaming template:", error);
     }
   };
 
@@ -279,44 +255,25 @@ const EmailEditorWrapper = () => {
     content: any,
   ): Promise<{ id: string; name: string }> => {
     try {
-      // Create new template ID
       const templateId = `template-${Date.now()}`;
-
-      // Get existing templates
-      const existingTemplatesJSON = localStorage.getItem("savedTemplates");
-      const existingTemplates = existingTemplatesJSON
-        ? JSON.parse(existingTemplatesJSON)
-        : [];
-
-      // Create new template
-      const newTemplate = {
+      const now = new Date().toISOString();
+      const newTemplate: StoredTemplate = {
         id: templateId,
         name: templateName,
         content,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: now,
+        updatedAt: now,
       };
 
-      // Add to templates
-      existingTemplates.push(newTemplate);
-      localStorage.setItem("savedTemplates", JSON.stringify(existingTemplates));
+      const existing = readStoredTemplates();
+      existing.push(newTemplate);
+      writeStoredTemplates(existing);
 
-      // Update current template info
       localStorage.setItem("lastEditedTemplate", JSON.stringify(content));
       localStorage.setItem("lastEditedTemplateId", templateId);
       localStorage.setItem("lastEditedTemplateName", templateName);
 
-      // Dispatch event to notify components about template list update
-      const templateListUpdatedEvent = new CustomEvent("templateListUpdated", {
-        detail: existingTemplates.map((template: StoredTemplate) => ({
-          id: template.id,
-          name: template.name,
-          description: `Last updated: ${
-            new Date(template.updatedAt).toLocaleString()
-          }`,
-        })),
-      });
-      window.dispatchEvent(templateListUpdatedEvent);
+      broadcastTemplateList(existing);
 
       return { id: templateId, name: templateName };
     } catch (error) {
@@ -352,6 +309,7 @@ const EmailEditorWrapper = () => {
       loadTemplate={handleLoadTemplate}
       deleteTemplate={handleDeleteTemplate}
       copyTemplate={handleCopyTemplate}
+      renameTemplate={handleRenameTemplate}
       saveAs={handleSaveAs}
     />
   );
