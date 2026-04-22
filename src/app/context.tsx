@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, useRef } from 'react';
 import { TEditorConfiguration } from '@editor/core';
 import { getDocument } from '@editor/editor-context';
+import { buildSavePayload, type SavePayload } from './save-payload';
 
 export type TemplateKind = 'template' | 'sample';
 
@@ -34,7 +35,7 @@ export interface EmailEditorProviderProps {
   initialTemplate?: TEditorConfiguration;
   initialTemplateId?: string;
   initialTemplateName?: string;
-  onSave?: (template: TEditorConfiguration) => void;
+  onSave?: (payload: SavePayload) => void | Promise<void>;
   onChange?: (template: TEditorConfiguration) => void;
 }
 
@@ -57,7 +58,7 @@ export const EmailEditorProvider: React.FC<EmailEditorProviderProps> = ({
     const currentDoc = getDocument();
     saveListenersRef.current.forEach(listener => listener(currentDoc));
     if (onSaveRef.current) {
-      onSaveRef.current(currentDoc);
+      onSaveRef.current(buildSavePayload(currentDoc));
     }
     return currentDoc;
   }, []);

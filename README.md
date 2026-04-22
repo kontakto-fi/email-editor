@@ -49,7 +49,7 @@ function MyApp() {
 | `initialTemplate` | object | - | Initial template to load when editor first mounts |
 | `initialTemplateId` | string | - | ID of the initial template |
 | `initialTemplateName` | string | - | Name of the initial template |
-| `onSave` | function | - | Callback when template is saved: `(template) => void` |
+| `onSave` | function | - | Callback when template is saved: `(payload: SavePayload) => void \| Promise<void>` (see SavePayload below) |
 | `onChange` | function | - | Callback when template changes: `(template) => void` |
 | `loadSamples` | function | - | Loads sample templates: `() => Promise<TemplateListItem[]>` |
 | `loadTemplates` | function | - | Loads user templates: `() => Promise<TemplateListItem[]>` |
@@ -58,7 +58,7 @@ function MyApp() {
 | `copyTemplate` | function | - | Copies a template: `(name, content) => void` |
 | `renameTemplate` | function | - | Renames a template: `(id, newSlug) => void \| Promise<void>` |
 | `setTemplateKind` | function | - | Promotes/demotes a row between template and sample: `(id, kind) => void \| Promise<void>`. When omitted, promote/demote menu items are hidden. |
-| `saveAs` | function | - | Saves template with new name: `(name, content) => Promise<{id, name}>` |
+| `saveAs` | function | - | Saves template with a new name: `(name, payload: SavePayload) => Promise<{ id, slug }>` |
 
 `TemplateListItem` is the lean list-endpoint shape (no `editor_config`):
 
@@ -96,6 +96,22 @@ type EmailLayoutData = {
 ```
 
 The editor renders a subject input above the canvas (always visible, supports `{{variable}}` syntax) and a Variables tab in the right inspector panel for declaring variables. Both persist via the standard save flow — consumers who previously stored `subject` in a separate DB column can read it from the saved `editor_config` instead.
+
+#### Save payload
+
+`onSave` and `saveAs` receive the same `SavePayload`. The editor renders body HTML and plain text on every save so consumers don't ship the renderer themselves:
+
+```ts
+type SavePayload = {
+  editorConfig: TEditorConfiguration;   // source of truth
+  subject?: string;                     // from the subject input
+  variables?: Array<{ name: string; description?: string }>;
+  bodyHtml: string;                     // pre-rendered, ready to send
+  bodyText: string;                     // pre-rendered, ready to send
+};
+```
+
+The `renderToStaticMarkup` and `renderToText` utilities are also exposed publicly for consumers that need to re-render outside the save flow (e.g. batch jobs).
 
 | `theme` | object | theme.ts | Custom theme for the EmailEditor, must be a Material UI theme object |
 

@@ -8,10 +8,11 @@ import { useSnackbar } from './snackbar-provider';
 import SaveTemplateDialog from './save-template-dialog';
 import { useDocument } from '@editor/editor-context';
 import { TemplateListItem } from '../index';
+import { buildSavePayload, SavePayload } from '../save-payload';
 
 interface SaveButtonProps {
   loadTemplates?: () => Promise<TemplateListItem[]>;
-  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
+  saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
 }
 
 export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
@@ -46,13 +47,10 @@ export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
   const handleSaveAs = async (templateName: string): Promise<boolean> => {
     try {
       if (saveAs) {
-        // Use provided saveAs function
-        const { id: templateId, name } = await saveAs(templateName, document);
-        
-        // Update context
-        setCurrentTemplate(templateId, name);
+        const { id: templateId, slug } = await saveAs(templateName, buildSavePayload(document));
 
-        // Refresh templates list
+        setCurrentTemplate(templateId, slug, 'template');
+
         if (loadTemplates) {
           await loadTemplates();
         }
@@ -60,16 +58,15 @@ export default function SaveButton({ loadTemplates, saveAs }: SaveButtonProps) {
         showMessage('Template saved successfully!');
         setSaveDialogOpen(false);
 
-        // Update URL
         window.location.hash = `#template/${templateId}`;
-        
-        return true; // Return true on success
+
+        return true;
       }
-      return false; // Return false if saveAs is not provided
+      return false;
     } catch (error) {
       console.error('Error saving template:', error);
       showMessage('Error saving template');
-      return false; // Return false on error
+      return false;
     }
   };
 

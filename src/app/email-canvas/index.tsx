@@ -23,10 +23,11 @@ import SaveButton from './save-button';
 import NewTemplateButton from './new-template-button';
 import SubjectInput from './subject-input';
 import { TemplateListItem } from '../index';
+import type { SavePayload } from '../save-payload';
 
 interface TemplatePanelProps {
   loadTemplates?: () => Promise<TemplateListItem[]>;
-  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
+  saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
   samplesDrawerEnabled?: boolean;
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Box, CircularProgress } from "@mui/material";
 import EmailEditor, { TemplateListItem } from "./app";
+import type { SavePayload } from "./app/save-payload";
 import { TEditorConfiguration } from "@editor/core";
 import theme from "./theme";
 import { StoredTemplate } from "./app/context";
@@ -81,11 +82,18 @@ const EmailEditorWrapper = () => {
     loadInitialTemplate();
   }, []);
 
-  // Handle saving templates to localStorage
-  const handleSave = (template: TEditorConfiguration) => {
+  // Handle saving templates to localStorage. The dev app stashes the rendered
+  // bodyHtml/bodyText alongside the source so we can verify they round-tripped.
+  const handleSave = (payload: SavePayload) => {
     try {
-      // Always save last edited template
+      const template = payload.editorConfig;
       localStorage.setItem("lastEditedTemplate", JSON.stringify(template));
+      localStorage.setItem("lastSavedPayload", JSON.stringify({
+        subject: payload.subject,
+        variables: payload.variables,
+        bodyHtmlLength: payload.bodyHtml.length,
+        bodyTextLength: payload.bodyText.length,
+      }));
 
       const currentId = localStorage.getItem("lastEditedTemplateId");
       const currentName = localStorage.getItem("lastEditedTemplateName");
@@ -100,6 +108,7 @@ const EmailEditorWrapper = () => {
           id: templateId,
           name: templateName,
           content: template,
+          subject: payload.subject,
           createdAt: currentTime,
           updatedAt: currentTime,
         };
@@ -122,6 +131,7 @@ const EmailEditorWrapper = () => {
           existing[index] = {
             ...existing[index],
             content: template,
+            subject: payload.subject,
             updatedAt: new Date().toISOString(),
           };
           writeStoredTemplates(existing);
@@ -277,18 +287,22 @@ const EmailEditorWrapper = () => {
     }
   };
 
-  // Handle saving a template with a new name
+  // Handle saving a template with a new name. Persists subject + the source
+  // editorConfig — the rendered bodyHtml/bodyText would normally go to the
+  // backend that sends emails; the dev app just records their lengths to
+  // confirm the renderer ran.
   const handleSaveAs = async (
     templateName: string,
-    content: any,
-  ): Promise<{ id: string; name: string }> => {
+    payload: SavePayload,
+  ): Promise<{ id: string; slug: string }> => {
     try {
       const templateId = `template-${Date.now()}`;
       const now = new Date().toISOString();
       const newTemplate: StoredTemplate = {
         id: templateId,
         name: templateName,
-        content,
+        content: payload.editorConfig,
+        subject: payload.subject,
         createdAt: now,
         updatedAt: now,
       };
@@ -297,13 +311,19 @@ const EmailEditorWrapper = () => {
       existing.push(newTemplate);
       writeStoredTemplates(existing);
 
-      localStorage.setItem("lastEditedTemplate", JSON.stringify(content));
+      localStorage.setItem("lastEditedTemplate", JSON.stringify(payload.editorConfig));
       localStorage.setItem("lastEditedTemplateId", templateId);
       localStorage.setItem("lastEditedTemplateName", templateName);
+      localStorage.setItem("lastSavedPayload", JSON.stringify({
+        subject: payload.subject,
+        variables: payload.variables,
+        bodyHtmlLength: payload.bodyHtml.length,
+        bodyTextLength: payload.bodyText.length,
+      }));
 
       broadcastTemplateList(existing);
 
-      return { id: templateId, name: templateName };
+      return { id: templateId, slug: templateName };
     } catch (error) {
       console.error("Error saving template:", error);
       throw error;

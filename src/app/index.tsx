@@ -14,6 +14,7 @@ import {
   setPersistenceEnabled
 } from '@editor/editor-context';
 import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEditorProviderProps } from './context';
+import type { SavePayload } from './save-payload';
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './templates-drawer';
 import TemplatePanel from './email-canvas';
@@ -82,7 +83,12 @@ export interface EmailEditorProps {
   initialTemplate?: TEditorConfiguration | string;
   initialTemplateId?: string;
   initialTemplateName?: string;
-  onSave?: (template: TEditorConfiguration) => void;
+  /**
+   * Called when the user saves the current template. Receives a `SavePayload`
+   * containing the source `editorConfig` plus pre-rendered `bodyHtml` /
+   * `bodyText` and the editor-managed `subject` / `variables` metadata.
+   */
+  onSave?: (payload: SavePayload) => void | Promise<void>;
   onChange?: (template: TEditorConfiguration) => void;
   /**
    * Duration for drawer enter transition in milliseconds. Set to 0 for instant.
@@ -148,9 +154,10 @@ export interface EmailEditorProps {
    */
   setTemplateKind?: (templateId: string, kind: TemplateKind) => void | Promise<void>;
   /**
-   * Callback to save a template with a new name.
+   * Callback to save a template with a new name. Receives the same
+   * `SavePayload` shape as `onSave`. Returns the new row's `id` and `slug`.
    */
-  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
+  saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
   /**
    * Optional theme override. If not provided, the default theme will be used.
    * This allows for easy styling without requiring a separate ThemeProvider.
@@ -351,4 +358,7 @@ export {
 };
 
 // Export utility
-export { htmlToEditorConfig }; 
+export { htmlToEditorConfig };
+
+// Re-export the save payload type so consumers typing their callbacks have one import path.
+export type { SavePayload, TemplateVariable } from './save-payload'; 

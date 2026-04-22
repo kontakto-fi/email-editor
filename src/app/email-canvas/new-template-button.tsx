@@ -8,10 +8,11 @@ import SaveTemplateDialog from './save-template-dialog';
 import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
 import { useEmailEditor } from '../context';
 import { TemplateListItem } from '../index';
+import { buildSavePayload, SavePayload } from '../save-payload';
 
 interface NewTemplateButtonProps {
   loadTemplates?: () => Promise<TemplateListItem[]>;
-  saveAs?: (templateName: string, content: any) => Promise<{id: string, name: string}>;
+  saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
 }
 
 export default function NewTemplateButton({ loadTemplates, saveAs }: NewTemplateButtonProps) {
@@ -71,34 +72,28 @@ export default function NewTemplateButton({ loadTemplates, saveAs }: NewTemplate
 
     try {
       if (saveAs) {
-        // Use provided saveAs function with the empty template
-        const { id: templateId, name } = await saveAs(templateName, EMPTY_EMAIL_MESSAGE);
-        
-        // Actually load the empty template into the editor
+        const { id: templateId, slug } = await saveAs(templateName, buildSavePayload(EMPTY_EMAIL_MESSAGE));
+
         resetDocument(EMPTY_EMAIL_MESSAGE);
-        
-        // Update context
-        setCurrentTemplate(templateId, name);
-        loadTemplate(EMPTY_EMAIL_MESSAGE, templateId, name);
-        
-        // Refresh templates list
+
+        setCurrentTemplate(templateId, slug, 'template');
+        loadTemplate(EMPTY_EMAIL_MESSAGE, templateId, slug, 'template');
+
         if (loadTemplates) {
           await loadTemplates();
         }
-        
-        // Show success message
+
         showMessage('New template created!');
-        
-        // Update URL
+
         window.location.hash = `#template/${templateId}`;
-        
-        return true; // Return true to indicate success
+
+        return true;
       }
     } catch (error) {
       console.error('Error creating template:', error);
       showMessage('Error creating template');
     }
-    return false; // Return false if there was an error
+    return false;
   };
 
   return (

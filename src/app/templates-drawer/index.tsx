@@ -23,6 +23,7 @@ import { TemplateKind, TemplateListItem } from '../index';
 import { TEditorConfiguration } from '@editor/core';
 import { useEmailEditor } from '../context';
 import { useSnackbar } from '../email-canvas/snackbar-provider';
+import { buildSavePayload, SavePayload } from '../save-payload';
 import TemplateRow from './template-row';
 import RenameDialog from './rename-dialog';
 import SaveTemplateDialog from '../email-canvas/save-template-dialog';
@@ -70,7 +71,7 @@ export interface SamplesDrawerProps {
   copyTemplate?: (templateName: string, content: any) => void;
   renameTemplate?: (templateId: string, newSlug: string) => void | Promise<void>;
   setTemplateKind?: (templateId: string, kind: TemplateKind) => void | Promise<void>;
-  saveAs?: (templateName: string, content: any) => Promise<{ id: string; name: string }>;
+  saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
 }
 
 export default function SamplesDrawer({
@@ -303,10 +304,10 @@ export default function SamplesDrawer({
     }
     try {
       const content = pendingSaveAs.content;
-      const { id, name } = await saveAs(templateName, content);
+      const { id, slug } = await saveAs(templateName, buildSavePayload(content));
       resetDocument(content);
-      setCurrentTemplate(id, name, 'template');
-      ctxLoadTemplate(content, id, name, 'template');
+      setCurrentTemplate(id, slug, 'template');
+      ctxLoadTemplate(content, id, slug, 'template');
       showMessage('New template created!');
       window.location.hash = `#template/${id}`;
       await refreshTemplates();
