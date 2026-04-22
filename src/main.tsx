@@ -158,12 +158,14 @@ const EmailEditorWrapper = () => {
         slug: "Welcome email",
         kind: "sample",
         description: "A simple welcome email template",
+        tags: ["marketing"],
       },
       {
         id: "reset-password",
         slug: "Reset password",
         kind: "sample",
         description: "Password reset email template",
+        tags: ["transactional"],
       },
       {
         id: "empty-email",

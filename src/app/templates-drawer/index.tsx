@@ -185,31 +185,38 @@ export default function SamplesDrawer({
 
   const allTags = useMemo(() => {
     const set = new Set<string>();
-    for (const t of templateRows) {
-      t.tags?.forEach((tag) => set.add(tag));
-    }
+    for (const t of templateRows) t.tags?.forEach((tag) => set.add(tag));
+    for (const s of sampleRows) s.tags?.forEach((tag) => set.add(tag));
     return Array.from(set).sort();
-  }, [templateRows]);
+  }, [templateRows, sampleRows]);
 
-  const filteredTemplates = useMemo(() => {
+  const matchesSearchAndTags = useMemo(() => {
     const term = search.trim().toLowerCase();
-    const matchSearch = (t: TemplateListItem) => {
-      if (!term) return true;
-      const haystack = [t.slug, t.description, t.subject]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-      return haystack.includes(term);
+    return (t: TemplateListItem) => {
+      if (term) {
+        const haystack = [t.slug, t.description, t.subject]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        if (!haystack.includes(term)) return false;
+      }
+      if (activeTags.length > 0) {
+        if (!t.tags || t.tags.length === 0) return false;
+        if (!activeTags.every((tag) => t.tags!.includes(tag))) return false;
+      }
+      return true;
     };
-    const matchTags = (t: TemplateListItem) => {
-      if (activeTags.length === 0) return true;
-      if (!t.tags || t.tags.length === 0) return false;
-      return activeTags.every((tag) => t.tags!.includes(tag));
-    };
-    return templateRows.filter((t) => matchSearch(t) && matchTags(t))
-      .slice()
-      .sort((a, b) => compareTemplates(a, b, sortKey));
-  }, [templateRows, search, activeTags, sortKey]);
+  }, [search, activeTags]);
+
+  const filteredTemplates = useMemo(
+    () => templateRows.filter(matchesSearchAndTags).slice().sort((a, b) => compareTemplates(a, b, sortKey)),
+    [templateRows, matchesSearchAndTags, sortKey]
+  );
+
+  const filteredSamples = useMemo(
+    () => sampleRows.filter(matchesSearchAndTags).slice().sort((a, b) => compareTemplates(a, b, sortKey)),
+    [sampleRows, matchesSearchAndTags, sortKey]
+  );
 
   const toggleTag = (tag: string) => {
     setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
@@ -402,6 +409,14 @@ export default function SamplesDrawer({
 
               {allTags.length > 0 && (
                 <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.5 }}>
+                  <Chip
+                    label="All"
+                    size="small"
+                    clickable
+                    color={activeTags.length === 0 ? 'primary' : 'default'}
+                    variant={activeTags.length === 0 ? 'filled' : 'outlined'}
+                    onClick={() => setActiveTags([])}
+                  />
                   {allTags.map((tag) => (
                     <Chip
                       key={tag}
@@ -466,9 +481,9 @@ export default function SamplesDrawer({
               <Stack alignItems="center" width="100%" py={2}>
                 <CircularProgress size={24} />
               </Stack>
-            ) : sampleRows.length > 0 ? (
+            ) : filteredSamples.length > 0 ? (
               <Stack spacing={0.25} sx={{ width: '100%' }}>
-                {sampleRows.map((sample) => (
+                {filteredSamples.map((sample) => (
                   <TemplateRow
                     key={sample.id}
                     template={sample}
@@ -481,7 +496,7 @@ export default function SamplesDrawer({
               </Stack>
             ) : (
               <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
-                No samples available
+                {sampleRows.length === 0 ? 'No samples available' : 'No samples match your filters'}
               </Typography>
             )}
           </Box>
