@@ -1,3 +1,11 @@
+# [2.2.0](https://github.com/kontakto-fi/email-editor/compare/v2.1.0...v2.2.0) (2026-04-22)
+
+
+### Features
+
+* inline bold/italic/link toolbar on text and heading ([af38bdc](https://github.com/kontakto-fi/email-editor/commit/af38bdced2ad1663bc6ccf92bfc86d96d15824f6))
+* slider-based line-height and letter-spacing controls ([9fa7e14](https://github.com/kontakto-fi/email-editor/commit/9fa7e146dc8a4ae3047195ae8b1048a9a1fbde87))
+
 # [2.1.0](https://github.com/kontakto-fi/email-editor/compare/v2.0.0...v2.1.0) (2026-04-22)
 
 
