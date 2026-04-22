@@ -11,7 +11,7 @@
 
 set -euo pipefail
 
-DEFAULT_ORDER=(4 8 5 6 7 10 11 12 9)
+DEFAULT_ORDER=(8 5 6 7 10 11 12 9 13)
 
 if [[ $# -eq 0 ]]; then
   ISSUES=("${DEFAULT_ORDER[@]}")
