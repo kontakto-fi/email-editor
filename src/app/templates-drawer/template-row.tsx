@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import {
   Box,
   Chip,
+  Divider,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Stack,
   Tooltip,
   Typography,
@@ -14,6 +19,7 @@ import {
   FileDownloadOutlined,
   FileUploadOutlined,
   LibraryAddOutlined,
+  MoreVertOutlined,
 } from '@mui/icons-material';
 import { resetDocument } from '@editor/editor-context';
 import { TEditorConfiguration } from '@editor/core';
@@ -64,6 +70,16 @@ export default function TemplateRow({
 }: TemplateRowProps) {
   const { setCurrentTemplate } = useEmailEditor();
   const [hover, setHover] = useState(false);
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const closeMenu = () => setMenuAnchor(null);
+  const openMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setMenuAnchor(e.currentTarget);
+  };
+  const runAction = (fn?: () => void) => () => {
+    closeMenu();
+    fn?.();
+  };
 
   const handleClick = async () => {
     try {
@@ -112,7 +128,7 @@ export default function TemplateRow({
       }}
     >
       <Stack direction="row" alignItems="flex-start" spacing={1}>
-        <Box sx={{ flexGrow: 1, minWidth: 0, pr: hasActions ? 14 : 0 }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, pr: hasActions ? 3 : 0 }}>
           <Stack direction="row" alignItems="baseline" spacing={1} sx={{ minWidth: 0 }}>
             <Typography
               variant="body2"
@@ -167,101 +183,85 @@ export default function TemplateRow({
       </Stack>
 
       {hasActions && (
-        <Stack
-          direction="row"
-          spacing={0.25}
-          onClick={stop}
-          sx={{
-            position: 'absolute',
-            top: 4,
-            right: 4,
-            bgcolor: 'background.paper',
-            borderRadius: 1,
-            boxShadow: 1,
-            p: 0.25,
-            opacity: hover || isCurrent ? 1 : 0.55,
-            transition: 'opacity 120ms',
-          }}
-        >
-          {onDuplicateAsTemplate && (
-            <Tooltip title="Duplicate as template">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  stop(e);
-                  onDuplicateAsTemplate();
-                }}
-              >
-                <LibraryAddOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-          {onDuplicate && (
-            <Tooltip title="Duplicate">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  stop(e);
-                  onDuplicate();
-                }}
-              >
-                <ContentCopyOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-          {onRename && (
-            <Tooltip title="Rename">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  stop(e);
-                  onRename();
-                }}
-              >
-                <DriveFileRenameOutlineOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-          {onPromote && (
-            <Tooltip title="Promote to sample">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  stop(e);
-                  onPromote();
-                }}
-              >
-                <FileUploadOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-          {onDemote && (
-            <Tooltip title="Demote to template">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  stop(e);
-                  onDemote();
-                }}
-              >
-                <FileDownloadOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-          {onDelete && (
-            <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  stop(e);
-                  onDelete();
-                }}
-              >
-                <DeleteOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Stack>
+        <>
+          <Tooltip title="More">
+            <IconButton
+              size="small"
+              onClick={openMenu}
+              aria-label="Row actions"
+              aria-haspopup="menu"
+              aria-expanded={Boolean(menuAnchor) || undefined}
+              sx={{
+                position: 'absolute',
+                top: 4,
+                right: 4,
+                opacity: hover || isCurrent || Boolean(menuAnchor) ? 1 : 0.45,
+                transition: 'opacity 120ms',
+              }}
+            >
+              <MoreVertOutlined fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            anchorEl={menuAnchor}
+            open={Boolean(menuAnchor)}
+            onClose={closeMenu}
+            onClick={stop}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            slotProps={{ paper: { sx: { minWidth: 200 } } }}
+          >
+            {onRename && (
+              <MenuItem onClick={runAction(onRename)}>
+                <ListItemIcon>
+                  <DriveFileRenameOutlineOutlined fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Edit name &amp; tags…</ListItemText>
+              </MenuItem>
+            )}
+            {onDuplicate && (
+              <MenuItem onClick={runAction(onDuplicate)}>
+                <ListItemIcon>
+                  <ContentCopyOutlined fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Duplicate</ListItemText>
+              </MenuItem>
+            )}
+            {onDuplicateAsTemplate && (
+              <MenuItem onClick={runAction(onDuplicateAsTemplate)}>
+                <ListItemIcon>
+                  <LibraryAddOutlined fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Duplicate as template</ListItemText>
+              </MenuItem>
+            )}
+            {onPromote && (
+              <MenuItem onClick={runAction(onPromote)}>
+                <ListItemIcon>
+                  <FileUploadOutlined fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Promote to sample</ListItemText>
+              </MenuItem>
+            )}
+            {onDemote && (
+              <MenuItem onClick={runAction(onDemote)}>
+                <ListItemIcon>
+                  <FileDownloadOutlined fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Demote to template</ListItemText>
+              </MenuItem>
+            )}
+            {onDelete && [
+              <Divider key="divider" />,
+              <MenuItem key="delete" onClick={runAction(onDelete)} sx={{ color: 'error.main' }}>
+                <ListItemIcon sx={{ color: 'error.main' }}>
+                  <DeleteOutlined fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete</ListItemText>
+              </MenuItem>,
+            ]}
+          </Menu>
+        </>
       )}
     </Box>
   );
