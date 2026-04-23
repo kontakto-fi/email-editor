@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/kontakto-fi/email-editor/compare/v2.4.0...v2.5.0) (2026-04-23)
+
+
+### Features
+
+* i18n support via Lingui with en, sv, and fi catalogs ([41dad1b](https://github.com/kontakto-fi/email-editor/commit/41dad1b669c5d1196b72abeb24d7add35aaf82b0)), closes [hi#impact](https://github.com/hi/issues/impact)
+
 # [2.4.0](https://github.com/kontakto-fi/email-editor/compare/v2.3.1...v2.4.0) (2026-04-23)
 
 
