@@ -27,6 +27,7 @@ import { useSnackbar } from '../email-canvas/snackbar-provider';
 import { buildSavePayload, SavePayload } from '../save-payload';
 import TemplateRow from './template-row';
 import OutlinePanel from './outline-panel';
+import NewTemplatePickerDialog from './new-template-picker-dialog';
 import RenameDialog from './rename-dialog';
 import SaveTemplateDialog from '../email-canvas/save-template-dialog';
 import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
@@ -108,6 +109,7 @@ export default function SamplesDrawer({
   const [renameTarget, setRenameTarget] = useState<TemplateListItem | null>(null);
   const [pendingSaveAs, setPendingSaveAs] = useState<{ content: TEditorConfiguration; defaultName: string } | null>(null);
   const [newError, setNewError] = useState<string | null>(null);
+  const [pickerKind, setPickerKind] = useState<'template' | 'sample' | null>(null);
 
   // Handler for the empty template + delegation
   const handleLoadTemplate = async (templateId: string) => {
@@ -329,9 +331,46 @@ export default function SamplesDrawer({
     }
   };
 
-  const openNewTemplateDialog = () => {
-    setNewError(null);
-    setPendingSaveAs({ content: EMPTY_EMAIL_MESSAGE, defaultName: 'New Template' });
+  const openNewPicker = (kind: 'template' | 'sample') => {
+    setPickerKind(kind);
+  };
+
+  const handleCreateFromPicker = async (
+    name: string,
+    starterId: string | null
+  ): Promise<boolean> => {
+    if (!saveAs) return false;
+    const kind = pickerKind ?? 'template';
+    try {
+      let content: TEditorConfiguration | null = EMPTY_EMAIL_MESSAGE;
+      if (starterId !== null) {
+        content = await handleLoadTemplate(starterId);
+        if (!content) {
+          showMessage('Could not load the selected sample');
+          return false;
+        }
+      }
+      const { id, slug } = await saveAs(name, buildSavePayload(content));
+      if (kind === 'sample' && setTemplateKind) {
+        try {
+          await setTemplateKind(id, 'sample');
+          flipKindLocally(id, 'sample');
+        } catch (e) {
+          console.error('Failed to mark new row as sample:', e);
+        }
+      }
+      resetDocument(content);
+      setCurrentTemplate(id, slug, kind);
+      ctxLoadTemplate(content, id, slug, kind);
+      showMessage(kind === 'sample' ? 'New sample created' : 'New template created');
+      window.location.hash = `#template/${id}`;
+      await refreshTemplates();
+      return true;
+    } catch (e) {
+      console.error('Error creating:', e);
+      showMessage('Error creating');
+      return false;
+    }
   };
 
   if (!enabled) {
@@ -367,12 +406,12 @@ export default function SamplesDrawer({
             <Typography variant="h6" component="h1">
               Library
             </Typography>
-            {saveAs && activeLeftTab === 'templates' && (
-              <Tooltip title="New template">
+            {saveAs && (activeLeftTab === 'templates' || activeLeftTab === 'samples') && (
+              <Tooltip title={activeLeftTab === 'samples' ? 'New sample' : 'New template'}>
                 <IconButton
                   size="small"
-                  onClick={openNewTemplateDialog}
-                  aria-label="New template"
+                  onClick={() => openNewPicker(activeLeftTab === 'samples' ? 'sample' : 'template')}
+                  aria-label={activeLeftTab === 'samples' ? 'New sample' : 'New template'}
                 >
                   <AddOutlined fontSize="small" />
                 </IconButton>
@@ -531,6 +570,19 @@ export default function SamplesDrawer({
         onNameChange={() => setNewError(null)}
         defaultName={pendingSaveAs?.defaultName ?? 'New Template'}
         error={newError}
+      />
+
+      <NewTemplatePickerDialog
+        open={pickerKind !== null}
+        kind={pickerKind ?? 'template'}
+        samples={sampleRows}
+        existingSlugs={
+          pickerKind === 'sample'
+            ? sampleRows.map((s) => s.slug)
+            : templateRows.map((t) => t.slug)
+        }
+        onClose={() => setPickerKind(null)}
+        onCreate={handleCreateFromPicker}
       />
     </>
   );
