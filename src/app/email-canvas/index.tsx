@@ -19,8 +19,7 @@ import HtmlPanel from './html-panel';
 import JsonPanel from './json-panel';
 import TextPanel from './text-panel';
 import MainTabsGroup from './main-tabs-group';
-import SaveButton from './save-button';
-import NewTemplateButton from './new-template-button';
+import SaveBar from './save-bar';
 import SubjectInput from './subject-input';
 import SubjectPreview from './subject-preview';
 import ImageDropPasteHandler from './image-drop-paste-handler';
@@ -138,12 +137,6 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
                 </Tooltip>
               </ToggleButton>
             </ToggleButtonGroup>
-            {showSaveButtons && (
-              <>
-                <NewTemplateButton loadTemplates={loadTemplates} saveAs={saveAs} />
-                <SaveButton loadTemplates={loadTemplates} saveAs={saveAs} />
-              </>
-            )}
           </Stack>
         </Stack>
         <ToggleInspectorPanelButton />
@@ -156,7 +149,7 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
             flexGrow: 1,
             display: 'flex',
             flexDirection: 'column',
-            paddingBottom: '50px',
+            paddingBottom: '16px',
             minWidth: 370,
             // Fills to the bottom of the viewport in editor mode so the
             // workspace gray doesn't end midway under a short email.
@@ -165,7 +158,10 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
             backgroundColor: selectedMainTab === 'editor' ? '#e7e8ec' : undefined,
           }}
         >
-          {renderMainPanel()}
+          <Box sx={{ flexGrow: 1 }}>{renderMainPanel()}</Box>
+          {showSaveButtons && selectedMainTab === 'editor' && (
+            <SaveBar loadTemplates={loadTemplates} saveAs={saveAs} />
+          )}
         </Box>
       </ImageDropPasteHandler>
     </>
