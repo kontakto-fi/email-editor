@@ -1,3 +1,15 @@
+# [2.6.0](https://github.com/kontakto-fi/email-editor/compare/v2.5.0...v2.6.0) (2026-04-23)
+
+
+### Bug Fixes
+
+* checkerboard workspace now fills area around email card ([2617c2a](https://github.com/kontakto-fi/email-editor/commit/2617c2aa3b3b77ec07745a8a1d0fdf6be8e5e93f))
+
+
+### Features
+
+* undo/redo with toolbar buttons and keyboard shortcuts ([aa366ef](https://github.com/kontakto-fi/email-editor/commit/aa366ef6b670333d82c7c61bda8007303aa4797c)), closes [#18](https://github.com/kontakto-fi/email-editor/issues/18)
+
 # [2.5.0](https://github.com/kontakto-fi/email-editor/compare/v2.4.0...v2.5.0) (2026-04-23)
 
 
