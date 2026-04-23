@@ -1,0 +1,206 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-04-23\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: hand-authored\n"
+"Language: sv\n"
+
+msgid "tune.move-up"
+msgstr "Flytta upp"
+
+msgid "tune.move-down"
+msgstr "Flytta ner"
+
+msgid "tune.copy"
+msgstr "Kopiera block"
+
+msgid "tune.delete"
+msgstr "Ta bort"
+
+msgid "toolbar.bold"
+msgstr "Fet"
+
+msgid "toolbar.italic"
+msgstr "Kursiv"
+
+msgid "toolbar.link"
+msgstr "Länk"
+
+msgid "toolbar.bold-shortcut"
+msgstr "Fet (Cmd+B)"
+
+msgid "toolbar.italic-shortcut"
+msgstr "Kursiv (Cmd+I)"
+
+msgid "toolbar.link-shortcut"
+msgstr "Länk (Cmd+K)"
+
+msgid "drawer.library"
+msgstr "Bibliotek"
+
+msgid "drawer.new-sample"
+msgstr "Ny mall"
+
+msgid "drawer.new-template"
+msgstr "Ny e-postmall"
+
+msgid "drawer.tab.templates"
+msgstr "Mallar"
+
+msgid "drawer.tab.samples"
+msgstr "Exempel"
+
+msgid "drawer.tab.outline"
+msgstr "Struktur"
+
+msgid "drawer.search-templates"
+msgstr "Sök mallar"
+
+msgid "drawer.search-samples"
+msgstr "Sök exempel"
+
+msgid "drawer.sort-by"
+msgstr "Sortera efter"
+
+msgid "drawer.tag.all"
+msgstr "Alla"
+
+msgid "drawer.no-templates"
+msgstr "Inga sparade mallar ännu"
+
+msgid "drawer.no-templates-match"
+msgstr "Inga mallar matchar dina filter"
+
+msgid "drawer.no-samples"
+msgstr "Inga exempel tillgängliga"
+
+msgid "drawer.no-samples-match"
+msgstr "Inga exempel matchar dina filter"
+
+msgid "sort.last-updated"
+msgstr "Senast uppdaterad"
+
+msgid "sort.recently-created"
+msgstr "Nyligen skapad"
+
+msgid "sort.name"
+msgstr "Namn (A–Ö)"
+
+msgid "savebar.save"
+msgstr "Spara"
+
+msgid "savebar.save-as-new"
+msgstr "Spara som ny…"
+
+msgid "savebar.save-changes"
+msgstr "Spara ändringar"
+
+msgid "savebar.save-changes-to-sample"
+msgstr "Spara ändringar till detta exempel"
+
+msgid "savebar.save-as-new-template"
+msgstr "Spara som en ny mall"
+
+msgid "savebar.save-as"
+msgstr "Spara som…"
+
+msgid "savebar.start-fresh"
+msgstr "Starta en ny mall"
+
+msgid "savebar.new"
+msgstr "Ny"
+
+msgid "savebar.template-saved"
+msgstr "Mall sparad"
+
+msgid "savebar.sample-saved"
+msgstr "Exempel sparat"
+
+msgid "savebar.error-saving"
+msgstr "Fel vid sparande"
+
+msgid "savebar.new-template-created"
+msgstr "Ny mall skapad"
+
+msgid "savebar.sample-prefix"
+msgstr "Exempel"
+
+msgid "panel.editor-appearance"
+msgstr "Editorns utseende"
+
+msgid "panel.template"
+msgstr "Mall"
+
+msgid "panel.export"
+msgstr "Exportera"
+
+msgid "panel.global"
+msgstr "Allmänt"
+
+msgid "panel.text-block"
+msgstr "Textblock"
+
+msgid "panel.heading-block"
+msgstr "Rubrikblock"
+
+msgid "panel.button-block"
+msgstr "Knappblock"
+
+msgid "panel.image-block"
+msgstr "Bildblock"
+
+msgid "panel.avatar-block"
+msgstr "Avatarblock"
+
+msgid "panel.signature-block"
+msgstr "Signaturblock"
+
+msgid "panel.spacer-block"
+msgstr "Mellanrumsblock"
+
+msgid "panel.divider-block"
+msgstr "Avgränsare"
+
+msgid "panel.columns-block"
+msgstr "Kolumner"
+
+msgid "panel.container-block"
+msgstr "Behållarblock"
+
+msgid "panel.html-block"
+msgstr "HTML-block"
+
+msgid "style.background-color"
+msgstr "Bakgrundsfärg"
+
+msgid "style.border-color"
+msgstr "Kantfärg"
+
+msgid "style.border-radius"
+msgstr "Kantradie"
+
+msgid "style.text-color"
+msgstr "Textfärg"
+
+msgid "style.font-family"
+msgstr "Typsnitt"
+
+msgid "style.font-size"
+msgstr "Typsnittsstorlek"
+
+msgid "style.font-weight"
+msgstr "Typsnittsvikt"
+
+msgid "style.line-height"
+msgstr "Radhöjd"
+
+msgid "style.letter-spacing"
+msgstr "Teckenavstånd"
+
+msgid "style.alignment"
+msgstr "Justering"
+
+msgid "style.padding"
+msgstr "Utrymme"

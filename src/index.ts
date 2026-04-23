@@ -124,3 +124,6 @@ export {
   type LibraryImage,
   type UploadedImage
 } from './app';
+
+// i18n
+export { SUPPORTED_LOCALES, type SupportedLocale } from './i18n';

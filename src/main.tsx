@@ -431,11 +431,14 @@ const EmailEditorWrapper = () => {
     );
   }
 
+  const localeFromUrl = new URLSearchParams(window.location.search).get('locale') ?? undefined;
+
   return (
     <EmailEditor
       theme={theme}
       persistenceEnabled={true}
       minHeight="100vh"
+      locale={localeFromUrl}
       initialTemplate={initialTemplate || undefined}
       initialTemplateId={initialTemplateId || undefined}
       initialTemplateName={initialTemplateName || undefined}

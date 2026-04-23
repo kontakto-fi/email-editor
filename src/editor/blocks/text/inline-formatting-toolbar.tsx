@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FormatBoldOutlined, FormatItalicOutlined, LinkOutlined } from '@mui/icons-material';
 import { IconButton, Paper, Popper, Stack, TextField } from '@mui/material';
 
+import { t } from '@i18n';
+
 type Props = {
   anchorEl: HTMLElement | null;
   visible: boolean;
@@ -64,13 +66,13 @@ export default function InlineFormattingToolbar({
           </Stack>
         ) : (
           <Stack direction="row" spacing={0.25}>
-            <IconButton size="small" onClick={onBold} title="Bold (Cmd+B)" aria-label="Bold">
+            <IconButton size="small" onClick={onBold} title={t('toolbar.bold-shortcut', 'Bold (Cmd+B)')} aria-label={t('toolbar.bold', 'Bold')}>
               <FormatBoldOutlined fontSize="small" />
             </IconButton>
-            <IconButton size="small" onClick={onItalic} title="Italic (Cmd+I)" aria-label="Italic">
+            <IconButton size="small" onClick={onItalic} title={t('toolbar.italic-shortcut', 'Italic (Cmd+I)')} aria-label={t('toolbar.italic', 'Italic')}>
               <FormatItalicOutlined fontSize="small" />
             </IconButton>
-            <IconButton size="small" onClick={onLinkRequest} title="Link (Cmd+K)" aria-label="Link">
+            <IconButton size="small" onClick={onLinkRequest} title={t('toolbar.link-shortcut', 'Link (Cmd+K)')} aria-label={t('toolbar.link', 'Link')}>
               <LinkOutlined fontSize="small" />
             </IconButton>
           </Stack>

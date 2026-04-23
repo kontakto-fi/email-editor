@@ -22,6 +22,7 @@ import {
 import { useSamplesDrawerOpen, resetDocument } from '@editor/editor-context';
 import { TemplateKind, TemplateListItem } from '../index';
 import { TEditorConfiguration } from '@editor/core';
+import { Trans, t } from '@i18n';
 import { useEmailEditor } from '../context';
 import { useSnackbar } from '../email-canvas/snackbar-provider';
 import { buildSavePayload, SavePayload } from '../save-payload';
@@ -34,7 +35,9 @@ import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
 
 export const SAMPLES_DRAWER_WIDTH = 320;
 
-// Empty template definition that will always be available
+// Empty template definition that will always be available. The visible slug
+// and description are translated at render time via i18n, so only the stable
+// English defaults live here.
 const EMPTY_TEMPLATE: TemplateListItem = {
   id: 'empty-email',
   slug: 'Empty email',
@@ -44,10 +47,10 @@ const EMPTY_TEMPLATE: TemplateListItem = {
 
 type SortKey = 'updatedAt' | 'createdAt' | 'slug';
 
-const SORT_OPTIONS: Array<{ value: SortKey; label: string }> = [
-  { value: 'updatedAt', label: 'Last updated' },
-  { value: 'createdAt', label: 'Recently created' },
-  { value: 'slug', label: 'Name (A–Z)' },
+const SORT_OPTIONS: Array<{ value: SortKey; labelKey: string; fallback: string }> = [
+  { value: 'updatedAt', labelKey: 'sort.last-updated', fallback: 'Last updated' },
+  { value: 'createdAt', labelKey: 'sort.recently-created', fallback: 'Recently created' },
+  { value: 'slug', labelKey: 'sort.name', fallback: 'Name (A–Z)' },
 ];
 
 function compareTemplates(a: TemplateListItem, b: TemplateListItem, key: SortKey): number {
@@ -426,14 +429,14 @@ export default function SamplesDrawer({
         >
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ pt: 1 }}>
             <Typography variant="h6" component="h1">
-              Library
+              <Trans id="drawer.library">Library</Trans>
             </Typography>
             {saveAs && (activeLeftTab === 'templates' || activeLeftTab === 'samples') && (
-              <Tooltip title={activeLeftTab === 'samples' ? 'New sample' : 'New template'}>
+              <Tooltip title={activeLeftTab === 'samples' ? t('drawer.new-sample', 'New sample') : t('drawer.new-template', 'New template')}>
                 <IconButton
                   size="small"
                   onClick={() => openNewPicker(activeLeftTab === 'samples' ? 'sample' : 'template')}
-                  aria-label={activeLeftTab === 'samples' ? 'New sample' : 'New template'}
+                  aria-label={activeLeftTab === 'samples' ? t('drawer.new-sample', 'New sample') : t('drawer.new-template', 'New template')}
                 >
                   <AddOutlined fontSize="small" />
                 </IconButton>
@@ -447,9 +450,9 @@ export default function SamplesDrawer({
             variant="fullWidth"
             sx={{ minHeight: 36, '& .MuiTab-root': { minHeight: 36, minWidth: 0, px: 1, fontSize: 13 } }}
           >
-            <Tab value="templates" label="Templates" disabled={!loadTemplates} />
-            <Tab value="samples" label="Samples" />
-            <Tab value="outline" label="Outline" />
+            <Tab value="templates" label={t('drawer.tab.templates', 'Templates')} disabled={!loadTemplates} />
+            <Tab value="samples" label={t('drawer.tab.samples', 'Samples')} />
+            <Tab value="outline" label={t('drawer.tab.outline', 'Outline')} />
           </Tabs>
 
           {activeLeftTab === 'outline' ? (
@@ -458,7 +461,7 @@ export default function SamplesDrawer({
             <>
               <TextField
                 size="small"
-                placeholder={activeLeftTab === 'templates' ? 'Search templates' : 'Search samples'}
+                placeholder={activeLeftTab === 'templates' ? t('drawer.search-templates', 'Search templates') : t('drawer.search-samples', 'Search samples')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 InputProps={{
@@ -473,13 +476,13 @@ export default function SamplesDrawer({
               <TextField
                 select
                 size="small"
-                label="Sort by"
+                label={t('drawer.sort-by', 'Sort by')}
                 value={sortKey}
                 onChange={(e) => setSortKey(e.target.value as SortKey)}
               >
                 {SORT_OPTIONS.map((opt) => (
                   <MenuItem key={opt.value} value={opt.value}>
-                    {opt.label}
+                    {t(opt.labelKey, opt.fallback)}
                   </MenuItem>
                 ))}
               </TextField>
@@ -487,7 +490,7 @@ export default function SamplesDrawer({
               {allTags.length > 0 && (
                 <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.5 }}>
                   <Chip
-                    label="All"
+                    label={t('drawer.tag.all', 'All')}
                     size="small"
                     clickable
                     color={activeTags.length === 0 ? 'primary' : 'default'}
@@ -536,8 +539,8 @@ export default function SamplesDrawer({
                   ) : (
                     <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
                       {templateRows.length === 0
-                        ? 'No saved templates yet'
-                        : 'No templates match your filters'}
+                        ? t('drawer.no-templates', 'No saved templates yet')
+                        : t('drawer.no-templates-match', 'No templates match your filters')}
                     </Typography>
                   )}
                 </Box>
@@ -564,7 +567,7 @@ export default function SamplesDrawer({
                     </Stack>
                   ) : (
                     <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
-                      {sampleRows.length === 0 ? 'No samples available' : 'No samples match your filters'}
+                      {sampleRows.length === 0 ? t('drawer.no-samples', 'No samples available') : t('drawer.no-samples-match', 'No samples match your filters')}
                     </Typography>
                   )}
                 </Box>

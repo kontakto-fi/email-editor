@@ -15,7 +15,8 @@ export default defineConfig({
       '@editor': path.resolve(__dirname, './src/editor'),
       '@core': path.resolve(__dirname, './src/core'),
       '@email-builder': path.resolve(__dirname, './src/email-builder'),
-      '@sample': path.resolve(__dirname, './sample-templates')
+      '@sample': path.resolve(__dirname, './sample-templates'),
+      '@i18n': path.resolve(__dirname, './src/i18n'),
     }
   }
 });

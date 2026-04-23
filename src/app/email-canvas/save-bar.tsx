@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Tooltip } from '@mui/material';
 import { AddOutlined, SaveOutlined, SaveAsOutlined } from '@mui/icons-material';
 import { resetDocument, useDocument } from '@editor/editor-context';
+import { t } from '@i18n';
 import { useEmailEditor } from '../context';
 import { useSnackbar } from './snackbar-provider';
 import { buildSavePayload, type SavePayload } from '../save-payload';
@@ -32,7 +33,7 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
 
   const hasOpenRow = Boolean(currentTemplateId);
   const isSample = currentTemplateKind === 'sample';
-  const primaryLabel = hasOpenRow ? 'Save' : 'Save as new…';
+  const primaryLabel = hasOpenRow ? t('savebar.save', 'Save') : t('savebar.save-as-new', 'Save as new…');
 
   const handlePrimary = async () => {
     try {
@@ -42,11 +43,11 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
         return;
       }
       saveTemplate();
-      showMessage(isSample ? 'Sample saved' : 'Template saved');
+      showMessage(isSample ? t('savebar.sample-saved', 'Sample saved') : t('savebar.template-saved', 'Template saved'));
       if (loadTemplates) await loadTemplates();
     } catch (e) {
       console.error('Error saving:', e);
-      showMessage('Error saving');
+      showMessage(t('savebar.error-saving', 'Error saving'));
     }
   };
 
@@ -59,12 +60,16 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
       setCurrentTemplate(id, slug, 'template');
       ctxLoadTemplate(starterContent, id, slug, 'template');
       if (loadTemplates) await loadTemplates();
-      showMessage(dialogMode === 'new-blank' ? 'New template created' : 'Template saved');
+      showMessage(
+        dialogMode === 'new-blank'
+          ? t('savebar.new-template-created', 'New template created')
+          : t('savebar.template-saved', 'Template saved')
+      );
       window.location.hash = `#template/${id}`;
       return true;
     } catch (e) {
       console.error('Error in saveAs:', e);
-      showMessage('Error saving');
+      showMessage(t('savebar.error-saving', 'Error saving'));
       return false;
     }
   };
@@ -110,13 +115,19 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
               }}
               title={currentTemplateName}
             >
-              {isSample ? 'Sample · ' : ''}
+              {isSample ? `${t('savebar.sample-prefix', 'Sample')} · ` : ''}
               <Box component="span" sx={{ color: 'text.primary', fontWeight: 600 }}>
                 {currentTemplateName}
               </Box>
             </Box>
           )}
-          <Tooltip title={hasOpenRow ? `Save changes${isSample ? ' to this sample' : ''}` : 'Save as a new template'}>
+          <Tooltip title={
+            hasOpenRow
+              ? (isSample
+                  ? t('savebar.save-changes-to-sample', 'Save changes to this sample')
+                  : t('savebar.save-changes', 'Save changes'))
+              : t('savebar.save-as-new-template', 'Save as a new template')
+          }>
             <Button
               variant="contained"
               size="large"
@@ -128,7 +139,7 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
             </Button>
           </Tooltip>
           {hasOpenRow && saveAs && (
-            <Tooltip title="Save as a new template">
+            <Tooltip title={t('savebar.save-as-new-template', 'Save as a new template')}>
               <Button
                 variant="outlined"
                 size="large"
@@ -139,12 +150,12 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
                 }}
                 sx={{ borderRadius: 999, textTransform: 'none', px: 2, fontSize: 14 }}
               >
-                Save as…
+                {t('savebar.save-as', 'Save as…')}
               </Button>
             </Tooltip>
           )}
           {saveAs && (
-            <Tooltip title="Start a fresh template">
+            <Tooltip title={t('savebar.start-fresh', 'Start a fresh template')}>
               <Button
                 variant="text"
                 size="large"
@@ -155,7 +166,7 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
                 }}
                 sx={{ borderRadius: 999, textTransform: 'none', px: 2, fontSize: 14, color: 'text.secondary' }}
               >
-                New
+                {t('savebar.new', 'New')}
               </Button>
             </Tooltip>
           )}

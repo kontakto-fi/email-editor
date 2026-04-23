@@ -1,0 +1,206 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-04-23\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: hand-authored\n"
+"Language: fi\n"
+
+msgid "tune.move-up"
+msgstr "Siirrä ylös"
+
+msgid "tune.move-down"
+msgstr "Siirrä alas"
+
+msgid "tune.copy"
+msgstr "Kopioi lohko"
+
+msgid "tune.delete"
+msgstr "Poista"
+
+msgid "toolbar.bold"
+msgstr "Lihavointi"
+
+msgid "toolbar.italic"
+msgstr "Kursivointi"
+
+msgid "toolbar.link"
+msgstr "Linkki"
+
+msgid "toolbar.bold-shortcut"
+msgstr "Lihavointi (Cmd+B)"
+
+msgid "toolbar.italic-shortcut"
+msgstr "Kursivointi (Cmd+I)"
+
+msgid "toolbar.link-shortcut"
+msgstr "Linkki (Cmd+K)"
+
+msgid "drawer.library"
+msgstr "Kirjasto"
+
+msgid "drawer.new-sample"
+msgstr "Uusi malli"
+
+msgid "drawer.new-template"
+msgstr "Uusi pohja"
+
+msgid "drawer.tab.templates"
+msgstr "Pohjat"
+
+msgid "drawer.tab.samples"
+msgstr "Mallit"
+
+msgid "drawer.tab.outline"
+msgstr "Rakenne"
+
+msgid "drawer.search-templates"
+msgstr "Etsi pohjia"
+
+msgid "drawer.search-samples"
+msgstr "Etsi malleja"
+
+msgid "drawer.sort-by"
+msgstr "Järjestys"
+
+msgid "drawer.tag.all"
+msgstr "Kaikki"
+
+msgid "drawer.no-templates"
+msgstr "Ei tallennettuja pohjia"
+
+msgid "drawer.no-templates-match"
+msgstr "Mikään pohja ei vastaa hakua"
+
+msgid "drawer.no-samples"
+msgstr "Ei malleja saatavilla"
+
+msgid "drawer.no-samples-match"
+msgstr "Mikään malli ei vastaa hakua"
+
+msgid "sort.last-updated"
+msgstr "Viimeksi päivitetty"
+
+msgid "sort.recently-created"
+msgstr "Äskettäin luotu"
+
+msgid "sort.name"
+msgstr "Nimi (A–Ö)"
+
+msgid "savebar.save"
+msgstr "Tallenna"
+
+msgid "savebar.save-as-new"
+msgstr "Tallenna uutena…"
+
+msgid "savebar.save-changes"
+msgstr "Tallenna muutokset"
+
+msgid "savebar.save-changes-to-sample"
+msgstr "Tallenna muutokset tähän malliin"
+
+msgid "savebar.save-as-new-template"
+msgstr "Tallenna uutena pohjana"
+
+msgid "savebar.save-as"
+msgstr "Tallenna nimellä…"
+
+msgid "savebar.start-fresh"
+msgstr "Aloita tyhjästä pohjasta"
+
+msgid "savebar.new"
+msgstr "Uusi"
+
+msgid "savebar.template-saved"
+msgstr "Pohja tallennettu"
+
+msgid "savebar.sample-saved"
+msgstr "Malli tallennettu"
+
+msgid "savebar.error-saving"
+msgstr "Tallennus epäonnistui"
+
+msgid "savebar.new-template-created"
+msgstr "Uusi pohja luotu"
+
+msgid "savebar.sample-prefix"
+msgstr "Malli"
+
+msgid "panel.editor-appearance"
+msgstr "Editorin ulkoasu"
+
+msgid "panel.template"
+msgstr "Pohja"
+
+msgid "panel.export"
+msgstr "Vienti"
+
+msgid "panel.global"
+msgstr "Yleiset"
+
+msgid "panel.text-block"
+msgstr "Tekstilohko"
+
+msgid "panel.heading-block"
+msgstr "Otsikkolohko"
+
+msgid "panel.button-block"
+msgstr "Painikelohko"
+
+msgid "panel.image-block"
+msgstr "Kuvalohko"
+
+msgid "panel.avatar-block"
+msgstr "Avatarlohko"
+
+msgid "panel.signature-block"
+msgstr "Allekirjoituslohko"
+
+msgid "panel.spacer-block"
+msgstr "Välilohko"
+
+msgid "panel.divider-block"
+msgstr "Erotin"
+
+msgid "panel.columns-block"
+msgstr "Sarakkeet"
+
+msgid "panel.container-block"
+msgstr "Säiliölohko"
+
+msgid "panel.html-block"
+msgstr "HTML-lohko"
+
+msgid "style.background-color"
+msgstr "Taustaväri"
+
+msgid "style.border-color"
+msgstr "Reunan väri"
+
+msgid "style.border-radius"
+msgstr "Reunan pyöristys"
+
+msgid "style.text-color"
+msgstr "Tekstin väri"
+
+msgid "style.font-family"
+msgstr "Fontti"
+
+msgid "style.font-size"
+msgstr "Fonttikoko"
+
+msgid "style.font-weight"
+msgstr "Fontin paksuus"
+
+msgid "style.line-height"
+msgstr "Rivikorkeus"
+
+msgid "style.letter-spacing"
+msgstr "Kirjainväli"
+
+msgid "style.alignment"
+msgstr "Tasaus"
+
+msgid "style.padding"
+msgstr "Täyte"

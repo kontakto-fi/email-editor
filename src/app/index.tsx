@@ -1,8 +1,10 @@
 import React, { forwardRef, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
+import { I18nProvider } from '@lingui/react';
 import { Stack, useTheme, ThemeProvider } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import defaultTheme from '../theme';
 import { CssBaseline } from '@mui/material';
+import { activateLocale, i18n, type SupportedLocale } from '../i18n';
 
 import { TEditorConfiguration } from '@editor/core';
 import {
@@ -187,6 +189,12 @@ export interface EmailEditorProps {
    * This allows for easy styling without requiring a separate ThemeProvider.
    */
   theme?: Theme;
+  /**
+   * UI language. One of "en", "sv", or "fi". Unknown values fall back to "en"
+   * with a console.warn. Defaults to "en". Applies to editor chrome only —
+   * email content and user data are never translated.
+   */
+  locale?: SupportedLocale | string;
 }
 
 function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: boolean) {
@@ -310,7 +318,12 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     loadImages,
     deleteImage,
     theme,
+    locale,
   } = props;
+
+  // Activate the requested locale before any UI renders. Subsequent prop
+  // changes re-activate on render.
+  activateLocale(locale);
 
   // Resolve: if it's a raw HTML string, wrap it in an editor config.
   // Memoize so a string prop doesn't create a new object every render.
@@ -341,6 +354,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
   );
 
   return (
+    <I18nProvider i18n={i18n}>
     <ThemeProvider theme={theme || defaultTheme}>
             <CssBaseline />
       <div style={{ height: '100%', overflow: 'auto' }}>
@@ -374,6 +388,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
         </SnackbarProvider>
       </div>
     </ThemeProvider>
+    </I18nProvider>
   );
 });
 

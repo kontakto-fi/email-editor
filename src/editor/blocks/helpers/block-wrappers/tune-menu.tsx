@@ -6,6 +6,7 @@ import { IconButton, Paper, Stack, SxProps, Tooltip } from '@mui/material';
 import { TEditorBlock } from '@editor/core';
 import { resetDocument, setSelectedBlockId, useDocument } from '@editor/editor-context';
 import { ColumnsContainerProps } from '@editor/blocks/columns-container/columns-container-props-schema';
+import { t } from '@i18n';
 
 const sx: SxProps = {
   position: 'absolute',
@@ -188,23 +189,23 @@ export default function TuneMenu({ blockId }: Props) {
   return (
     <Paper sx={sx} onClick={(ev) => ev.stopPropagation()}>
       <Stack>
-        <Tooltip title="Move up" placement="left-start">
-          <IconButton onClick={() => handleMoveClick('up')} sx={{ color: 'text.primary' }}>
+        <Tooltip title={t('tune.move-up', 'Move up')} placement="left-start">
+          <IconButton aria-label={t('tune.move-up', 'Move up')} onClick={() => handleMoveClick('up')} sx={{ color: 'text.primary' }}>
             <ArrowUpwardOutlined fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Move down" placement="left-start">
-          <IconButton onClick={() => handleMoveClick('down')} sx={{ color: 'text.primary' }}>
+        <Tooltip title={t('tune.move-down', 'Move down')} placement="left-start">
+          <IconButton aria-label={t('tune.move-down', 'Move down')} onClick={() => handleMoveClick('down')} sx={{ color: 'text.primary' }}>
             <ArrowDownwardOutlined fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Copy block" placement="left-start">
-          <IconButton onClick={handleCopyClick} sx={{ color: 'text.primary' }}>
+        <Tooltip title={t('tune.copy', 'Copy block')} placement="left-start">
+          <IconButton aria-label={t('tune.copy', 'Copy block')} onClick={handleCopyClick} sx={{ color: 'text.primary' }}>
             <ContentCopyOutlined fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete" placement="left-start">
-          <IconButton onClick={handleDeleteClick} sx={{ color: 'text.primary' }}>
+        <Tooltip title={t('tune.delete', 'Delete')} placement="left-start">
+          <IconButton aria-label={t('tune.delete', 'Delete')} onClick={handleDeleteClick} sx={{ color: 'text.primary' }}>
             <DeleteOutlined fontSize="small" />
           </IconButton>
         </Tooltip>

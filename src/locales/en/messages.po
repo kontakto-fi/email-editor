@@ -1,0 +1,206 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-04-23\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: hand-authored\n"
+"Language: en\n"
+
+msgid "tune.move-up"
+msgstr "Move up"
+
+msgid "tune.move-down"
+msgstr "Move down"
+
+msgid "tune.copy"
+msgstr "Copy block"
+
+msgid "tune.delete"
+msgstr "Delete"
+
+msgid "toolbar.bold"
+msgstr "Bold"
+
+msgid "toolbar.italic"
+msgstr "Italic"
+
+msgid "toolbar.link"
+msgstr "Link"
+
+msgid "toolbar.bold-shortcut"
+msgstr "Bold (Cmd+B)"
+
+msgid "toolbar.italic-shortcut"
+msgstr "Italic (Cmd+I)"
+
+msgid "toolbar.link-shortcut"
+msgstr "Link (Cmd+K)"
+
+msgid "drawer.library"
+msgstr "Library"
+
+msgid "drawer.new-sample"
+msgstr "New sample"
+
+msgid "drawer.new-template"
+msgstr "New template"
+
+msgid "drawer.tab.templates"
+msgstr "Templates"
+
+msgid "drawer.tab.samples"
+msgstr "Samples"
+
+msgid "drawer.tab.outline"
+msgstr "Outline"
+
+msgid "drawer.search-templates"
+msgstr "Search templates"
+
+msgid "drawer.search-samples"
+msgstr "Search samples"
+
+msgid "drawer.sort-by"
+msgstr "Sort by"
+
+msgid "drawer.tag.all"
+msgstr "All"
+
+msgid "drawer.no-templates"
+msgstr "No saved templates yet"
+
+msgid "drawer.no-templates-match"
+msgstr "No templates match your filters"
+
+msgid "drawer.no-samples"
+msgstr "No samples available"
+
+msgid "drawer.no-samples-match"
+msgstr "No samples match your filters"
+
+msgid "sort.last-updated"
+msgstr "Last updated"
+
+msgid "sort.recently-created"
+msgstr "Recently created"
+
+msgid "sort.name"
+msgstr "Name (A–Z)"
+
+msgid "savebar.save"
+msgstr "Save"
+
+msgid "savebar.save-as-new"
+msgstr "Save as new…"
+
+msgid "savebar.save-changes"
+msgstr "Save changes"
+
+msgid "savebar.save-changes-to-sample"
+msgstr "Save changes to this sample"
+
+msgid "savebar.save-as-new-template"
+msgstr "Save as a new template"
+
+msgid "savebar.save-as"
+msgstr "Save as…"
+
+msgid "savebar.start-fresh"
+msgstr "Start a fresh template"
+
+msgid "savebar.new"
+msgstr "New"
+
+msgid "savebar.template-saved"
+msgstr "Template saved"
+
+msgid "savebar.sample-saved"
+msgstr "Sample saved"
+
+msgid "savebar.error-saving"
+msgstr "Error saving"
+
+msgid "savebar.new-template-created"
+msgstr "New template created"
+
+msgid "savebar.sample-prefix"
+msgstr "Sample"
+
+msgid "panel.editor-appearance"
+msgstr "Editor appearance"
+
+msgid "panel.template"
+msgstr "Template"
+
+msgid "panel.export"
+msgstr "Export"
+
+msgid "panel.global"
+msgstr "Global"
+
+msgid "panel.text-block"
+msgstr "Text block"
+
+msgid "panel.heading-block"
+msgstr "Heading block"
+
+msgid "panel.button-block"
+msgstr "Button block"
+
+msgid "panel.image-block"
+msgstr "Image block"
+
+msgid "panel.avatar-block"
+msgstr "Avatar block"
+
+msgid "panel.signature-block"
+msgstr "Signature block"
+
+msgid "panel.spacer-block"
+msgstr "Spacer block"
+
+msgid "panel.divider-block"
+msgstr "Divider block"
+
+msgid "panel.columns-block"
+msgstr "Columns block"
+
+msgid "panel.container-block"
+msgstr "Container block"
+
+msgid "panel.html-block"
+msgstr "HTML block"
+
+msgid "style.background-color"
+msgstr "Background color"
+
+msgid "style.border-color"
+msgstr "Border color"
+
+msgid "style.border-radius"
+msgstr "Border radius"
+
+msgid "style.text-color"
+msgstr "Text color"
+
+msgid "style.font-family"
+msgstr "Font family"
+
+msgid "style.font-size"
+msgstr "Font size"
+
+msgid "style.font-weight"
+msgstr "Font weight"
+
+msgid "style.line-height"
+msgstr "Line height"
+
+msgid "style.letter-spacing"
+msgstr "Letter spacing"
+
+msgid "style.alignment"
+msgstr "Alignment"
+
+msgid "style.padding"
+msgstr "Padding"

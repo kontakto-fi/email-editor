@@ -17,14 +17,18 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsup",
+    "build": "lingui compile && vite build && tsup",
     "preview": "vite preview",
     "test": "playwright test",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "i18n:extract": "lingui extract",
+    "i18n:compile": "lingui compile"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@lingui/core": "^5.9.5",
+    "@lingui/react": "^5.9.5",
     "@mui/icons-material": "^5",
     "@mui/material": "^5",
     "dompurify": "^3.3.1",
@@ -38,6 +42,8 @@
     "zustand": "^4.5.1"
   },
   "devDependencies": {
+    "@lingui/cli": "^5.9.5",
+    "@lingui/format-po": "^5.9.5",
     "@playwright/test": "^1.58.2",
     "@types/dompurify": "^3.0.5",
     "@types/react": "^18.2.55",
