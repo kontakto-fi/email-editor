@@ -245,12 +245,14 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
   // with the rendered email — EmailLayoutReader is unchanged.
   const WORKSPACE_BG = '#e7e8ec';
   const CARD_MAX_WIDTH = 664; // 600 canvas + 32px horizontal padding
+  // Note: no `overflow: hidden` on the card — the per-block TuneMenu renders
+  // icon controls that sit slightly outside the block's rectangle, and clipping
+  // them here would hide the move-up/down/copy/delete affordances.
   const cardStyle: React.CSSProperties = {
     maxWidth: CARD_MAX_WIDTH,
     margin: '0 auto',
     borderRadius: 12,
     boxShadow: '0 1px 2px rgba(33, 36, 67, 0.05), 0 8px 24px rgba(33, 36, 67, 0.08)',
-    overflow: 'hidden',
   };
 
   if (props.backdropDisabled) {
