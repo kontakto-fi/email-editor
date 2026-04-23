@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/kontakto-fi/email-editor/compare/v2.7.0...v2.8.0) (2026-04-23)
+
+
+### Features
+
+* translate inspector tabs, outline, block picker, workspace toggle ([b569c7d](https://github.com/kontakto-fi/email-editor/commit/b569c7d13a6fe2a6f7e59c96ad692c97ddf394d3))
+
 # [2.7.0](https://github.com/kontakto-fi/email-editor/compare/v2.6.0...v2.7.0) (2026-04-23)
 
 
