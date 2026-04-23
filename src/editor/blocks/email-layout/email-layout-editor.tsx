@@ -241,10 +241,11 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
     />
   );
 
-  // Editor-only chrome: a muted workspace around the email, so the 600-px
-  // canvas reads as a bounded document on wide screens. None of this ships
-  // with the rendered email — EmailLayoutReader is unchanged.
-  const WORKSPACE_BG = '#e7e8ec';
+  // Editor-only chrome: framing around the 600-px canvas on wide screens.
+  // The workspace background (solid or checkerboard) is painted by the parent
+  // TemplatePanel so it fills the entire out-of-canvas area; this wrapper
+  // stays transparent to let it show through. None of this ships with the
+  // rendered email — EmailLayoutReader is unchanged.
   const CARD_MAX_WIDTH = 664; // 600 canvas + 32px horizontal padding
   // Note: no `overflow: hidden` on the card — the per-block TuneMenu renders
   // icon controls that sit slightly outside the block's rectangle, and clipping
@@ -264,7 +265,6 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
         }}
         style={{
           ...baseStyle,
-          backgroundColor: WORKSPACE_BG,
           padding: '32px',
           width: '100%',
           minHeight: '100%',
@@ -290,7 +290,6 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
       }}
       style={{
         ...baseStyle,
-        backgroundColor: WORKSPACE_BG,
         padding: '32px 16px',
         width: '100%',
         minHeight: '100%',

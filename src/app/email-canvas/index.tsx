@@ -39,12 +39,12 @@ interface TemplatePanelProps {
   samplesDrawerEnabled?: boolean;
 }
 
-// Editor-mode workspace backgrounds. 'checkerboard' is a 24-px light/dark
+// Editor-mode workspace backgrounds. 'checkerboard' is a 12-px light/dark
 // squares pattern (opt-in default per user ask); 'solid' is the previous flat
 // gray. Both sit behind the email card and never reach the rendered output.
 const WORKSPACE_SOLID = '#e7e8ec';
 const WORKSPACE_CHECKERBOARD =
-  'repeating-conic-gradient(#eceef2 0% 25%, #dfe1e6 0% 50%) 50% / 24px 24px';
+  'repeating-conic-gradient(#eceef2 0% 25%, #dfe1e6 0% 50%) 50% / 12px 12px';
 
 export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnabled = true }: TemplatePanelProps) {
   const document = useDocument();
