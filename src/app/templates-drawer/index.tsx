@@ -72,7 +72,11 @@ export interface SamplesDrawerProps {
   currentTemplateId?: string | null;
   deleteTemplate?: (templateId: string) => void;
   copyTemplate?: (templateName: string, content: any) => void;
-  renameTemplate?: (templateId: string, newSlug: string) => void | Promise<void>;
+  renameTemplate?: (
+    templateId: string,
+    newSlug: string,
+    opts?: { tags?: string[] },
+  ) => void | Promise<void>;
   setTemplateKind?: (templateId: string, kind: TemplateKind) => void | Promise<void>;
   saveAs?: (templateName: string, payload: SavePayload) => Promise<{ id: string; slug: string }>;
 }
@@ -254,17 +258,21 @@ export default function SamplesDrawer({
     showMessage('Template deleted');
   };
 
-  const handleRenameSubmit = async (newSlug: string) => {
+  const handleRenameSubmit = async (newSlug: string, opts?: { tags?: string[] }) => {
     if (!renameTarget || !renameTemplate) return;
-    await renameTemplate(renameTarget.id, newSlug);
-    // Optimistic: update local list so the UI reflects the rename without waiting on the host's event.
-    setTemplates((prev) =>
-      prev.map((t) => (t.id === renameTarget.id ? { ...t, slug: newSlug } : t)),
-    );
+    await renameTemplate(renameTarget.id, newSlug, opts);
+    // Optimistic: update local lists (both templates + samples) so the UI
+    // reflects the edit without waiting on the host's event.
+    const patch = (t: TemplateListItem) =>
+      t.id === renameTarget.id
+        ? { ...t, slug: newSlug, tags: opts?.tags ?? t.tags }
+        : t;
+    setTemplates((prev) => prev.map(patch));
+    setSamples((prev) => prev.map(patch));
     if (currentTemplateId === renameTarget.id) {
       setCurrentTemplate(renameTarget.id, newSlug);
     }
-    showMessage('Template renamed');
+    showMessage('Details saved');
   };
 
   const flipKindLocally = (id: string, kind: TemplateKind) => {
@@ -556,6 +564,7 @@ export default function SamplesDrawer({
         <RenameDialog
           open={!!renameTarget}
           currentSlug={renameTarget.slug}
+          currentTags={renameTarget.tags ?? []}
           existingSlugs={existingSlugs.filter((s) => s !== renameTarget.slug)}
           onClose={() => setRenameTarget(null)}
           onSubmit={handleRenameSubmit}

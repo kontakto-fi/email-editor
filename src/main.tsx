@@ -292,8 +292,12 @@ const EmailEditorWrapper = () => {
     }
   };
 
-  // Handle template rename
-  const handleRenameTemplate = (templateId: string, newSlug: string) => {
+  // Handle template rename + optional tag replacement
+  const handleRenameTemplate = (
+    templateId: string,
+    newSlug: string,
+    opts?: { tags?: string[] },
+  ) => {
     try {
       const existing = readStoredTemplates();
       const index = existing.findIndex((t) => t.id === templateId);
@@ -301,6 +305,7 @@ const EmailEditorWrapper = () => {
       existing[index] = {
         ...existing[index],
         name: newSlug,
+        tags: opts?.tags ?? existing[index].tags,
         updatedAt: new Date().toISOString(),
       };
       writeStoredTemplates(existing);

@@ -146,9 +146,16 @@ export interface EmailEditorProps {
    */
   copyTemplate?: (templateName: string, content: any) => void;
   /**
-   * Callback to rename a template by ID. Receives the new slug.
+   * Callback to update a template's details. Receives the new slug and an
+   * optional options bag with the full new tag list. Called from the
+   * drawer's Edit-details dialog — the `tags` array replaces the existing
+   * tag list when provided.
    */
-  renameTemplate?: (templateId: string, newSlug: string) => void | Promise<void>;
+  renameTemplate?: (
+    templateId: string,
+    newSlug: string,
+    opts?: { tags?: string[] },
+  ) => void | Promise<void>;
   /**
    * Callback to promote/demote a row between `template` and `sample`.
    * When omitted, promote/demote menu items are hidden.
