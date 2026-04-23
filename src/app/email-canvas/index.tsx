@@ -151,10 +151,20 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
       {selectedMainTab === 'editor' && <SubjectInput />}
       {selectedMainTab === 'preview' && <SubjectPreview />}
       <ImageDropPasteHandler enabled={selectedMainTab === 'editor'}>
-        <Box sx={{
-          paddingBottom: '50px',
-          minWidth: 370
-                }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            paddingBottom: '50px',
+            minWidth: 370,
+            // Fills to the bottom of the viewport in editor mode so the
+            // workspace gray doesn't end midway under a short email.
+            // 49px toolbar + 49px subject bar = 98px fixed chrome above.
+            minHeight: selectedMainTab === 'editor' ? 'calc(100vh - 98px)' : undefined,
+            backgroundColor: selectedMainTab === 'editor' ? '#e7e8ec' : undefined,
+          }}
+        >
           {renderMainPanel()}
         </Box>
       </ImageDropPasteHandler>
