@@ -186,6 +186,58 @@ const uploadImage = async (file: File) => {
 
 Newly uploaded images get their `width` / `height` set on the resulting Image block — important for Outlook, which needs explicit dimensions to lay the email out before images load.
 
+#### Example PostgreSQL schema
+
+A minimal schema that maps directly onto `SavePayload`, `TemplateListItem`, and the image-library callbacks. The editor itself is backend-agnostic — this is just a reference starting point.
+
+```sql
+-- Email templates (user-editable rows + org-wide read-only samples)
+create table email_templates (
+  id            uuid primary key default gen_random_uuid(),
+  slug          text not null,                                  -- primary label shown in the drawer
+  kind          text not null check (kind in ('template', 'sample')),
+  description   text,
+  subject       text,                                           -- mirrors editor_config.root.data.subject
+  variables     jsonb not null default '[]'::jsonb,             -- [{ name, description?, sampleValue? }]
+  tags          text[] not null default '{}',
+  thumbnail_url text,
+
+  -- Source of truth: full TEditorConfiguration from SavePayload.editorConfig
+  editor_config jsonb not null,
+
+  -- Pre-rendered output from the save pipeline; usually what you ship to the sender
+  body_html     text not null,
+  body_text     text not null,
+
+  -- null for org-wide samples, set for user/tenant-owned templates
+  owner_id      uuid references users(id) on delete cascade,
+
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now(),
+
+  unique (owner_id, slug)
+);
+
+create index email_templates_owner_kind_idx on email_templates (owner_id, kind);
+create index email_templates_tags_gin_idx   on email_templates using gin (tags);
+
+-- Image library backing uploadImage / loadImages / deleteImage
+create table email_images (
+  id            uuid primary key default gen_random_uuid(),
+  url           text not null unique,
+  thumbnail_url text,
+  width         int,
+  height        int,
+  alt           text,
+  owner_id      uuid references users(id) on delete cascade,
+  uploaded_at   timestamptz not null default now()
+);
+
+create index email_images_owner_uploaded_idx on email_images (owner_id, uploaded_at desc);
+```
+
+`loadTemplates` typically scopes to `owner_id = :user` with `kind = 'template'`; `loadSamples` returns `kind = 'sample'` (often ignoring `owner_id`, or scoping to an org). The `kind` column — not which endpoint returned the row — decides which drawer section a template appears in.
+
 | `theme` | object | theme.ts | Custom theme for the EmailEditor, must be a Material UI theme object |
 
 #### Imperative API
