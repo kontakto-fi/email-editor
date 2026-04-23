@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
 import { useCurrentBlockId } from '@editor/editor-block';
-import { resetDocument, setDocument, setSelectedBlockId, useDocument, useSelectedBlockId } from '@editor/editor-context';
+import { replaceDocument, setDocument, setSelectedBlockId, useDocument, useSelectedBlockId } from '@editor/editor-context';
 import { TEditorBlock } from '@editor/core';
 import EditorChildrenIds from '@editor/blocks/helpers/editor-children-ids';
 
@@ -135,7 +135,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
       }
     }
     delete nDocument[selectedBlockId];
-    resetDocument(nDocument);
+    replaceDocument(nDocument as any);
   }, [selectedBlockId, document]);
 
   const handleCopy = useCallback((e: KeyboardEvent) => {
@@ -196,7 +196,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
       },
     };
 
-    resetDocument(doc);
+    replaceDocument(doc);
     setSelectedBlockId(newRootId);
   }, [document, childrenIds, selectedBlockId, currentBlockId]);
 

@@ -21,6 +21,7 @@ import JsonPanel from './json-panel';
 import TextPanel from './text-panel';
 import MainTabsGroup from './main-tabs-group';
 import SaveBar from './save-bar';
+import UndoRedoButtons from './undo-redo-buttons';
 import SubjectInput from './subject-input';
 import SubjectPreview from './subject-preview';
 import ImageDropPasteHandler from './image-drop-paste-handler';
@@ -133,7 +134,8 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
           <Stack direction="row" spacing={2}>
             <MainTabsGroup />
           </Stack>
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} alignItems="center">
+            {selectedMainTab === 'editor' && <UndoRedoButtons />}
             <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
               <ToggleButton value="desktop">
                 <Tooltip title="Desktop view">

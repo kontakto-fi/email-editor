@@ -1,4 +1,6 @@
-import { create } from 'zustand';
+import { create, useStore } from 'zustand';
+import { temporal } from 'zundo';
+
 import { TEditorConfiguration } from './core';
 import type { ParentRef } from './blocks/helpers/move-block';
 
@@ -43,20 +45,57 @@ const EMPTY_DOCUMENT: TEditorConfiguration = {
   },
 };
 
-const editorStateStore = create<TValue>(() => ({
-  document: EMPTY_DOCUMENT,
-  selectedBlockId: null,
-  selectedSidebarTab: 'styles',
-  selectedMainTab: 'editor',
-  selectedScreenSize: 'desktop',
-  inspectorDrawerOpen: true,
-  samplesDrawerOpen: true,
-  persistenceEnabled: false,
-  lastFocusedEditable: null,
-  hoveredBlockId: null,
-  draggingBlock: null,
-  workspaceBackground: 'checkerboard',
-}));
+// Leading-edge throttle so rapid consecutive document mutations (dragging a
+// slider, typing) collapse into a single history entry: only the pre-burst
+// state is pushed, subsequent changes inside the window are dropped from the
+// undo stack (they remain in the document, just not as separate entries).
+const COALESCE_MS = 300;
+function leadingThrottle<Args extends unknown[]>(
+  fn: (...args: Args) => void,
+  wait: number,
+): (...args: Args) => void {
+  let last = Number.NEGATIVE_INFINITY;
+  return (...args: Args) => {
+    const now = Date.now();
+    if (now - last >= wait) {
+      last = now;
+      fn(...args);
+    }
+  };
+}
+
+const editorStateStore = create<TValue>()(
+  temporal(
+    () => ({
+      document: EMPTY_DOCUMENT,
+      selectedBlockId: null,
+      selectedSidebarTab: 'styles',
+      selectedMainTab: 'editor',
+      selectedScreenSize: 'desktop',
+      inspectorDrawerOpen: true,
+      samplesDrawerOpen: true,
+      persistenceEnabled: false,
+      lastFocusedEditable: null,
+      hoveredBlockId: null,
+      draggingBlock: null,
+      workspaceBackground: 'checkerboard',
+    }),
+    {
+      limit: 100,
+      // Only the document participates in history — selection, drawers, tabs
+      // and other UI state are intentionally excluded.
+      partialize: (state) => ({ document: state.document }),
+      // Skip UI-only state changes: if the document reference is unchanged,
+      // no history entry is recorded.
+      equality: (a, b) => a.document === b.document,
+      handleSet: (handleSet) =>
+        leadingThrottle<Parameters<typeof handleSet>>(
+          (pastState, replace, currentState) => handleSet(pastState, replace, currentState),
+          COALESCE_MS,
+        ),
+    },
+  ),
+);
 
 export function useDocument() {
   return editorStateStore((s) => s.document);
@@ -112,11 +151,17 @@ export function setSidebarTab(selectedSidebarTab: TValue['selectedSidebarTab']) 
 }
 
 export function resetDocument(document: TValue['document']) {
-  return editorStateStore.setState({
+  // Loading a fresh template should not itself appear as an undoable step,
+  // and any prior history no longer applies to the new document.
+  const temporalApi = editorStateStore.temporal.getState();
+  temporalApi.pause();
+  editorStateStore.setState({
     document,
     selectedSidebarTab: 'styles',
     selectedBlockId: null,
   });
+  temporalApi.clear();
+  temporalApi.resume();
 }
 
 export function getDocument() {
@@ -125,13 +170,21 @@ export function getDocument() {
 
 export function setDocument(document: TValue['document']) {
   const originalDocument = editorStateStore.getState().document;
-  
+
   editorStateStore.setState({
     document: {
       ...originalDocument,
       ...document,
     },
   });
+}
+
+// Replace the full document (unlike setDocument, does not merge with the
+// current one). Preserves undo history — use this for document-wide edits
+// such as block deletions that need to drop keys from the map. Distinct from
+// resetDocument, which clears history because it implies a fresh template.
+export function replaceDocument(document: TValue['document']) {
+  editorStateStore.setState({ document });
 }
 
 export function toggleInspectorDrawerOpen() {
@@ -190,4 +243,28 @@ export function setWorkspaceBackground(workspaceBackground: TValue['workspaceBac
 
 export function setLastFocusedEditable(lastFocusedEditable: TFocusedEditable | null) {
   return editorStateStore.setState({ lastFocusedEditable });
+}
+
+// ---------------------------------------------------------------------------
+// Undo / redo
+// ---------------------------------------------------------------------------
+
+export function undo() {
+  editorStateStore.temporal.getState().undo();
+}
+
+export function redo() {
+  editorStateStore.temporal.getState().redo();
+}
+
+export function clearHistory() {
+  editorStateStore.temporal.getState().clear();
+}
+
+export function useCanUndo() {
+  return useStore(editorStateStore.temporal, (s) => s.pastStates.length > 0);
+}
+
+export function useCanRedo() {
+  return useStore(editorStateStore.temporal, (s) => s.futureStates.length > 0);
 }

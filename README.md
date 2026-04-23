@@ -223,6 +223,20 @@ function MyApp() {
 }
 ```
 
+### Keyboard shortcuts
+
+The editor surfaces a few global shortcuts. Inside text fields or rich-text blocks the native browser behavior takes over — global undo/redo only fires when focus is on the canvas (not mid-typing).
+
+| Action | macOS | Windows / Linux |
+|---|---|---|
+| Undo | ⌘ + Z | Ctrl + Z |
+| Redo | ⌘ + Shift + Z | Ctrl + Shift + Z, Ctrl + Y |
+| Bold (inside text) | ⌘ + B | Ctrl + B |
+| Italic (inside text) | ⌘ + I | Ctrl + I |
+| Link (inside text) | ⌘ + K | Ctrl + K |
+
+The undo history tracks document mutations only (block insert/delete/move, content edits, style changes, variable edits). Rapid consecutive edits (dragging a slider, typing a burst) collapse into a single history entry. The ring buffer holds the last 100 entries and resets whenever a new template is loaded.
+
 ### Stand-alone version using Vite
 
 This project includes a standalone version that can be run using Vite:
