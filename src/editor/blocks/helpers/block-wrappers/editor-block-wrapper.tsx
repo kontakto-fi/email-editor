@@ -45,7 +45,9 @@ export default function EditorBlockWrapper({ children }: TEditorBlockWrapperProp
 
   // Drag support: only enable when the wrapper has a parent context — the
   // root EmailLayout (which owns its own drag-free surface) has no parent.
-  const draggable = Boolean(blockParent);
+  // Also disable while the block is selected so click-drag and Shift+Arrow
+  // work for text selection inside the textarea.
+  const draggable = Boolean(blockParent) && selectedBlockId !== blockId;
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     if (!blockParent) return;

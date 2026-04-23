@@ -163,6 +163,19 @@ export default function SamplesDrawer({
     }
   };
 
+  // Optimistic insert: if the host's loadTemplates hasn't yet reflected a
+  // just-saved row (common with cached SWR/React-Query or read-replica lag),
+  // patch it into local state so the user sees it immediately.
+  const ensureRowPresent = (id: string, slug: string, kind: TemplateKind, tags?: string[]) => {
+    const now = new Date().toISOString();
+    const row: TemplateListItem = { id, slug, kind, tags, createdAt: now, updatedAt: now };
+    if (kind === 'sample') {
+      setSamples((prev) => (prev.some((t) => t.id === id) ? prev : [...prev, row]));
+    } else {
+      setTemplates((prev) => (prev.some((t) => t.id === id) ? prev : [...prev, row]));
+    }
+  };
+
   useEffect(() => {
     if (!enabled || !loadTemplates) return;
     refreshTemplates();
@@ -331,6 +344,7 @@ export default function SamplesDrawer({
       showMessage('New template created!');
       window.location.hash = `#template/${id}`;
       await refreshTemplates();
+      ensureRowPresent(id, slug, 'template');
       return true;
     } catch (e) {
       console.error('Error creating template:', e);
@@ -373,6 +387,7 @@ export default function SamplesDrawer({
       showMessage(kind === 'sample' ? 'New sample created' : 'New template created');
       window.location.hash = `#template/${id}`;
       await refreshTemplates();
+      ensureRowPresent(id, slug, kind);
       return true;
     } catch (e) {
       console.error('Error creating:', e);
