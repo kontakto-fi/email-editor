@@ -534,3 +534,117 @@ msgstr " mån sedan"
 
 msgid "time.years-short"
 msgstr " år sedan"
+
+msgid "inspect.hint"
+msgstr "Klicka på ett block för att inspektera."
+
+msgid "inspect.not-found"
+msgstr "Blocket hittades inte. Klicka på ett block för att återställa."
+
+msgid "settings.workspace-background"
+msgstr "Arbetsytans bakgrund"
+
+msgid "settings.checkerboard"
+msgstr "Rutmönster"
+
+msgid "settings.solid"
+msgstr "Enfärgad"
+
+msgid "settings.editor-only-hint"
+msgstr "Syns bara i editorn — når aldrig det renderade mejlet."
+
+msgid "settings.no-template"
+msgstr "Ingen mall vald"
+
+msgid "settings.delete-confirm"
+msgstr "Är du säker på att du vill ta bort denna mall?"
+
+msgid "settings.copied"
+msgstr "Mall kopierad!"
+
+msgid "settings.save-disabled"
+msgstr "Sparfunktionen är inaktiverad. Aktivera genom att ange nödvändiga callback-funktioner."
+
+msgid "settings.save-as-sample"
+msgstr "Spara som exempelmall"
+
+msgid "settings.delete"
+msgstr "Ta bort mall"
+
+msgid "settings.save-details"
+msgstr "Spara detaljer"
+
+msgid "settings.saved"
+msgstr "Sparad"
+
+msgid "settings.no-rename-cb"
+msgstr "Koppla renameTemplate-callback för att kunna redigera härifrån"
+
+msgid "panel.details"
+msgstr "Detaljer"
+
+msgid "outline.title"
+msgstr "Struktur"
+
+msgid "outline.canvas"
+msgstr "Canvas"
+
+msgid "outline.hint"
+msgstr "Klicka på en rad för att välja. Dra en rad för att ändra ordning eller flytta till en behållare."
+
+msgid "rename.add-tag"
+msgstr "Lägg till en etikett"
+
+msgid "undo.label"
+msgstr "Ångra"
+
+msgid "undo.tooltip"
+msgstr "Ångra"
+
+msgid "redo.label"
+msgstr "Gör om"
+
+msgid "redo.tooltip"
+msgstr "Gör om"
+
+msgid "block-add.heading"
+msgstr "Rubrik"
+
+msgid "block-add.text"
+msgstr "Text"
+
+msgid "block-add.button"
+msgstr "Knapp"
+
+msgid "block-add.image"
+msgstr "Bild"
+
+msgid "block-add.avatar"
+msgstr "Avatar"
+
+msgid "block-add.personal-signature"
+msgstr "Personlig signatur"
+
+msgid "block-add.company-signature"
+msgstr "Företagssignatur"
+
+msgid "block-add.divider"
+msgstr "Avgränsare"
+
+msgid "block-add.spacer"
+msgstr "Mellanrum"
+
+msgid "block-add.html"
+msgstr "HTML"
+
+msgid "block-add.columns"
+msgstr "Kolumner"
+
+msgid "block-add.container"
+msgstr "Behållare"
+
+msgid "tag.marketing"
+msgstr "marknadsföring"
+
+msgid "tag.transactional"
+msgstr "transaktionella"

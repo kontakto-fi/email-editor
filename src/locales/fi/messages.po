@@ -534,3 +534,117 @@ msgstr " kk sitten"
 
 msgid "time.years-short"
 msgstr " v sitten"
+
+msgid "inspect.hint"
+msgstr "Valitse lohko napsauttamalla."
+
+msgid "inspect.not-found"
+msgstr "Lohkoa ei löytynyt. Palaa napsauttamalla toista lohkoa."
+
+msgid "settings.workspace-background"
+msgstr "Työtilan tausta"
+
+msgid "settings.checkerboard"
+msgstr "Shakkikuvio"
+
+msgid "settings.solid"
+msgstr "Yksivärinen"
+
+msgid "settings.editor-only-hint"
+msgstr "Näkyy vain editorissa — ei päädy lähetettävään viestiin."
+
+msgid "settings.no-template"
+msgstr "Pohjaa ei ole valittu"
+
+msgid "settings.delete-confirm"
+msgstr "Haluatko varmasti poistaa tämän pohjan?"
+
+msgid "settings.copied"
+msgstr "Pohja kopioitu!"
+
+msgid "settings.save-disabled"
+msgstr "Tallennus on poistettu käytöstä. Ota käyttöön antamalla tarvittavat callback-funktiot."
+
+msgid "settings.save-as-sample"
+msgstr "Tallenna mallipohjaksi"
+
+msgid "settings.delete"
+msgstr "Poista pohja"
+
+msgid "settings.save-details"
+msgstr "Tallenna tiedot"
+
+msgid "settings.saved"
+msgstr "Tallennettu"
+
+msgid "settings.no-rename-cb"
+msgstr "Anna renameTemplate-callback käyttöön, niin voit muokata tästä"
+
+msgid "panel.details"
+msgstr "Tiedot"
+
+msgid "outline.title"
+msgstr "Rakenne"
+
+msgid "outline.canvas"
+msgstr "Kangas"
+
+msgid "outline.hint"
+msgstr "Valitse rivi napsauttamalla. Raahaa riviä järjestyksen muuttamiseksi tai siirrä se säiliöön."
+
+msgid "rename.add-tag"
+msgstr "Lisää tunniste"
+
+msgid "undo.label"
+msgstr "Kumoa"
+
+msgid "undo.tooltip"
+msgstr "Kumoa"
+
+msgid "redo.label"
+msgstr "Tee uudelleen"
+
+msgid "redo.tooltip"
+msgstr "Tee uudelleen"
+
+msgid "block-add.heading"
+msgstr "Otsikko"
+
+msgid "block-add.text"
+msgstr "Teksti"
+
+msgid "block-add.button"
+msgstr "Painike"
+
+msgid "block-add.image"
+msgstr "Kuva"
+
+msgid "block-add.avatar"
+msgstr "Avatar"
+
+msgid "block-add.personal-signature"
+msgstr "Henkilökohtainen allekirjoitus"
+
+msgid "block-add.company-signature"
+msgstr "Yritysallekirjoitus"
+
+msgid "block-add.divider"
+msgstr "Erotin"
+
+msgid "block-add.spacer"
+msgstr "Väli"
+
+msgid "block-add.html"
+msgstr "HTML"
+
+msgid "block-add.columns"
+msgstr "Sarakkeet"
+
+msgid "block-add.container"
+msgstr "Säiliö"
+
+msgid "tag.marketing"
+msgstr "markkinointi"
+
+msgid "tag.transactional"
+msgstr "tapahtumaviestit"

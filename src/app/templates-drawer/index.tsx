@@ -500,7 +500,7 @@ export default function SamplesDrawer({
                   {allTags.map((tag) => (
                     <Chip
                       key={tag}
-                      label={tag}
+                      label={t(`tag.${tag}`, tag)}
                       size="small"
                       clickable
                       color={activeTags.includes(tag) ? 'primary' : 'default'}

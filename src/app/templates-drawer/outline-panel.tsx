@@ -28,6 +28,7 @@ import {
   useSelectedBlockId,
 } from '@editor/editor-context';
 import { TEditorConfiguration } from '@editor/core';
+import { t } from '@i18n';
 import {
   buildMovePatch,
   isDescendant,
@@ -122,7 +123,7 @@ function buildNode(id: string, doc: TEditorConfiguration, ctx?: BuildCtx): Outli
         .filter((n): n is OutlineNode => n !== null);
       return {
         id,
-        label: 'Canvas',
+        label: t('outline.canvas', 'Canvas'),
         icon: iconForType('EmailLayout'),
         children,
         containerChildrenRef: parentForChildren,
@@ -259,10 +260,10 @@ export default function OutlinePanel() {
   return (
     <Box>
       <Typography variant="subtitle2" component="h2" sx={{ fontWeight: 'bold', mb: 0.5, px: 0.5 }}>
-        Outline
+        {t('outline.title', 'Outline')}
       </Typography>
       <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', px: 0.5, mb: 1 }}>
-        Click a row to select. Drag a row to reorder or move it into a container.
+        {t('outline.hint', 'Click a row to select. Drag a row to reorder or move it into a container.')}
       </Typography>
       {tree ? (
         <OutlineRow

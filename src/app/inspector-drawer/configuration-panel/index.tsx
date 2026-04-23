@@ -4,6 +4,7 @@ import { Box, Typography } from '@mui/material';
 
 import { TEditorBlock } from '@editor/core';
 import { setDocument, useDocument, useSelectedBlockId } from '@editor/editor-context';
+import { t } from '@i18n';
 
 import AvatarSidebarPanel from './input-panels/avatar-sidebar-panel';
 import ButtonSidebarPanel from './input-panels/button-sidebar-panel';
@@ -31,11 +32,11 @@ export default function ConfigurationPanel() {
   const selectedBlockId = useSelectedBlockId();
 
   if (!selectedBlockId) {
-    return renderMessage('Click on a block to inspect.');
+    return renderMessage(t('inspect.hint', 'Click on a block to inspect.'));
   }
   const block = document[selectedBlockId];
   if (!block) {
-    return renderMessage(`Block with id ${selectedBlockId} was not found. Click on a block to reset.`);
+    return renderMessage(t('inspect.not-found', 'Block not found. Click on a block to reset.'));
   }
 
   const setBlock = (conf: TEditorBlock) => setDocument({ [selectedBlockId]: conf });

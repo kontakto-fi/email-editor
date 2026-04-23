@@ -534,3 +534,117 @@ msgstr "mo ago"
 
 msgid "time.years-short"
 msgstr "y ago"
+
+msgid "inspect.hint"
+msgstr "Click on a block to inspect."
+
+msgid "inspect.not-found"
+msgstr "Block not found. Click on a block to reset."
+
+msgid "settings.workspace-background"
+msgstr "Workspace background"
+
+msgid "settings.checkerboard"
+msgstr "Checkerboard"
+
+msgid "settings.solid"
+msgstr "Solid"
+
+msgid "settings.editor-only-hint"
+msgstr "Editor-only — never reaches the rendered email."
+
+msgid "settings.no-template"
+msgstr "No template selected"
+
+msgid "settings.delete-confirm"
+msgstr "Are you sure you want to delete this template?"
+
+msgid "settings.copied"
+msgstr "Template copied successfully!"
+
+msgid "settings.save-disabled"
+msgstr "Save functionality is disabled. To enable saving, provide the necessary callback functions."
+
+msgid "settings.save-as-sample"
+msgstr "Save as Sample Template"
+
+msgid "settings.delete"
+msgstr "Delete Template"
+
+msgid "settings.save-details"
+msgstr "Save details"
+
+msgid "settings.saved"
+msgstr "Saved"
+
+msgid "settings.no-rename-cb"
+msgstr "Wire a renameTemplate callback to enable editing from here"
+
+msgid "panel.details"
+msgstr "Details"
+
+msgid "outline.title"
+msgstr "Outline"
+
+msgid "outline.canvas"
+msgstr "Canvas"
+
+msgid "outline.hint"
+msgstr "Click a row to select. Drag a row to reorder or move it into a container."
+
+msgid "rename.add-tag"
+msgstr "Add a tag"
+
+msgid "undo.label"
+msgstr "Undo"
+
+msgid "undo.tooltip"
+msgstr "Undo"
+
+msgid "redo.label"
+msgstr "Redo"
+
+msgid "redo.tooltip"
+msgstr "Redo"
+
+msgid "block-add.heading"
+msgstr "Heading"
+
+msgid "block-add.text"
+msgstr "Text"
+
+msgid "block-add.button"
+msgstr "Button"
+
+msgid "block-add.image"
+msgstr "Image"
+
+msgid "block-add.avatar"
+msgstr "Avatar"
+
+msgid "block-add.personal-signature"
+msgstr "Personal Signature"
+
+msgid "block-add.company-signature"
+msgstr "Company Signature"
+
+msgid "block-add.divider"
+msgstr "Divider"
+
+msgid "block-add.spacer"
+msgstr "Spacer"
+
+msgid "block-add.html"
+msgstr "Html"
+
+msgid "block-add.columns"
+msgstr "Columns"
+
+msgid "block-add.container"
+msgstr "Container"
+
+msgid "tag.marketing"
+msgstr "marketing"
+
+msgid "tag.transactional"
+msgstr "transactional"

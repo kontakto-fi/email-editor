@@ -27,6 +27,7 @@ import {
   usePersistenceEnabled,
   useWorkspaceBackground,
 } from '@editor/editor-context';
+import { t } from '@i18n';
 import BaseSidebarPanel from './configuration-panel/input-panels/helpers/base-sidebar-panel';
 import TemplateDownloadButton from './template-panel-download-button';
 
@@ -58,7 +59,7 @@ export default function TemplatePanel({
   const workspaceBackground = useWorkspaceBackground();
 
   const handleDelete = () => {
-    if (!currentTemplateId || !window.confirm('Are you sure you want to delete this template?')) {
+    if (!currentTemplateId || !window.confirm(t('settings.delete-confirm', 'Are you sure you want to delete this template?'))) {
       return;
     }
 
@@ -80,7 +81,7 @@ export default function TemplatePanel({
       copyTemplate(`${currentTemplateName} (Copy)`, document);
 
       // Show confirmation
-      window.alert('Template copied successfully!');
+      window.alert(t('settings.copied', 'Template copied successfully!'));
     }
   };
 
@@ -88,7 +89,7 @@ export default function TemplatePanel({
     <BaseSidebarPanel title="Editor appearance">
       <Stack spacing={1}>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          Workspace background
+          {t('settings.workspace-background', 'Workspace background')}
         </Typography>
         <ToggleButtonGroup
           value={workspaceBackground}
@@ -98,15 +99,15 @@ export default function TemplatePanel({
         >
           <ToggleButton value="checkerboard" sx={{ textTransform: 'none', gap: 0.75 }}>
             <GridOnOutlined fontSize="small" />
-            Checkerboard
+            {t('settings.checkerboard', 'Checkerboard')}
           </ToggleButton>
           <ToggleButton value="solid" sx={{ textTransform: 'none', gap: 0.75 }}>
             <SquareOutlined fontSize="small" />
-            Solid
+            {t('settings.solid', 'Solid')}
           </ToggleButton>
         </ToggleButtonGroup>
         <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-          Editor-only — never reaches the rendered email.
+          {t('settings.editor-only-hint', 'Editor-only — never reaches the rendered email.')}
         </Typography>
       </Stack>
     </BaseSidebarPanel>
@@ -115,7 +116,7 @@ export default function TemplatePanel({
   if (!currentTemplateId) {
     return (
       <>
-        <BaseSidebarPanel title="Template">No template selected</BaseSidebarPanel>
+        <BaseSidebarPanel title="Template">{t('settings.no-template', 'No template selected')}</BaseSidebarPanel>
         {workspaceToggle}
       </>
     );
@@ -151,7 +152,7 @@ export default function TemplatePanel({
                 fontSize: '0.8rem',
               }}
             >
-              Save functionality is disabled. To enable saving, provide the necessary callback functions.
+              {t('settings.save-disabled', 'Save functionality is disabled. To enable saving, provide the necessary callback functions.')}
             </Typography>
           )}
           {persistenceEnabled && (
@@ -164,7 +165,7 @@ export default function TemplatePanel({
                 fullWidth
                 disabled={!copyTemplate}
               >
-                Save as Sample Template
+                {t('settings.save-as-sample', 'Save as Sample Template')}
               </Button>
               <Button
                 variant="outlined"
@@ -174,7 +175,7 @@ export default function TemplatePanel({
                 fullWidth
                 disabled={!deleteTemplate}
               >
-                Delete Template
+                {t('settings.delete', 'Delete Template')}
               </Button>
             </>
           )}
@@ -250,7 +251,7 @@ function DetailsEditor({ templateId, currentName, currentTags, canEdit, onSave }
     <Stack spacing={1.5}>
       <TextField
         size="small"
-        label="Name"
+        label={t('rename.name-label', 'Name')}
         value={name}
         onChange={(e) => setName(e.target.value)}
         disabled={!canEdit || saving}
@@ -258,7 +259,7 @@ function DetailsEditor({ templateId, currentName, currentTags, canEdit, onSave }
       />
       <Box>
         <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mb: 0.5 }}>
-          Tags
+          {t('rename.tags', 'Tags')}
         </Typography>
         {tags.length > 0 ? (
           <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
@@ -273,13 +274,13 @@ function DetailsEditor({ templateId, currentName, currentTags, canEdit, onSave }
           </Stack>
         ) : (
           <Typography variant="caption" sx={{ color: 'text.disabled', display: 'block', mb: 1 }}>
-            No tags. Suggested: <i>transactional</i>, <i>marketing</i>.
+            {t('rename.no-tags', 'No tags yet.')}
           </Typography>
         )}
         <TextField
           size="small"
           fullWidth
-          placeholder="Add a tag"
+          placeholder={t('rename.add-tag', 'Add a tag')}
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
           disabled={!canEdit || saving}
@@ -302,14 +303,14 @@ function DetailsEditor({ templateId, currentName, currentTags, canEdit, onSave }
                   startIcon={<AddOutlined fontSize="small" />}
                   sx={{ textTransform: 'none' }}
                 >
-                  Add
+                  {t('common.add', 'Add')}
                 </Button>
               </InputAdornment>
             ),
           }}
         />
       </Box>
-      <Tooltip title={canEdit ? '' : 'Wire a renameTemplate callback to enable editing from here'} placement="top">
+      <Tooltip title={canEdit ? '' : t('settings.no-rename-cb', 'Wire a renameTemplate callback to enable editing from here')} placement="top">
         <span>
           <Button
             variant="contained"
@@ -319,7 +320,7 @@ function DetailsEditor({ templateId, currentName, currentTags, canEdit, onSave }
             disabled={!canEdit || saving || !dirty || !name.trim()}
             startIcon={justSaved ? <CheckOutlined fontSize="small" /> : null}
           >
-            {saving ? 'Saving…' : justSaved ? 'Saved' : 'Save details'}
+            {saving ? t('common.saving', 'Saving…') : justSaved ? t('settings.saved', 'Saved') : t('settings.save-details', 'Save details')}
           </Button>
         </span>
       </Tooltip>

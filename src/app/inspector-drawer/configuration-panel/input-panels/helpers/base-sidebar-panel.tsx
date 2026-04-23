@@ -22,6 +22,7 @@ const TITLE_KEYS: Record<string, string> = {
   'Columns block': 'panel.columns-block',
   'Container block': 'panel.container-block',
   'Html block': 'panel.html-block',
+  Details: 'panel.details',
 };
 
 type SidebarPanelProps = {
