@@ -274,16 +274,15 @@ export default function SamplesDrawer({
   const handleRenameSubmit = async (newSlug: string, opts?: { tags?: string[] }) => {
     if (!renameTarget || !renameTemplate) return;
     await renameTemplate(renameTarget.id, newSlug, opts);
+    const newTags = opts?.tags ?? renameTarget.tags ?? [];
     // Optimistic: update local lists (both templates + samples) so the UI
     // reflects the edit without waiting on the host's event.
     const patch = (t: TemplateListItem) =>
-      t.id === renameTarget.id
-        ? { ...t, slug: newSlug, tags: opts?.tags ?? t.tags }
-        : t;
+      t.id === renameTarget.id ? { ...t, slug: newSlug, tags: newTags } : t;
     setTemplates((prev) => prev.map(patch));
     setSamples((prev) => prev.map(patch));
     if (currentTemplateId === renameTarget.id) {
-      setCurrentTemplate(renameTarget.id, newSlug);
+      setCurrentTemplate(renameTarget.id, newSlug, undefined, newTags);
     }
     showMessage('Details saved');
   };

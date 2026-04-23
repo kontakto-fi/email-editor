@@ -39,16 +39,28 @@ export interface InspectorDrawerProps {
   copyTemplate?: (templateName: string, content: any) => void;
 
   /**
+   * Callback to update a template's details (name + tags). Threaded through
+   * to the Settings tab so editors can rename / retag without opening the
+   * row menu.
+   */
+  renameTemplate?: (
+    templateId: string,
+    newSlug: string,
+    opts?: { tags?: string[] },
+  ) => void | Promise<void>;
+
+  /**
    * Indicates whether the template is saving enabled
    */
   savingEnabled?: boolean;
 }
 
-export default function InspectorDrawer({ 
-  enterDuration = 225, 
+export default function InspectorDrawer({
+  enterDuration = 225,
   exitDuration = 225,
   deleteTemplate,
   copyTemplate,
+  renameTemplate,
   savingEnabled = true
 }: InspectorDrawerProps = {}) {
   const selectedSidebarTab = useSelectedSidebarTab();
@@ -66,6 +78,7 @@ export default function InspectorDrawer({
         return <TemplatePanel
           deleteTemplate={deleteTemplate}
           copyTemplate={copyTemplate}
+          renameTemplate={renameTemplate}
         />;
     }
   };

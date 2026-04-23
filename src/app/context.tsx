@@ -22,10 +22,23 @@ export interface EmailEditorContextType {
   currentTemplateId: string | null;
   currentTemplateName: string | null;
   currentTemplateKind: TemplateKind | null;
+  currentTemplateTags: string[];
   saveTemplate: () => TEditorConfiguration;
-  loadTemplate: (template: TEditorConfiguration, templateId?: string, templateName?: string, kind?: TemplateKind | null) => void;
+  loadTemplate: (
+    template: TEditorConfiguration,
+    templateId?: string,
+    templateName?: string,
+    kind?: TemplateKind | null,
+    tags?: string[] | null,
+  ) => void;
   registerSaveListener: (callback: (template: TEditorConfiguration) => void) => () => void;
-  setCurrentTemplate: (templateId: string | null, templateName: string | null, kind?: TemplateKind | null) => void;
+  setCurrentTemplate: (
+    templateId: string | null,
+    templateName: string | null,
+    kind?: TemplateKind | null,
+    tags?: string[] | null,
+  ) => void;
+  setCurrentTemplateTags: (tags: string[]) => void;
 }
 
 const EmailEditorContext = createContext<EmailEditorContextType | null>(null);
@@ -48,6 +61,7 @@ export const EmailEditorProvider: React.FC<EmailEditorProviderProps> = ({
   const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(initialTemplateId);
   const [currentTemplateName, setCurrentTemplateName] = useState<string | null>(initialTemplateName);
   const [currentTemplateKind, setCurrentTemplateKind] = useState<TemplateKind | null>(null);
+  const [currentTemplateTags, setCurrentTemplateTagsState] = useState<string[]>([]);
   const saveListenersRef = useRef<((template: TEditorConfiguration) => void)[]>([]);
 
   // Use ref for onSave callback to keep context value stable
@@ -63,26 +77,39 @@ export const EmailEditorProvider: React.FC<EmailEditorProviderProps> = ({
     return currentDoc;
   }, []);
 
-  const loadTemplate = useCallback((newTemplate: TEditorConfiguration, templateId?: string, templateName?: string, kind?: TemplateKind | null) => {
-    if (templateId !== undefined) {
+  const loadTemplate = useCallback(
+    (
+      _newTemplate: TEditorConfiguration,
+      templateId?: string,
+      templateName?: string,
+      kind?: TemplateKind | null,
+      tags?: string[] | null,
+    ) => {
+      if (templateId !== undefined) setCurrentTemplateId(templateId);
+      if (templateName !== undefined) setCurrentTemplateName(templateName);
+      if (kind !== undefined) setCurrentTemplateKind(kind);
+      if (tags !== undefined) setCurrentTemplateTagsState(tags ?? []);
+    },
+    []
+  );
+
+  const setCurrentTemplate = useCallback(
+    (
+      templateId: string | null,
+      templateName: string | null,
+      kind?: TemplateKind | null,
+      tags?: string[] | null,
+    ) => {
       setCurrentTemplateId(templateId);
-    }
-
-    if (templateName !== undefined) {
       setCurrentTemplateName(templateName);
-    }
+      if (kind !== undefined) setCurrentTemplateKind(kind);
+      if (tags !== undefined) setCurrentTemplateTagsState(tags ?? []);
+    },
+    []
+  );
 
-    if (kind !== undefined) {
-      setCurrentTemplateKind(kind);
-    }
-  }, []);
-
-  const setCurrentTemplate = useCallback((templateId: string | null, templateName: string | null, kind?: TemplateKind | null) => {
-    setCurrentTemplateId(templateId);
-    setCurrentTemplateName(templateName);
-    if (kind !== undefined) {
-      setCurrentTemplateKind(kind);
-    }
+  const setCurrentTemplateTags = useCallback((tags: string[]) => {
+    setCurrentTemplateTagsState(tags);
   }, []);
 
   const registerSaveListener = useCallback((callback: (template: TEditorConfiguration) => void) => {
@@ -92,15 +119,30 @@ export const EmailEditorProvider: React.FC<EmailEditorProviderProps> = ({
     };
   }, []);
 
-  const value = useMemo(() => ({
-    currentTemplateId,
-    currentTemplateName,
-    currentTemplateKind,
-    saveTemplate,
-    loadTemplate,
-    registerSaveListener,
-    setCurrentTemplate
-  }), [currentTemplateId, currentTemplateName, currentTemplateKind, saveTemplate, loadTemplate, registerSaveListener, setCurrentTemplate]);
+  const value = useMemo(
+    () => ({
+      currentTemplateId,
+      currentTemplateName,
+      currentTemplateKind,
+      currentTemplateTags,
+      saveTemplate,
+      loadTemplate,
+      registerSaveListener,
+      setCurrentTemplate,
+      setCurrentTemplateTags,
+    }),
+    [
+      currentTemplateId,
+      currentTemplateName,
+      currentTemplateKind,
+      currentTemplateTags,
+      saveTemplate,
+      loadTemplate,
+      registerSaveListener,
+      setCurrentTemplate,
+      setCurrentTemplateTags,
+    ]
+  );
 
   return (
     <EmailEditorContext.Provider value={value}>

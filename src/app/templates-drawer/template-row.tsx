@@ -86,7 +86,7 @@ export default function TemplateRow({
       const content = await templateLoader();
       if (content) {
         resetDocument(content);
-        setCurrentTemplate(template.id, template.slug, template.kind);
+        setCurrentTemplate(template.id, template.slug, template.kind, template.tags ?? []);
       }
     } catch (error) {
       console.error('Error loading template:', error);

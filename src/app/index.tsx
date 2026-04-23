@@ -250,11 +250,12 @@ const EmailEditorInternal = forwardRef<EmailEditorRef, Omit<EmailEditorProps, 'i
 
   return (
     <Stack position="relative" id="drawer-container" sx={{ minHeight }}>
-      <InspectorDrawer 
+      <InspectorDrawer
         enterDuration={drawerEnterDuration}
         exitDuration={drawerExitDuration}
         deleteTemplate={deleteTemplate}
         copyTemplate={copyTemplate}
+        renameTemplate={renameTemplate}
       />
       <SamplesDrawer
         enterDuration={drawerEnterDuration}
