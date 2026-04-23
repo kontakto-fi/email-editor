@@ -166,7 +166,7 @@ export default function TemplateRow({
         </Box>
       </Stack>
 
-      {hasActions && hover && (
+      {hasActions && (
         <Stack
           direction="row"
           spacing={0.25}
@@ -179,6 +179,8 @@ export default function TemplateRow({
             borderRadius: 1,
             boxShadow: 1,
             p: 0.25,
+            opacity: hover || isCurrent ? 1 : 0.55,
+            transition: 'opacity 120ms',
           }}
         >
           {onDuplicateAsTemplate && (
