@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/kontakto-fi/email-editor/compare/v2.6.0...v2.7.0) (2026-04-23)
+
+
+### Features
+
+* translate all sidebar panels, dialogs, tabs, and toolbar ([44c1260](https://github.com/kontakto-fi/email-editor/commit/44c1260122783457e6e61a6ee74faab457b1b4e7))
+
 # [2.6.0](https://github.com/kontakto-fi/email-editor/compare/v2.5.0...v2.6.0) (2026-04-23)
 
 
