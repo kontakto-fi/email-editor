@@ -79,7 +79,7 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
           justifyContent: 'center',
           pointerEvents: 'none',
           zIndex: 2,
-          pb: 2,
+          pb: 3,
         }}
       >
         <Box
@@ -87,23 +87,23 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
             pointerEvents: 'auto',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 1,
-            px: 1.25,
-            py: 1,
+            gap: 1.25,
+            px: 2,
+            py: 1.25,
             backgroundColor: 'background.paper',
             borderRadius: 999,
             boxShadow:
-              '0 2px 6px rgba(33, 36, 67, 0.06), 0 12px 32px rgba(33, 36, 67, 0.12)',
+              '0 2px 6px rgba(33, 36, 67, 0.06), 0 16px 40px rgba(33, 36, 67, 0.14)',
           }}
         >
           {hasOpenRow && currentTemplateName && (
             <Box
               sx={{
-                pl: 1.5,
+                pl: 1,
                 pr: 1,
-                fontSize: 12,
+                fontSize: 14,
                 color: 'text.secondary',
-                maxWidth: 180,
+                maxWidth: 220,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -119,10 +119,10 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
           <Tooltip title={hasOpenRow ? `Save changes${isSample ? ' to this sample' : ''}` : 'Save as a new template'}>
             <Button
               variant="contained"
-              size="small"
-              startIcon={<SaveOutlined fontSize="small" />}
+              size="large"
+              startIcon={<SaveOutlined />}
               onClick={handlePrimary}
-              sx={{ borderRadius: 999, textTransform: 'none' }}
+              sx={{ borderRadius: 999, textTransform: 'none', px: 2.5, fontSize: 15, fontWeight: 600 }}
             >
               {primaryLabel}
             </Button>
@@ -131,13 +131,13 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
             <Tooltip title="Save as a new template">
               <Button
                 variant="outlined"
-                size="small"
-                startIcon={<SaveAsOutlined fontSize="small" />}
+                size="large"
+                startIcon={<SaveAsOutlined />}
                 onClick={() => {
                   setNameError(null);
                   setDialogMode('save-as');
                 }}
-                sx={{ borderRadius: 999, textTransform: 'none' }}
+                sx={{ borderRadius: 999, textTransform: 'none', px: 2, fontSize: 14 }}
               >
                 Save as…
               </Button>
@@ -147,13 +147,13 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
             <Tooltip title="Start a fresh template">
               <Button
                 variant="text"
-                size="small"
-                startIcon={<AddOutlined fontSize="small" />}
+                size="large"
+                startIcon={<AddOutlined />}
                 onClick={() => {
                   setNameError(null);
                   setDialogMode('new-blank');
                 }}
-                sx={{ borderRadius: 999, textTransform: 'none', color: 'text.secondary' }}
+                sx={{ borderRadius: 999, textTransform: 'none', px: 2, fontSize: 14, color: 'text.secondary' }}
               >
                 New
               </Button>
