@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/kontakto-fi/email-editor/compare/v2.3.0...v2.3.1) (2026-04-23)
+
+
+### Bug Fixes
+
+* restore text selection and refresh saved templates ([3cee376](https://github.com/kontakto-fi/email-editor/commit/3cee376c553c12b3ae29054ab55f19106eae5bdc))
+
 # [2.3.0](https://github.com/kontakto-fi/email-editor/compare/v2.2.2...v2.3.0) (2026-04-23)
 
 
