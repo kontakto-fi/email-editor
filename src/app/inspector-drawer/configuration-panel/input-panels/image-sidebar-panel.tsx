@@ -10,6 +10,7 @@ import {
 } from '@mui/icons-material';
 import { Alert, Box, Button, CircularProgress, Stack, ToggleButton, Tooltip } from '@mui/material';
 import { ImageProps, ImagePropsSchema } from '@blocks';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import RadioGroupInput from './helpers/inputs/radio-group-input';
@@ -91,7 +92,7 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
                 disabled={uploading}
                 onClick={() => fileInputRef.current?.click()}
               >
-                {uploading ? 'Uploading…' : 'Upload'}
+                {uploading ? t('image.uploading', 'Uploading…') : t('image.upload', 'Upload')}
               </Button>
               <input
                 ref={fileInputRef}
@@ -114,7 +115,7 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
               startIcon={<CollectionsOutlined fontSize="small" />}
               onClick={() => setLibraryOpen(true)}
             >
-              Library
+              {t('image.library', 'Library')}
             </Button>
           )}
         </Stack>
@@ -127,7 +128,7 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
       )}
 
       <TextInput
-        label="Source URL"
+        label={t('image.source-url', 'Source URL')}
         defaultValue={url}
         onChange={(v) => {
           const next = v.trim().length === 0 ? null : v.trim();
@@ -138,18 +139,18 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
         <Box sx={{ mt: -1, mb: 1, display: 'flex', alignItems: 'flex-start', gap: 0.75 }}>
           <ErrorOutlineOutlined fontSize="small" sx={{ color: 'warning.main', mt: '2px' }} />
           <Box sx={{ fontSize: 12, color: 'warning.dark' }}>
-            Non-HTTPS URL: Gmail and other clients strip mixed content. Use https:// for reliable delivery.
+            {t('image.http-warning', 'Non-HTTPS URL: Gmail and other clients strip mixed content. Use https:// for reliable delivery.')}
           </Box>
         </Box>
       )}
 
       <TextInput
-        label="Alt text"
+        label={t('image.alt-text', 'Alt text')}
         defaultValue={data.props?.alt ?? ''}
         onChange={(alt) => updateData({ ...data, props: { ...data.props, alt } })}
       />
       <TextInput
-        label="Click through URL"
+        label={t('image.link-href', 'Click through URL')}
         defaultValue={data.props?.linkHref ?? ''}
         onChange={(v) => {
           const linkHref = v.trim().length === 0 ? null : v.trim();
@@ -158,19 +159,19 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
       />
       <Stack direction="row" spacing={2}>
         <TextDimensionInput
-          label="Width"
+          label={t('field.width', 'Width')}
           defaultValue={data.props?.width}
           onChange={(width) => updateData({ ...data, props: { ...data.props, width } })}
         />
         <TextDimensionInput
-          label="Height"
+          label={t('field.height', 'Height')}
           defaultValue={data.props?.height}
           onChange={(height) => updateData({ ...data, props: { ...data.props, height } })}
         />
       </Stack>
 
       <RadioGroupInput
-        label="Alignment"
+        label={t('style.alignment', 'Alignment')}
         defaultValue={data.props?.contentAlignment ?? 'middle'}
         onChange={(contentAlignment) => updateData({ ...data, props: { ...data.props, contentAlignment } })}
       >

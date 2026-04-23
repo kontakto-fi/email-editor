@@ -11,6 +11,7 @@ import { ToggleButton } from '@mui/material';
 import ColumnsContainerPropsSchema, {
   ColumnsContainerProps,
 } from '@editor/blocks/columns-container/columns-container-props-schema';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import ColumnWidthsInput from './helpers/inputs/column-widths-input';
@@ -37,7 +38,7 @@ export default function ColumnsContainerPanel({ data, setData }: ColumnsContaine
   return (
     <BaseSidebarPanel title="Columns block">
       <RadioGroupInput
-        label="Number of columns"
+        label={t('columns.count', 'Number of columns')}
         defaultValue={data.props?.columnsCount === 2 ? '2' : '3'}
         onChange={(v) => {
           updateData({ ...data, props: { ...data.props, columnsCount: v === '2' ? 2 : 3 } });
@@ -53,7 +54,7 @@ export default function ColumnsContainerPanel({ data, setData }: ColumnsContaine
         }}
       />
       <SliderInput
-        label="Columns gap"
+        label={t('columns.gap', 'Columns gap')}
         iconLabel={<SpaceBarOutlined sx={{ color: 'text.secondary' }} />}
         units="px"
         step={4}
@@ -64,7 +65,7 @@ export default function ColumnsContainerPanel({ data, setData }: ColumnsContaine
         onChange={(columnsGap) => updateData({ ...data, props: { ...data.props, columnsGap } })}
       />
       <RadioGroupInput
-        label="Alignment"
+        label={t('style.alignment', 'Alignment')}
         defaultValue={data.props?.contentAlignment ?? 'middle'}
         onChange={(contentAlignment) => {
           updateData({ ...data, props: { ...data.props, contentAlignment } });

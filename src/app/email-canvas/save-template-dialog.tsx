@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  DialogActions, 
-  Button, 
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
   TextField,
   Box
 } from '@mui/material';
+import { t } from '@i18n';
 
 interface SaveTemplateDialogProps {
   open: boolean;
@@ -16,15 +17,21 @@ interface SaveTemplateDialogProps {
   onNameChange?: () => void;
   defaultName?: string;
   error?: string | null;
+  /**
+   * Dialog flavour — controls the title + submit label. "save-as" (default)
+   * shows "Save as a new template"; "new" shows "Create a new template".
+   */
+  mode?: 'save-as' | 'new';
 }
 
-export default function SaveTemplateDialog({ 
-  open, 
-  onClose, 
+export default function SaveTemplateDialog({
+  open,
+  onClose,
   onSave,
   onNameChange,
   defaultName = '',
-  error: externalError = null
+  error: externalError = null,
+  mode = 'save-as',
 }: SaveTemplateDialogProps) {
   const [templateName, setTemplateName] = useState(defaultName);
   const [internalError, setInternalError] = useState('');
@@ -57,7 +64,7 @@ export default function SaveTemplateDialog({
 
   const handleSave = async () => {
     if (!templateName.trim()) {
-      setInternalError('Please enter a template name');
+      setInternalError(t('save-dialog.error-empty-name', 'Please enter a template name'));
       return;
     }
     
@@ -101,19 +108,24 @@ export default function SaveTemplateDialog({
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle>Save Email Template</DialogTitle>
+      <DialogTitle>
+        {mode === 'new'
+          ? t('save-dialog.title-new', 'Create a new template')
+          : t('save-dialog.title', 'Save as a new template')}
+      </DialogTitle>
       <DialogContent>
         <Box sx={{ pt: 1 }}>
           <TextField
             autoFocus
             margin="dense"
             id="template-name"
-            label="Template Name"
+            label={t('save-dialog.name-label', 'Template Name')}
             type="text"
             fullWidth
             variant="outlined"
             value={templateName}
             onChange={handleNameChange}
+            onFocus={(e) => e.currentTarget.select()}
             error={!!displayError}
             helperText={displayError}
             onKeyPress={(e) => {
@@ -126,14 +138,18 @@ export default function SaveTemplateDialog({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel} disabled={isSubmitting}>Cancel</Button>
-        <Button 
-          onClick={handleSave} 
-          variant="contained" 
+        <Button onClick={handleCancel} disabled={isSubmitting}>{t('common.cancel', 'Cancel')}</Button>
+        <Button
+          onClick={handleSave}
+          variant="contained"
           color="primary"
           disabled={!templateName.trim() || !!displayError || isSubmitting}
         >
-          {isSubmitting ? 'Saving...' : 'Save Template'}
+          {isSubmitting
+            ? t('save-dialog.saving', 'Saving...')
+            : mode === 'new'
+              ? t('save-dialog.create', 'Create')
+              : t('save-dialog.save', 'Save')}
         </Button>
       </DialogActions>
     </Dialog>

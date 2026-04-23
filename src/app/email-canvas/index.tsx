@@ -13,6 +13,7 @@ import {
   usePersistenceEnabled,
   useWorkspaceBackground
 } from '@editor/editor-context';
+import { t } from '@i18n';
 import ToggleInspectorPanelButton from '../inspector-drawer/toggle-inspector-panel-button';
 import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-button';
 
@@ -138,12 +139,12 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
             {selectedMainTab === 'editor' && <UndoRedoButtons />}
             <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
               <ToggleButton value="desktop">
-                <Tooltip title="Desktop view">
+                <Tooltip title={t('canvas.desktop-view', 'Desktop view')}>
                   <MonitorOutlined fontSize="small" />
                 </Tooltip>
               </ToggleButton>
               <ToggleButton value="mobile">
-                <Tooltip title="Mobile view">
+                <Tooltip title={t('canvas.mobile-view', 'Mobile view')}>
                   <PhoneIphoneOutlined fontSize="small" />
                 </Tooltip>
               </ToggleButton>

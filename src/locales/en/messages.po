@@ -204,3 +204,333 @@ msgstr "Alignment"
 
 msgid "style.padding"
 msgstr "Padding"
+
+msgid "common.cancel"
+msgstr "Cancel"
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "common.saving"
+msgstr "Saving…"
+
+msgid "common.add"
+msgstr "Add"
+
+msgid "save-dialog.title"
+msgstr "Save as a new template"
+
+msgid "save-dialog.title-new"
+msgstr "Create a new template"
+
+msgid "save-dialog.name-label"
+msgstr "Template Name"
+
+msgid "save-dialog.saving"
+msgstr "Saving..."
+
+msgid "save-dialog.save"
+msgstr "Save"
+
+msgid "save-dialog.create"
+msgstr "Create"
+
+msgid "save-dialog.error-empty-name"
+msgstr "Please enter a template name"
+
+msgid "rename.title"
+msgstr "Edit details"
+
+msgid "rename.name-label"
+msgstr "Name"
+
+msgid "rename.tags"
+msgstr "Tags"
+
+msgid "rename.no-tags"
+msgstr "No tags yet."
+
+msgid "rename.tag-placeholder"
+msgstr "Add a tag and press Enter"
+
+msgid "rename.error-empty"
+msgstr "Please enter a name"
+
+msgid "rename.error-taken"
+msgstr "A template with this name already exists"
+
+msgid "rename.error-generic"
+msgstr "Failed to update template details"
+
+msgid "picker.title-template"
+msgstr "New template"
+
+msgid "picker.title-sample"
+msgstr "New sample"
+
+msgid "picker.start-from"
+msgstr "Start from"
+
+msgid "picker.blank-title"
+msgstr "Blank"
+
+msgid "picker.blank-desc"
+msgstr "Start from an empty email"
+
+msgid "picker.creating"
+msgstr "Creating…"
+
+msgid "picker.create-template"
+msgstr "Create template"
+
+msgid "picker.create-sample"
+msgstr "Create sample"
+
+msgid "picker.error-name-required"
+msgstr "Name is required"
+
+msgid "picker.error-template-taken"
+msgstr "A template with this name already exists"
+
+msgid "picker.error-sample-taken"
+msgstr "A sample with this name already exists"
+
+msgid "tab.edit"
+msgstr "Edit"
+
+msgid "tab.preview"
+msgstr "Preview"
+
+msgid "tab.html-output"
+msgstr "HTML output"
+
+msgid "tab.text-output"
+msgstr "Plain text output"
+
+msgid "tab.json-output"
+msgstr "JSON output"
+
+msgid "canvas.desktop-view"
+msgstr "Desktop view"
+
+msgid "canvas.mobile-view"
+msgstr "Mobile view"
+
+msgid "inspector.tab.styles"
+msgstr "Styles"
+
+msgid "inspector.tab.inspect"
+msgstr "Inspect"
+
+msgid "inspector.tab.variables"
+msgstr "Variables"
+
+msgid "inspector.tab.settings"
+msgstr "Settings"
+
+msgid "global.disable-backdrop"
+msgstr "Disable backdrop"
+
+msgid "global.backdrop-color"
+msgstr "Backdrop color"
+
+msgid "global.canvas-color"
+msgstr "Canvas color"
+
+msgid "global.canvas-border-color"
+msgstr "Canvas border color"
+
+msgid "global.canvas-border-radius"
+msgstr "Canvas border radius"
+
+msgid "field.content"
+msgstr "Content"
+
+msgid "field.markdown"
+msgstr "Markdown"
+
+msgid "field.level"
+msgstr "Level"
+
+msgid "field.text"
+msgstr "Text"
+
+msgid "field.url"
+msgstr "Url"
+
+msgid "field.width"
+msgstr "Width"
+
+msgid "field.height"
+msgstr "Height"
+
+msgid "field.size"
+msgstr "Size"
+
+msgid "field.style"
+msgstr "Style"
+
+msgid "button.width.full"
+msgstr "Full"
+
+msgid "button.width.auto"
+msgstr "Auto"
+
+msgid "button.style.rectangle"
+msgstr "Rectangle"
+
+msgid "button.style.rounded"
+msgstr "Rounded"
+
+msgid "button.style.pill"
+msgstr "Pill"
+
+msgid "button.color"
+msgstr "Button color"
+
+msgid "size.xs"
+msgstr "Xs"
+
+msgid "size.sm"
+msgstr "Sm"
+
+msgid "size.md"
+msgstr "Md"
+
+msgid "size.lg"
+msgstr "Lg"
+
+msgid "image.upload"
+msgstr "Upload"
+
+msgid "image.uploading"
+msgstr "Uploading…"
+
+msgid "image.library"
+msgstr "Library"
+
+msgid "image.source-url"
+msgstr "Source URL"
+
+msgid "image.alt-text"
+msgstr "Alt text"
+
+msgid "image.link-href"
+msgstr "Click through URL"
+
+msgid "image.http-warning"
+msgstr "Non-HTTPS URL: Gmail and other clients strip mixed content. Use https:// for reliable delivery."
+
+msgid "signature.greeting"
+msgstr "Greeting"
+
+msgid "signature.name"
+msgstr "Name"
+
+msgid "signature.title"
+msgstr "Title"
+
+msgid "signature.company"
+msgstr "Company"
+
+msgid "signature.address"
+msgstr "Address"
+
+msgid "signature.email"
+msgstr "Email"
+
+msgid "signature.phone"
+msgstr "Phone"
+
+msgid "signature.website"
+msgstr "Website"
+
+msgid "signature.image-url"
+msgstr "Image URL"
+
+msgid "signature.image-size"
+msgstr "Image size"
+
+msgid "signature.image-shape"
+msgstr "Image shape"
+
+msgid "signature.layout"
+msgstr "Layout"
+
+msgid "signature.layout.horizontal"
+msgstr "Horizontal"
+
+msgid "signature.layout.vertical"
+msgstr "Vertical"
+
+msgid "signature.shape.circle"
+msgstr "Circle"
+
+msgid "signature.shape.square"
+msgstr "Square"
+
+msgid "signature.shape.rounded"
+msgstr "Rounded"
+
+msgid "signature.name-color"
+msgstr "Name color"
+
+msgid "signature.link-color"
+msgstr "Link color"
+
+msgid "avatar.shape"
+msgstr "Shape"
+
+msgid "divider.color"
+msgstr "Color"
+
+msgid "columns.count"
+msgstr "Number of columns"
+
+msgid "columns.gap"
+msgstr "Columns gap"
+
+msgid "empty.slug"
+msgstr "Empty email"
+
+msgid "empty.description"
+msgstr "A blank email template to start from scratch"
+
+msgid "row.more"
+msgstr "More"
+
+msgid "row.actions"
+msgstr "Row actions"
+
+msgid "row.edit-details"
+msgstr "Edit name & tags…"
+
+msgid "row.duplicate"
+msgstr "Duplicate"
+
+msgid "row.duplicate-as-template"
+msgstr "Duplicate as template"
+
+msgid "row.promote"
+msgstr "Promote to sample"
+
+msgid "row.demote"
+msgstr "Demote to template"
+
+msgid "time.just-now"
+msgstr "just now"
+
+msgid "time.minutes-short"
+msgstr "m ago"
+
+msgid "time.hours-short"
+msgstr "h ago"
+
+msgid "time.days-short"
+msgstr "d ago"
+
+msgid "time.months-short"
+msgstr "mo ago"
+
+msgid "time.years-short"
+msgstr "y ago"

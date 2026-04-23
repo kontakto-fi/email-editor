@@ -2,11 +2,12 @@ import React from 'react';
 
 import { Box, Drawer, Tab, Tabs } from '@mui/material';
 
-import { 
-  setSidebarTab, 
-  useInspectorDrawerOpen, 
+import {
+  setSidebarTab,
+  useInspectorDrawerOpen,
   useSelectedSidebarTab
 } from '@editor/editor-context';
+import { t } from '@i18n';
 
 import ConfigurationPanel from './configuration-panel';
 import StylesPanel from './styles-panel';
@@ -112,10 +113,10 @@ export default function InspectorDrawer({
             variant="fullWidth"
             sx={{ '& .MuiTab-root': { minWidth: 0, px: 1, fontSize: 13 } }}
           >
-            <Tab value="styles" label="Styles" />
-            <Tab value="block-configuration" label="Inspect" />
-            <Tab value="variables" label="Variables" />
-            <Tab value="template-settings" label="Settings" />
+            <Tab value="styles" label={t('inspector.tab.styles', 'Styles')} />
+            <Tab value="block-configuration" label={t('inspector.tab.inspect', 'Inspect')} />
+            <Tab value="variables" label={t('inspector.tab.variables', 'Variables')} />
+            <Tab value="template-settings" label={t('inspector.tab.settings', 'Settings')} />
           </Tabs>
         </Box>
       </Box>

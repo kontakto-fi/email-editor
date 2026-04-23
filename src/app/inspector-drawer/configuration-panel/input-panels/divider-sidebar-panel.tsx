@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { HeightOutlined } from '@mui/icons-material';
 import { DividerPropsDefaults, DividerPropsSchema } from '@blocks/divider';
 import type { DividerProps } from '@blocks/divider';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import ColorInput from './helpers/inputs/color-input';
@@ -31,12 +32,12 @@ export default function DividerSidebarPanel({ data, setData }: DividerSidebarPan
   return (
     <BaseSidebarPanel title="Divider block">
       <ColorInput
-        label="Color"
+        label={t('divider.color', 'Color')}
         defaultValue={lineColor}
         onChange={(lineColor) => updateData({ ...data, props: { ...data.props, lineColor } })}
       />
       <SliderInput
-        label="Height"
+        label={t('field.height', 'Height')}
         iconLabel={<HeightOutlined sx={{ color: 'text.secondary' }} />}
         units="px"
         step={1}

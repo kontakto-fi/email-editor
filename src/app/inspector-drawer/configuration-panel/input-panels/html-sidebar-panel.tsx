@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { HtmlPropsSchema } from '@blocks';
 import type { HtmlProps } from '@blocks';
 
+import { t } from '@i18n';
+
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import TextInput from './helpers/inputs/text-input';
 import MultiStylePropertyPanel from './helpers/style-inputs/multi-style-property-panel';
@@ -26,7 +28,7 @@ export default function HtmlSidebarPanel({ data, setData }: HtmlSidebarPanelProp
   return (
     <BaseSidebarPanel title="Html block">
       <TextInput
-        label="Content"
+        label={t('field.content', 'Content')}
         rows={5}
         defaultValue={data.props?.contents ?? ''}
         onChange={(contents) => updateData({ ...data, props: { ...data.props, contents } })}

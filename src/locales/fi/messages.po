@@ -204,3 +204,333 @@ msgstr "Tasaus"
 
 msgid "style.padding"
 msgstr "Täyte"
+
+msgid "common.cancel"
+msgstr "Peruuta"
+
+msgid "common.save"
+msgstr "Tallenna"
+
+msgid "common.saving"
+msgstr "Tallennetaan…"
+
+msgid "common.add"
+msgstr "Lisää"
+
+msgid "save-dialog.title"
+msgstr "Tallenna uutena pohjana"
+
+msgid "save-dialog.title-new"
+msgstr "Luo uusi pohja"
+
+msgid "save-dialog.name-label"
+msgstr "Pohjan nimi"
+
+msgid "save-dialog.saving"
+msgstr "Tallennetaan..."
+
+msgid "save-dialog.save"
+msgstr "Tallenna"
+
+msgid "save-dialog.create"
+msgstr "Luo"
+
+msgid "save-dialog.error-empty-name"
+msgstr "Anna pohjalle nimi"
+
+msgid "rename.title"
+msgstr "Muokkaa tietoja"
+
+msgid "rename.name-label"
+msgstr "Nimi"
+
+msgid "rename.tags"
+msgstr "Tunnisteet"
+
+msgid "rename.no-tags"
+msgstr "Ei tunnisteita."
+
+msgid "rename.tag-placeholder"
+msgstr "Lisää tunniste ja paina Enter"
+
+msgid "rename.error-empty"
+msgstr "Anna nimi"
+
+msgid "rename.error-taken"
+msgstr "Samanniminen pohja on jo olemassa"
+
+msgid "rename.error-generic"
+msgstr "Tietojen päivitys epäonnistui"
+
+msgid "picker.title-template"
+msgstr "Uusi pohja"
+
+msgid "picker.title-sample"
+msgstr "Uusi malli"
+
+msgid "picker.start-from"
+msgstr "Aloitetaan pohjasta"
+
+msgid "picker.blank-title"
+msgstr "Tyhjä"
+
+msgid "picker.blank-desc"
+msgstr "Aloita tyhjästä sähköpostista"
+
+msgid "picker.creating"
+msgstr "Luodaan…"
+
+msgid "picker.create-template"
+msgstr "Luo pohja"
+
+msgid "picker.create-sample"
+msgstr "Luo malli"
+
+msgid "picker.error-name-required"
+msgstr "Nimi vaaditaan"
+
+msgid "picker.error-template-taken"
+msgstr "Samanniminen pohja on jo olemassa"
+
+msgid "picker.error-sample-taken"
+msgstr "Samanniminen malli on jo olemassa"
+
+msgid "tab.edit"
+msgstr "Muokkaa"
+
+msgid "tab.preview"
+msgstr "Esikatselu"
+
+msgid "tab.html-output"
+msgstr "HTML-tuloste"
+
+msgid "tab.text-output"
+msgstr "Tekstituloste"
+
+msgid "tab.json-output"
+msgstr "JSON-tuloste"
+
+msgid "canvas.desktop-view"
+msgstr "Työpöytänäkymä"
+
+msgid "canvas.mobile-view"
+msgstr "Mobiilinäkymä"
+
+msgid "inspector.tab.styles"
+msgstr "Tyylit"
+
+msgid "inspector.tab.inspect"
+msgstr "Tarkastele"
+
+msgid "inspector.tab.variables"
+msgstr "Muuttujat"
+
+msgid "inspector.tab.settings"
+msgstr "Asetukset"
+
+msgid "global.disable-backdrop"
+msgstr "Piilota taustaväri"
+
+msgid "global.backdrop-color"
+msgstr "Taustaväri"
+
+msgid "global.canvas-color"
+msgstr "Kankaan väri"
+
+msgid "global.canvas-border-color"
+msgstr "Kankaan reunan väri"
+
+msgid "global.canvas-border-radius"
+msgstr "Kankaan reunan pyöristys"
+
+msgid "field.content"
+msgstr "Sisältö"
+
+msgid "field.markdown"
+msgstr "Markdown"
+
+msgid "field.level"
+msgstr "Taso"
+
+msgid "field.text"
+msgstr "Teksti"
+
+msgid "field.url"
+msgstr "Osoite"
+
+msgid "field.width"
+msgstr "Leveys"
+
+msgid "field.height"
+msgstr "Korkeus"
+
+msgid "field.size"
+msgstr "Koko"
+
+msgid "field.style"
+msgstr "Tyyli"
+
+msgid "button.width.full"
+msgstr "Täysi"
+
+msgid "button.width.auto"
+msgstr "Automaattinen"
+
+msgid "button.style.rectangle"
+msgstr "Suorakaide"
+
+msgid "button.style.rounded"
+msgstr "Pyöristetty"
+
+msgid "button.style.pill"
+msgstr "Pilleri"
+
+msgid "button.color"
+msgstr "Painikkeen väri"
+
+msgid "size.xs"
+msgstr "Xs"
+
+msgid "size.sm"
+msgstr "Sm"
+
+msgid "size.md"
+msgstr "Md"
+
+msgid "size.lg"
+msgstr "Lg"
+
+msgid "image.upload"
+msgstr "Lataa"
+
+msgid "image.uploading"
+msgstr "Ladataan…"
+
+msgid "image.library"
+msgstr "Kirjasto"
+
+msgid "image.source-url"
+msgstr "Lähdeosoite"
+
+msgid "image.alt-text"
+msgstr "Vaihtoehtoinen teksti"
+
+msgid "image.link-href"
+msgstr "Linkin osoite"
+
+msgid "image.http-warning"
+msgstr "Ei-HTTPS-osoite: Gmail ja muut asiakasohjelmat poistavat sekoitetun sisällön. Käytä https:// varmaa toimitusta varten."
+
+msgid "signature.greeting"
+msgstr "Tervehdys"
+
+msgid "signature.name"
+msgstr "Nimi"
+
+msgid "signature.title"
+msgstr "Titteli"
+
+msgid "signature.company"
+msgstr "Yritys"
+
+msgid "signature.address"
+msgstr "Osoite"
+
+msgid "signature.email"
+msgstr "Sähköposti"
+
+msgid "signature.phone"
+msgstr "Puhelin"
+
+msgid "signature.website"
+msgstr "Verkkosivusto"
+
+msgid "signature.image-url"
+msgstr "Kuvan osoite"
+
+msgid "signature.image-size"
+msgstr "Kuvan koko"
+
+msgid "signature.image-shape"
+msgstr "Kuvan muoto"
+
+msgid "signature.layout"
+msgstr "Asettelu"
+
+msgid "signature.layout.horizontal"
+msgstr "Vaakasuora"
+
+msgid "signature.layout.vertical"
+msgstr "Pystysuora"
+
+msgid "signature.shape.circle"
+msgstr "Ympyrä"
+
+msgid "signature.shape.square"
+msgstr "Neliö"
+
+msgid "signature.shape.rounded"
+msgstr "Pyöristetty"
+
+msgid "signature.name-color"
+msgstr "Nimen väri"
+
+msgid "signature.link-color"
+msgstr "Linkin väri"
+
+msgid "avatar.shape"
+msgstr "Muoto"
+
+msgid "divider.color"
+msgstr "Väri"
+
+msgid "columns.count"
+msgstr "Sarakkeiden määrä"
+
+msgid "columns.gap"
+msgstr "Sarakeväli"
+
+msgid "empty.slug"
+msgstr "Tyhjä sähköposti"
+
+msgid "empty.description"
+msgstr "Tyhjä sähköpostipohja, aloita tyhjältä pöydältä"
+
+msgid "row.more"
+msgstr "Lisää"
+
+msgid "row.actions"
+msgstr "Rivin toiminnot"
+
+msgid "row.edit-details"
+msgstr "Muokkaa nimeä ja tunnisteita…"
+
+msgid "row.duplicate"
+msgstr "Monista"
+
+msgid "row.duplicate-as-template"
+msgstr "Monista pohjaksi"
+
+msgid "row.promote"
+msgstr "Ylennä malliksi"
+
+msgid "row.demote"
+msgstr "Alenna pohjaksi"
+
+msgid "time.just-now"
+msgstr "juuri nyt"
+
+msgid "time.minutes-short"
+msgstr " min sitten"
+
+msgid "time.hours-short"
+msgstr " h sitten"
+
+msgid "time.days-short"
+msgstr " pv sitten"
+
+msgid "time.months-short"
+msgstr " kk sitten"
+
+msgid "time.years-short"
+msgstr " v sitten"

@@ -204,3 +204,333 @@ msgstr "Justering"
 
 msgid "style.padding"
 msgstr "Utrymme"
+
+msgid "common.cancel"
+msgstr "Avbryt"
+
+msgid "common.save"
+msgstr "Spara"
+
+msgid "common.saving"
+msgstr "Sparar…"
+
+msgid "common.add"
+msgstr "Lägg till"
+
+msgid "save-dialog.title"
+msgstr "Spara som en ny mall"
+
+msgid "save-dialog.title-new"
+msgstr "Skapa en ny mall"
+
+msgid "save-dialog.name-label"
+msgstr "Mallnamn"
+
+msgid "save-dialog.saving"
+msgstr "Sparar..."
+
+msgid "save-dialog.save"
+msgstr "Spara"
+
+msgid "save-dialog.create"
+msgstr "Skapa"
+
+msgid "save-dialog.error-empty-name"
+msgstr "Ange ett mallnamn"
+
+msgid "rename.title"
+msgstr "Redigera detaljer"
+
+msgid "rename.name-label"
+msgstr "Namn"
+
+msgid "rename.tags"
+msgstr "Etiketter"
+
+msgid "rename.no-tags"
+msgstr "Inga etiketter ännu."
+
+msgid "rename.tag-placeholder"
+msgstr "Lägg till en etikett och tryck Enter"
+
+msgid "rename.error-empty"
+msgstr "Ange ett namn"
+
+msgid "rename.error-taken"
+msgstr "En mall med detta namn finns redan"
+
+msgid "rename.error-generic"
+msgstr "Kunde inte uppdatera malldetaljer"
+
+msgid "picker.title-template"
+msgstr "Ny mall"
+
+msgid "picker.title-sample"
+msgstr "Nytt exempel"
+
+msgid "picker.start-from"
+msgstr "Utgå från"
+
+msgid "picker.blank-title"
+msgstr "Tomt"
+
+msgid "picker.blank-desc"
+msgstr "Starta från ett tomt e-postmeddelande"
+
+msgid "picker.creating"
+msgstr "Skapar…"
+
+msgid "picker.create-template"
+msgstr "Skapa mall"
+
+msgid "picker.create-sample"
+msgstr "Skapa exempel"
+
+msgid "picker.error-name-required"
+msgstr "Namn krävs"
+
+msgid "picker.error-template-taken"
+msgstr "En mall med detta namn finns redan"
+
+msgid "picker.error-sample-taken"
+msgstr "Ett exempel med detta namn finns redan"
+
+msgid "tab.edit"
+msgstr "Redigera"
+
+msgid "tab.preview"
+msgstr "Förhandsgranska"
+
+msgid "tab.html-output"
+msgstr "HTML-utdata"
+
+msgid "tab.text-output"
+msgstr "Textutdata"
+
+msgid "tab.json-output"
+msgstr "JSON-utdata"
+
+msgid "canvas.desktop-view"
+msgstr "Skrivbordsvy"
+
+msgid "canvas.mobile-view"
+msgstr "Mobilvy"
+
+msgid "inspector.tab.styles"
+msgstr "Stilar"
+
+msgid "inspector.tab.inspect"
+msgstr "Inspektera"
+
+msgid "inspector.tab.variables"
+msgstr "Variabler"
+
+msgid "inspector.tab.settings"
+msgstr "Inställningar"
+
+msgid "global.disable-backdrop"
+msgstr "Dölj bakgrund"
+
+msgid "global.backdrop-color"
+msgstr "Bakgrundsfärg"
+
+msgid "global.canvas-color"
+msgstr "Canvasfärg"
+
+msgid "global.canvas-border-color"
+msgstr "Canvaskantfärg"
+
+msgid "global.canvas-border-radius"
+msgstr "Canvaskantradie"
+
+msgid "field.content"
+msgstr "Innehåll"
+
+msgid "field.markdown"
+msgstr "Markdown"
+
+msgid "field.level"
+msgstr "Nivå"
+
+msgid "field.text"
+msgstr "Text"
+
+msgid "field.url"
+msgstr "Adress"
+
+msgid "field.width"
+msgstr "Bredd"
+
+msgid "field.height"
+msgstr "Höjd"
+
+msgid "field.size"
+msgstr "Storlek"
+
+msgid "field.style"
+msgstr "Stil"
+
+msgid "button.width.full"
+msgstr "Full"
+
+msgid "button.width.auto"
+msgstr "Auto"
+
+msgid "button.style.rectangle"
+msgstr "Rektangel"
+
+msgid "button.style.rounded"
+msgstr "Rundad"
+
+msgid "button.style.pill"
+msgstr "Piller"
+
+msgid "button.color"
+msgstr "Knappfärg"
+
+msgid "size.xs"
+msgstr "Xs"
+
+msgid "size.sm"
+msgstr "Sm"
+
+msgid "size.md"
+msgstr "Md"
+
+msgid "size.lg"
+msgstr "Lg"
+
+msgid "image.upload"
+msgstr "Ladda upp"
+
+msgid "image.uploading"
+msgstr "Laddar upp…"
+
+msgid "image.library"
+msgstr "Bibliotek"
+
+msgid "image.source-url"
+msgstr "Källadress"
+
+msgid "image.alt-text"
+msgstr "Alternativ text"
+
+msgid "image.link-href"
+msgstr "Klicklänk"
+
+msgid "image.http-warning"
+msgstr "Icke-HTTPS-URL: Gmail och andra klienter tar bort blandat innehåll. Använd https:// för pålitlig leverans."
+
+msgid "signature.greeting"
+msgstr "Hälsning"
+
+msgid "signature.name"
+msgstr "Namn"
+
+msgid "signature.title"
+msgstr "Titel"
+
+msgid "signature.company"
+msgstr "Företag"
+
+msgid "signature.address"
+msgstr "Adress"
+
+msgid "signature.email"
+msgstr "E-post"
+
+msgid "signature.phone"
+msgstr "Telefon"
+
+msgid "signature.website"
+msgstr "Webbplats"
+
+msgid "signature.image-url"
+msgstr "Bildadress"
+
+msgid "signature.image-size"
+msgstr "Bildstorlek"
+
+msgid "signature.image-shape"
+msgstr "Bildform"
+
+msgid "signature.layout"
+msgstr "Layout"
+
+msgid "signature.layout.horizontal"
+msgstr "Horisontell"
+
+msgid "signature.layout.vertical"
+msgstr "Vertikal"
+
+msgid "signature.shape.circle"
+msgstr "Cirkel"
+
+msgid "signature.shape.square"
+msgstr "Kvadrat"
+
+msgid "signature.shape.rounded"
+msgstr "Rundad"
+
+msgid "signature.name-color"
+msgstr "Namnfärg"
+
+msgid "signature.link-color"
+msgstr "Länkfärg"
+
+msgid "avatar.shape"
+msgstr "Form"
+
+msgid "divider.color"
+msgstr "Färg"
+
+msgid "columns.count"
+msgstr "Antal kolumner"
+
+msgid "columns.gap"
+msgstr "Kolumnmellanrum"
+
+msgid "empty.slug"
+msgstr "Tomt e-postmeddelande"
+
+msgid "empty.description"
+msgstr "En tom e-postmall att utgå från"
+
+msgid "row.more"
+msgstr "Mer"
+
+msgid "row.actions"
+msgstr "Radåtgärder"
+
+msgid "row.edit-details"
+msgstr "Redigera namn och etiketter…"
+
+msgid "row.duplicate"
+msgstr "Duplicera"
+
+msgid "row.duplicate-as-template"
+msgstr "Duplicera som mall"
+
+msgid "row.promote"
+msgstr "Befordra till exempel"
+
+msgid "row.demote"
+msgstr "Degradera till mall"
+
+msgid "time.just-now"
+msgstr "just nu"
+
+msgid "time.minutes-short"
+msgstr " min sedan"
+
+msgid "time.hours-short"
+msgstr " tim sedan"
+
+msgid "time.days-short"
+msgstr " d sedan"
+
+msgid "time.months-short"
+msgstr " mån sedan"
+
+msgid "time.years-short"
+msgstr " år sedan"

@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import { AddOutlined } from '@mui/icons-material';
 
+import { t } from '@i18n';
+
 export interface RenameDialogProps {
   open: boolean;
   currentSlug: string;
@@ -67,12 +69,12 @@ export default function RenameDialog({
   const handleSubmit = async () => {
     const trimmedSlug = slug.trim();
     if (!trimmedSlug) {
-      setError('Please enter a name');
+      setError(t('rename.error-empty', 'Please enter a name'));
       return;
     }
     const slugChanged = trimmedSlug !== currentSlug;
     if (slugChanged && existingSlugs.some((s) => s.toLowerCase() === trimmedSlug.toLowerCase())) {
-      setError('A template with this name already exists');
+      setError(t('rename.error-taken', 'A template with this name already exists'));
       return;
     }
     if (!slugChanged && tagsUnchanged) {
@@ -85,7 +87,7 @@ export default function RenameDialog({
       onClose();
     } catch (e) {
       console.error('Error updating template details:', e);
-      setError('Failed to update template details');
+      setError(t('rename.error-generic', 'Failed to update template details'));
     } finally {
       setSubmitting(false);
     }
@@ -93,12 +95,12 @@ export default function RenameDialog({
 
   return (
     <Dialog open={open} onClose={submitting ? undefined : onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit details</DialogTitle>
+      <DialogTitle>{t('rename.title', 'Edit details')}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label="Name"
+          label={t('rename.name-label', 'Name')}
           fullWidth
           variant="outlined"
           value={slug}
@@ -114,7 +116,7 @@ export default function RenameDialog({
           }}
         />
         <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1, mb: 0.5 }}>
-          Tags
+          {t('rename.tags', 'Tags')}
         </Typography>
         {tags.length > 0 ? (
           <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
@@ -129,13 +131,13 @@ export default function RenameDialog({
           </Stack>
         ) : (
           <Typography variant="caption" sx={{ color: 'text.disabled', display: 'block', mb: 1 }}>
-            No tags yet. Suggested: <i>transactional</i>, <i>marketing</i>.
+            {t('rename.no-tags', 'No tags yet.')}
           </Typography>
         )}
         <TextField
           size="small"
           fullWidth
-          placeholder="Add a tag and press Enter"
+          placeholder={t('rename.tag-placeholder', 'Add a tag and press Enter')}
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
           disabled={submitting}
@@ -158,7 +160,7 @@ export default function RenameDialog({
                   startIcon={<AddOutlined fontSize="small" />}
                   sx={{ textTransform: 'none' }}
                 >
-                  Add
+                  {t('common.add', 'Add')}
                 </Button>
               </InputAdornment>
             ),
@@ -168,14 +170,14 @@ export default function RenameDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={submitting}>
-          Cancel
+          {t('common.cancel', 'Cancel')}
         </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"
           disabled={!slug.trim() || submitting}
         >
-          {submitting ? 'Saving…' : 'Save'}
+          {submitting ? t('common.saving', 'Saving…') : t('common.save', 'Save')}
         </Button>
       </DialogActions>
     </Dialog>

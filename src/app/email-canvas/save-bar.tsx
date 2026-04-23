@@ -175,6 +175,7 @@ export default function SaveBar({ loadTemplates, saveAs }: SaveBarProps) {
 
       <SaveTemplateDialog
         open={dialogMode !== null}
+        mode={dialogMode === 'new-blank' ? 'new' : 'save-as'}
         onClose={() => {
           setDialogMode(null);
           setNameError(null);

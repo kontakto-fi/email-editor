@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DescriptionOutlined, InsertDriveFileOutlined } from '@mui/icons-material';
+import { t } from '@i18n';
 import { TemplateListItem } from '../index';
 
 type NewTemplatePickerDialogProps = {
@@ -42,7 +43,7 @@ export default function NewTemplatePickerDialog({
 
   useEffect(() => {
     if (open) {
-      setName(defaultName ?? (kind === 'sample' ? 'New sample' : 'New template'));
+      setName(defaultName ?? t(kind === 'sample' ? 'drawer.new-sample' : 'drawer.new-template', kind === 'sample' ? 'New sample' : 'New template'));
       setSelectedStarter(null);
       setError(null);
       setBusy(false);
@@ -51,11 +52,11 @@ export default function NewTemplatePickerDialog({
 
   const validate = (): string | null => {
     const trimmed = name.trim();
-    if (!trimmed) return 'Name is required';
+    if (!trimmed) return t('picker.error-name-required', 'Name is required');
     if (existingSlugs.some((s) => s.toLowerCase() === trimmed.toLowerCase())) {
       return kind === 'sample'
-        ? 'A sample with this name already exists'
-        : 'A template with this name already exists';
+        ? t('picker.error-sample-taken', 'A sample with this name already exists')
+        : t('picker.error-template-taken', 'A template with this name already exists');
     }
     return null;
   };
@@ -79,10 +80,14 @@ export default function NewTemplatePickerDialog({
 
   return (
     <Dialog open={open} onClose={busy ? undefined : onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{kind === 'sample' ? 'New sample' : 'New template'}</DialogTitle>
+      <DialogTitle>
+        {kind === 'sample'
+          ? t('picker.title-sample', 'New sample')
+          : t('picker.title-template', 'New template')}
+      </DialogTitle>
       <DialogContent dividers>
         <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Start from
+          {t('picker.start-from', 'Start from')}
         </Typography>
         <List
           dense
@@ -102,7 +107,7 @@ export default function NewTemplatePickerDialog({
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1 }}>
               <InsertDriveFileOutlined fontSize="small" sx={{ color: 'text.secondary' }} />
-              <ListItemText primary="Blank" secondary="Start from an empty email" />
+              <ListItemText primary={t('picker.blank-title', 'Blank')} secondary={t('picker.blank-desc', 'Start from an empty email')} />
             </Box>
           </ListItemButton>
           {pickable.map((s) => (
@@ -122,8 +127,9 @@ export default function NewTemplatePickerDialog({
           autoFocus
           fullWidth
           size="small"
-          label="Name"
+          label={t('rename.name-label', 'Name')}
           value={name}
+          onFocus={(e) => e.currentTarget.select()}
           onChange={(e) => {
             setName(e.target.value);
             if (error) setError(null);
@@ -138,10 +144,14 @@ export default function NewTemplatePickerDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={busy}>
-          Cancel
+          {t('common.cancel', 'Cancel')}
         </Button>
         <Button variant="contained" onClick={handleCreate} disabled={busy}>
-          {busy ? 'Creating…' : `Create ${kind}`}
+          {busy
+            ? t('picker.creating', 'Creating…')
+            : kind === 'sample'
+              ? t('picker.create-sample', 'Create sample')
+              : t('picker.create-template', 'Create template')}
         </Button>
       </DialogActions>
     </Dialog>

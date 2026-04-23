@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { ToggleButton } from '@mui/material';
 import { HeadingProps, HeadingPropsDefaults, HeadingPropsSchema } from '@blocks/heading';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import RadioGroupInput from './helpers/inputs/radio-group-input';
@@ -28,7 +29,7 @@ export default function HeadingSidebarPanel({ data, setData }: HeadingSidebarPan
   return (
     <BaseSidebarPanel title="Heading block">
       <TextInput
-        label="Content"
+        label={t('field.content', 'Content')}
         rows={3}
         defaultValue={data.props?.text ?? HeadingPropsDefaults.text}
         onChange={(text) => {
@@ -36,7 +37,7 @@ export default function HeadingSidebarPanel({ data, setData }: HeadingSidebarPan
         }}
       />
       <RadioGroupInput
-        label="Level"
+        label={t('field.level', 'Level')}
         defaultValue={data.props?.level ?? HeadingPropsDefaults.level}
         onChange={(level) => {
           updateData({ ...data, props: { ...data.props, level } });

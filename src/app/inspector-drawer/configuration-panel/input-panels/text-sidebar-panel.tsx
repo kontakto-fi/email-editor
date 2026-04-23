@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { TextProps, TextPropsSchema } from '@blocks';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import BooleanInput from './helpers/inputs/boolean-input';
@@ -27,13 +28,13 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
   return (
     <BaseSidebarPanel title="Text block">
       <TextInput
-        label="Content"
+        label={t('field.content', 'Content')}
         rows={5}
         defaultValue={data.props?.text ?? ''}
         onChange={(text) => updateData({ ...data, props: { ...data.props, text } })}
       />
       <BooleanInput
-        label="Markdown"
+        label={t('field.markdown', 'Markdown')}
         defaultValue={data.props?.markdown ?? false}
         onChange={(markdown) => updateData({ ...data, props: { ...data.props, markdown } })}
       />

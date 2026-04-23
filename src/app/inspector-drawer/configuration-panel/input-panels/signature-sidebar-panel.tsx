@@ -4,6 +4,7 @@ import { AspectRatioOutlined } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
 import { SignaturePropsDefaults, SignaturePropsSchema } from '@blocks';
 import type { SignatureProps } from '@blocks';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import ColorInput from './helpers/inputs/color-input';
@@ -47,52 +48,52 @@ export default function SignatureSidebarPanel({ data, setData }: SignatureSideba
   return (
     <BaseSidebarPanel title="Signature block">
       <TextInput
-        label="Greeting"
+        label={t('signature.greeting', 'Greeting')}
         defaultValue={greeting}
         onChange={(greeting) => updateData({ ...data, props: { ...data.props, greeting } })}
       />
       <TextInput
-        label="Name"
+        label={t('signature.name', 'Name')}
         defaultValue={name}
         onChange={(name) => updateData({ ...data, props: { ...data.props, name } })}
       />
       <TextInput
-        label="Title"
+        label={t('signature.title', 'Title')}
         defaultValue={title}
         onChange={(title) => updateData({ ...data, props: { ...data.props, title } })}
       />
       <TextInput
-        label="Company"
+        label={t('signature.company', 'Company')}
         defaultValue={company}
         onChange={(company) => updateData({ ...data, props: { ...data.props, company } })}
       />
       <TextInput
-        label="Address"
+        label={t('signature.address', 'Address')}
         defaultValue={address}
         onChange={(address) => updateData({ ...data, props: { ...data.props, address } })}
       />
       <TextInput
-        label="Email"
+        label={t('signature.email', 'Email')}
         defaultValue={email}
         onChange={(email) => updateData({ ...data, props: { ...data.props, email } })}
       />
       <TextInput
-        label="Phone"
+        label={t('signature.phone', 'Phone')}
         defaultValue={phone}
         onChange={(phone) => updateData({ ...data, props: { ...data.props, phone } })}
       />
       <TextInput
-        label="Website"
+        label={t('signature.website', 'Website')}
         defaultValue={website}
         onChange={(website) => updateData({ ...data, props: { ...data.props, website } })}
       />
       <TextInput
-        label="Image URL"
+        label={t('signature.image-url', 'Image URL')}
         defaultValue={imageUrl}
         onChange={(imageUrl) => updateData({ ...data, props: { ...data.props, imageUrl } })}
       />
       <SliderInput
-        label="Image size"
+        label={t('signature.image-size', 'Image size')}
         iconLabel={<AspectRatioOutlined sx={{ color: 'text.secondary' }} />}
         units="px"
         step={4}
@@ -102,34 +103,34 @@ export default function SignatureSidebarPanel({ data, setData }: SignatureSideba
         onChange={(imageSize) => updateData({ ...data, props: { ...data.props, imageSize } })}
       />
       <RadioGroupInput
-        label="Image shape"
+        label={t('signature.image-shape', 'Image shape')}
         defaultValue={imageShape}
         onChange={(imageShape) => updateData({ ...data, props: { ...data.props, imageShape } })}
       >
-        <ToggleButton value="circle">Circle</ToggleButton>
-        <ToggleButton value="square">Square</ToggleButton>
-        <ToggleButton value="rounded">Rounded</ToggleButton>
+        <ToggleButton value="circle">{t('signature.shape.circle', 'Circle')}</ToggleButton>
+        <ToggleButton value="square">{t('signature.shape.square', 'Square')}</ToggleButton>
+        <ToggleButton value="rounded">{t('signature.shape.rounded', 'Rounded')}</ToggleButton>
       </RadioGroupInput>
       <RadioGroupInput
-        label="Layout"
+        label={t('signature.layout', 'Layout')}
         defaultValue={layout}
         onChange={(layout) => updateData({ ...data, props: { ...data.props, layout } })}
       >
-        <ToggleButton value="horizontal">Horizontal</ToggleButton>
-        <ToggleButton value="vertical">Vertical</ToggleButton>
+        <ToggleButton value="horizontal">{t('signature.layout.horizontal', 'Horizontal')}</ToggleButton>
+        <ToggleButton value="vertical">{t('signature.layout.vertical', 'Vertical')}</ToggleButton>
       </RadioGroupInput>
       <ColorInput
-        label="Name color"
+        label={t('signature.name-color', 'Name color')}
         defaultValue={nameColor}
         onChange={(nameColor) => updateData({ ...data, props: { ...data.props, nameColor } })}
       />
       <ColorInput
-        label="Text color"
+        label={t('style.text-color', 'Text color')}
         defaultValue={textColor}
         onChange={(textColor) => updateData({ ...data, props: { ...data.props, textColor } })}
       />
       <ColorInput
-        label="Link color"
+        label={t('signature.link-color', 'Link color')}
         defaultValue={linkColor}
         onChange={(linkColor) => updateData({ ...data, props: { ...data.props, linkColor } })}
       />

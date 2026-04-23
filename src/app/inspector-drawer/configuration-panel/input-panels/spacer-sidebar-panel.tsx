@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { HeightOutlined } from '@mui/icons-material';
 import { SpacerProps, SpacerPropsDefaults, SpacerPropsSchema } from '@blocks';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import SliderInput from './helpers/inputs/slider-input';
@@ -26,7 +27,7 @@ export default function SpacerSidebarPanel({ data, setData }: SpacerSidebarPanel
   return (
     <BaseSidebarPanel title="Spacer block">
       <SliderInput
-        label="Height"
+        label={t('field.height', 'Height')}
         iconLabel={<HeightOutlined sx={{ color: 'text.secondary' }} />}
         units="px"
         step={4}

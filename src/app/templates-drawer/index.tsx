@@ -36,14 +36,14 @@ import EMPTY_EMAIL_MESSAGE from '@sample/empty-email-message';
 export const SAMPLES_DRAWER_WIDTH = 320;
 
 // Empty template definition that will always be available. The visible slug
-// and description are translated at render time via i18n, so only the stable
-// English defaults live here.
-const EMPTY_TEMPLATE: TemplateListItem = {
+// and description come from the catalog (see `empty.*` keys) so the drawer
+// shows localized copy.
+const buildEmptyTemplate = (): TemplateListItem => ({
   id: 'empty-email',
-  slug: 'Empty email',
+  slug: t('empty.slug', 'Empty email'),
   kind: 'sample',
-  description: 'A blank email template to start from scratch',
-};
+  description: t('empty.description', 'A blank email template to start from scratch'),
+});
 
 type SortKey = 'updatedAt' | 'createdAt' | 'slug';
 
@@ -102,7 +102,7 @@ export default function SamplesDrawer({
   const { setCurrentTemplate, loadTemplate: ctxLoadTemplate } = useEmailEditor();
   const { showMessage } = useSnackbar();
 
-  const [samples, setSamples] = useState<TemplateListItem[]>([EMPTY_TEMPLATE]);
+  const [samples, setSamples] = useState<TemplateListItem[]>([buildEmptyTemplate()]);
   const [templates, setTemplates] = useState<TemplateListItem[]>([]);
   const [loadingSamples, setLoadingSamples] = useState(false);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
@@ -141,11 +141,11 @@ export default function SamplesDrawer({
       .then((results) => {
         const normalized = withKind(results, 'sample');
         const existingEmpty = normalized.find((s) => s.id === 'empty-email');
-        setSamples(existingEmpty ? normalized : [EMPTY_TEMPLATE, ...normalized]);
+        setSamples(existingEmpty ? normalized : [buildEmptyTemplate(), ...normalized]);
       })
       .catch((error) => {
         console.error('Failed to load samples:', error);
-        setSamples([EMPTY_TEMPLATE]);
+        setSamples([buildEmptyTemplate()]);
       })
       .finally(() => setLoadingSamples(false));
   }, [enabled, samplesDrawerOpen, loadSamples]);

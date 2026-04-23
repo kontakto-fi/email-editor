@@ -23,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import { resetDocument } from '@editor/editor-context';
 import { TEditorConfiguration } from '@editor/core';
+import { t } from '@i18n';
 import { useEmailEditor } from '../context';
 import { TemplateListItem } from '../index';
 
@@ -44,17 +45,17 @@ function relativeTime(iso?: string): string | null {
   if (Number.isNaN(date)) return null;
   const diffMs = Date.now() - date;
   const diffSec = Math.round(diffMs / 1000);
-  if (diffSec < 60) return 'just now';
+  if (diffSec < 60) return t('time.just-now', 'just now');
   const diffMin = Math.round(diffSec / 60);
-  if (diffMin < 60) return `${diffMin}m ago`;
+  if (diffMin < 60) return `${diffMin}${t('time.minutes-short', 'm ago')}`;
   const diffHr = Math.round(diffMin / 60);
-  if (diffHr < 24) return `${diffHr}h ago`;
+  if (diffHr < 24) return `${diffHr}${t('time.hours-short', 'h ago')}`;
   const diffDay = Math.round(diffHr / 24);
-  if (diffDay < 30) return `${diffDay}d ago`;
+  if (diffDay < 30) return `${diffDay}${t('time.days-short', 'd ago')}`;
   const diffMo = Math.round(diffDay / 30);
-  if (diffMo < 12) return `${diffMo}mo ago`;
+  if (diffMo < 12) return `${diffMo}${t('time.months-short', 'mo ago')}`;
   const diffYr = Math.round(diffMo / 12);
-  return `${diffYr}y ago`;
+  return `${diffYr}${t('time.years-short', 'y ago')}`;
 }
 
 export default function TemplateRow({
@@ -184,11 +185,11 @@ export default function TemplateRow({
 
       {hasActions && (
         <>
-          <Tooltip title="More">
+          <Tooltip title={t('row.more', 'More')}>
             <IconButton
               size="small"
               onClick={openMenu}
-              aria-label="Row actions"
+              aria-label={t('row.actions', 'Row actions')}
               aria-haspopup="menu"
               aria-expanded={Boolean(menuAnchor) || undefined}
               sx={{
@@ -216,7 +217,7 @@ export default function TemplateRow({
                 <ListItemIcon>
                   <DriveFileRenameOutlineOutlined fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Edit name &amp; tags…</ListItemText>
+                <ListItemText>{t('row.edit-details', 'Edit name & tags…')}</ListItemText>
               </MenuItem>
             )}
             {onDuplicate && (
@@ -224,7 +225,7 @@ export default function TemplateRow({
                 <ListItemIcon>
                   <ContentCopyOutlined fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Duplicate</ListItemText>
+                <ListItemText>{t('row.duplicate', 'Duplicate')}</ListItemText>
               </MenuItem>
             )}
             {onDuplicateAsTemplate && (
@@ -232,7 +233,7 @@ export default function TemplateRow({
                 <ListItemIcon>
                   <LibraryAddOutlined fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Duplicate as template</ListItemText>
+                <ListItemText>{t('row.duplicate-as-template', 'Duplicate as template')}</ListItemText>
               </MenuItem>
             )}
             {onPromote && (
@@ -240,7 +241,7 @@ export default function TemplateRow({
                 <ListItemIcon>
                   <FileUploadOutlined fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Promote to sample</ListItemText>
+                <ListItemText>{t('row.promote', 'Promote to sample')}</ListItemText>
               </MenuItem>
             )}
             {onDemote && (
@@ -248,7 +249,7 @@ export default function TemplateRow({
                 <ListItemIcon>
                   <FileDownloadOutlined fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Demote to template</ListItemText>
+                <ListItemText>{t('row.demote', 'Demote to template')}</ListItemText>
               </MenuItem>
             )}
             {onDelete && [
@@ -257,7 +258,7 @@ export default function TemplateRow({
                 <ListItemIcon sx={{ color: 'error.main' }}>
                   <DeleteOutlined fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Delete</ListItemText>
+                <ListItemText>{t('tune.delete', 'Delete')}</ListItemText>
               </MenuItem>,
             ]}
           </Menu>

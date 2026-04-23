@@ -4,6 +4,7 @@ import { CodeOutlined, DataObjectOutlined, EditOutlined, PreviewOutlined, Subjec
 import { Tab, Tabs, Tooltip } from '@mui/material';
 
 import { setSelectedMainTab, useSelectedMainTab } from '@editor/editor-context';
+import { t } from '@i18n';
 
 export default function MainTabsGroup() {
   const selectedMainTab = useSelectedMainTab();
@@ -26,7 +27,7 @@ export default function MainTabsGroup() {
       <Tab
         value="editor"
         label={
-          <Tooltip title="Edit">
+          <Tooltip title={t('tab.edit', 'Edit')}>
             <EditOutlined fontSize="small" />
           </Tooltip>
         }
@@ -34,7 +35,7 @@ export default function MainTabsGroup() {
       <Tab
         value="preview"
         label={
-          <Tooltip title="Preview">
+          <Tooltip title={t('tab.preview', 'Preview')}>
             <PreviewOutlined fontSize="small" />
           </Tooltip>
         }
@@ -42,7 +43,7 @@ export default function MainTabsGroup() {
       <Tab
         value="html"
         label={
-          <Tooltip title="HTML output">
+          <Tooltip title={t('tab.html-output', 'HTML output')}>
             <CodeOutlined fontSize="small" />
           </Tooltip>
         }
@@ -50,7 +51,7 @@ export default function MainTabsGroup() {
       <Tab
         value="text"
         label={
-          <Tooltip title="Plain text output">
+          <Tooltip title={t('tab.text-output', 'Plain text output')}>
             <SubjectOutlined fontSize="small" />
           </Tooltip>
         }
@@ -58,7 +59,7 @@ export default function MainTabsGroup() {
       <Tab
         value="json"
         label={
-          <Tooltip title="JSON output">
+          <Tooltip title={t('tab.json-output', 'JSON output')}>
             <DataObjectOutlined fontSize="small" />
           </Tooltip>
         }

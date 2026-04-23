@@ -4,6 +4,7 @@ import { AspectRatioOutlined } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
 import { AvatarPropsDefaults, AvatarPropsSchema } from '@blocks';
 import type { AvatarProps } from '@blocks';
+import { t } from '@i18n';
 
 import BaseSidebarPanel from './helpers/base-sidebar-panel';
 import RadioGroupInput from './helpers/inputs/radio-group-input';
@@ -35,7 +36,7 @@ export default function AvatarSidebarPanel({ data, setData }: AvatarSidebarPanel
   return (
     <BaseSidebarPanel title="Avatar block">
       <SliderInput
-        label="Size"
+        label={t('field.size', 'Size')}
         iconLabel={<AspectRatioOutlined sx={{ color: 'text.secondary' }} />}
         units="px"
         step={3}
@@ -47,25 +48,25 @@ export default function AvatarSidebarPanel({ data, setData }: AvatarSidebarPanel
         }}
       />
       <RadioGroupInput
-        label="Shape"
+        label={t('avatar.shape', 'Shape')}
         defaultValue={shape}
         onChange={(shape) => {
           updateData({ ...data, props: { ...data.props, shape } });
         }}
       >
-        <ToggleButton value="circle">Circle</ToggleButton>
-        <ToggleButton value="square">Square</ToggleButton>
-        <ToggleButton value="rounded">Rounded</ToggleButton>
+        <ToggleButton value="circle">{t('signature.shape.circle', 'Circle')}</ToggleButton>
+        <ToggleButton value="square">{t('signature.shape.square', 'Square')}</ToggleButton>
+        <ToggleButton value="rounded">{t('signature.shape.rounded', 'Rounded')}</ToggleButton>
       </RadioGroupInput>
       <TextInput
-        label="Image URL"
+        label={t('signature.image-url', 'Image URL')}
         defaultValue={imageUrl}
         onChange={(imageUrl) => {
           updateData({ ...data, props: { ...data.props, imageUrl } });
         }}
       />
       <TextInput
-        label="Alt text"
+        label={t('image.alt-text', 'Alt text')}
         defaultValue={alt}
         onChange={(alt) => {
           updateData({ ...data, props: { ...data.props, alt } });
