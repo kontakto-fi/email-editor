@@ -112,7 +112,7 @@ export default function TemplateRow({
       }}
     >
       <Stack direction="row" alignItems="flex-start" spacing={1}>
-        <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, pr: hasActions ? 14 : 0 }}>
           <Stack direction="row" alignItems="baseline" spacing={1} sx={{ minWidth: 0 }}>
             <Typography
               variant="body2"
@@ -127,7 +127,7 @@ export default function TemplateRow({
             >
               {template.slug}
             </Typography>
-            {updated && (
+            {updated && !hasActions && (
               <Typography
                 variant="caption"
                 sx={{ color: 'text.secondary', flexShrink: 0, fontSize: '0.7rem' }}

@@ -59,6 +59,55 @@ const EmailEditorWrapper = () => {
   );
   const [loading, setLoading] = useState(true);
 
+  // Seed the bundled samples into localStorage on first boot so they behave
+  // identically to user-created ones (renameable, deletable, taggable, etc.).
+  // After the seed they live in storage like any other row; re-seeding is a
+  // no-op once the marker is set, so renames/deletes stick across reloads.
+  useEffect(() => {
+    if (localStorage.getItem("samplesSeeded") === "v1") return;
+    try {
+      const now = new Date().toISOString();
+      const seeds: StoredTemplate[] = [
+        {
+          id: "welcome",
+          name: "Welcome email",
+          kind: "sample",
+          description: "A simple welcome email template",
+          tags: ["marketing"],
+          content: WELCOME,
+          createdAt: now,
+          updatedAt: now,
+        },
+        {
+          id: "reset-password",
+          name: "Reset password",
+          kind: "sample",
+          description: "Password reset email template",
+          tags: ["transactional"],
+          content: RESET_PASSWORD,
+          createdAt: now,
+          updatedAt: now,
+        },
+        {
+          id: "empty-email",
+          name: "Empty email",
+          kind: "sample",
+          description: "A blank email template to start from scratch",
+          content: EMPTY_EMAIL_MESSAGE,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ];
+      const existing = readStoredTemplates();
+      const byId = new Map(existing.map((t) => [t.id, t]));
+      for (const seed of seeds) if (!byId.has(seed.id)) existing.push(seed);
+      writeStoredTemplates(existing);
+      localStorage.setItem("samplesSeeded", "v1");
+    } catch (error) {
+      console.error("Error seeding samples:", error);
+    }
+  }, []);
+
   // Load initial template on mount
   useEffect(() => {
     const loadInitialTemplate = async () => {
@@ -99,8 +148,8 @@ const EmailEditorWrapper = () => {
       const currentId = localStorage.getItem("lastEditedTemplateId");
       const currentName = localStorage.getItem("lastEditedTemplateName");
 
-      // If we're saving a sample template or there's no current template, create a new one
-      if (!currentId || currentId === "welcome") {
+      // If we're saving without a current row, create a new one
+      if (!currentId) {
         const templateId = `template-${Date.now()}`;
         const templateName = currentName || "New Template";
         const currentTime = new Date().toISOString();
@@ -145,45 +194,22 @@ const EmailEditorWrapper = () => {
   };
 
   // Load available templates (list endpoint — lean, no editor_config).
-  // Returns every user-scoped row regardless of kind; the drawer partitions by `kind`.
+  // Returns every stored row regardless of kind; the drawer partitions by `kind`.
   const handleLoadTemplates = async (): Promise<TemplateListItem[]> => {
     return readStoredTemplates().map(storedToListItem);
   };
 
-  // Load sample templates — only the built-in fixtures. User-promoted rows live in loadTemplates.
+  // Samples are just stored rows with kind='sample' — no separate fixture path.
   const handleLoadSamples = async (): Promise<TemplateListItem[]> => {
-    return [
-      {
-        id: "welcome",
-        slug: "Welcome email",
-        kind: "sample",
-        description: "A simple welcome email template",
-        tags: ["marketing"],
-      },
-      {
-        id: "reset-password",
-        slug: "Reset password",
-        kind: "sample",
-        description: "Password reset email template",
-        tags: ["transactional"],
-      },
-      {
-        id: "empty-email",
-        slug: "Empty email",
-        kind: "sample",
-        description: "A blank email template to start from scratch",
-      },
-    ];
+    return readStoredTemplates()
+      .filter((t) => t.kind === "sample")
+      .map(storedToListItem);
   };
 
-  // Load a specific template by ID
+  // Load a specific template by ID — reads content from storage only.
   const handleLoadTemplate = async (
     templateId: string,
   ): Promise<TEditorConfiguration | null> => {
-    if (templateId === "welcome") return WELCOME;
-    if (templateId === "reset-password") return RESET_PASSWORD;
-    if (templateId === "empty-email") return EMPTY_EMAIL_MESSAGE;
-
     try {
       const existing = readStoredTemplates();
       const template = existing.find((t) => t.id === templateId);

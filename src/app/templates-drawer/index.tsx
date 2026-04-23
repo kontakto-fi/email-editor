@@ -527,36 +527,18 @@ export default function SamplesDrawer({
                     </Stack>
                   ) : filteredSamples.length > 0 ? (
                     <Stack spacing={0.25} sx={{ width: '100%' }}>
-                      {filteredSamples.map((sample) => {
-                        const isBuiltIn =
-                          sample.id === 'welcome' ||
-                          sample.id === 'reset-password' ||
-                          sample.id === 'empty-email';
-                        return (
-                          <TemplateRow
-                            key={sample.id}
-                            template={sample}
-                            isCurrent={currentTemplateId === sample.id}
-                            templateLoader={() => handleLoadTemplate(sample.id)}
-                            onDuplicateAsTemplate={saveAs ? () => handleDuplicateAsTemplate(sample) : undefined}
-                            onRename={
-                              renameTemplate && !isBuiltIn
-                                ? () => setRenameTarget(sample)
-                                : undefined
-                            }
-                            onDelete={
-                              deleteTemplate && !isBuiltIn
-                                ? () => handleDelete(sample)
-                                : undefined
-                            }
-                            onDemote={
-                              setTemplateKind && !isBuiltIn
-                                ? () => handleSetKind(sample, 'template')
-                                : undefined
-                            }
-                          />
-                        );
-                      })}
+                      {filteredSamples.map((sample) => (
+                        <TemplateRow
+                          key={sample.id}
+                          template={sample}
+                          isCurrent={currentTemplateId === sample.id}
+                          templateLoader={() => handleLoadTemplate(sample.id)}
+                          onDuplicateAsTemplate={saveAs ? () => handleDuplicateAsTemplate(sample) : undefined}
+                          onRename={renameTemplate ? () => setRenameTarget(sample) : undefined}
+                          onDelete={deleteTemplate ? () => handleDelete(sample) : undefined}
+                          onDemote={setTemplateKind ? () => handleSetKind(sample, 'template') : undefined}
+                        />
+                      ))}
                     </Stack>
                   ) : (
                     <Typography variant="body2" sx={{ color: 'text.secondary', py: 1 }}>
