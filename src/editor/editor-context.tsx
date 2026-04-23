@@ -1,11 +1,17 @@
 import { create } from 'zustand';
 import { TEditorConfiguration } from './core';
+import type { ParentRef } from './blocks/helpers/move-block';
 
 export type TFocusedEditable = {
   blockId: string; // 'subject' for the EmailLayout subject input
   field: 'text' | 'contents' | 'subject';
   selectionStart: number;
   selectionEnd: number;
+};
+
+export type TDraggingBlock = {
+  sourceId: string;
+  sourceParent: ParentRef;
 };
 
 type TValue = {
@@ -19,6 +25,7 @@ type TValue = {
   persistenceEnabled: boolean;
   lastFocusedEditable: TFocusedEditable | null;
   hoveredBlockId: string | null;
+  draggingBlock: TDraggingBlock | null;
 };
 
 // Initialize with an empty document
@@ -46,6 +53,7 @@ const editorStateStore = create<TValue>(() => ({
   persistenceEnabled: false,
   lastFocusedEditable: null,
   hoveredBlockId: null,
+  draggingBlock: null,
 }));
 
 export function useDocument() {
@@ -156,6 +164,18 @@ export function useHoveredBlockId() {
 
 export function setHoveredBlockId(hoveredBlockId: TValue['hoveredBlockId']) {
   return editorStateStore.setState({ hoveredBlockId });
+}
+
+export function useDraggingBlock() {
+  return editorStateStore((s) => s.draggingBlock);
+}
+
+export function getDraggingBlock() {
+  return editorStateStore.getState().draggingBlock;
+}
+
+export function setDraggingBlock(draggingBlock: TValue['draggingBlock']) {
+  return editorStateStore.setState({ draggingBlock });
 }
 
 export function setLastFocusedEditable(lastFocusedEditable: TFocusedEditable | null) {

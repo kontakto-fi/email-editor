@@ -40,9 +40,21 @@ export default function ColumnsContainerEditor({ style, props }: ColumnsContaine
       props={restProps}
       style={style}
       columns={[
-        <EditorChildrenIds childrenIds={columns?.[0]?.childrenIds} onChange={(change) => updateColumn(0, change)} />,
-        <EditorChildrenIds childrenIds={columns?.[1]?.childrenIds} onChange={(change) => updateColumn(1, change)} />,
-        <EditorChildrenIds childrenIds={columns?.[2]?.childrenIds} onChange={(change) => updateColumn(2, change)} />,
+        <EditorChildrenIds
+          childrenIds={columns?.[0]?.childrenIds}
+          parentRef={{ kind: 'ColumnsContainer', parentId: currentBlockId, columnIndex: 0 }}
+          onChange={(change) => updateColumn(0, change)}
+        />,
+        <EditorChildrenIds
+          childrenIds={columns?.[1]?.childrenIds}
+          parentRef={{ kind: 'ColumnsContainer', parentId: currentBlockId, columnIndex: 1 }}
+          onChange={(change) => updateColumn(1, change)}
+        />,
+        <EditorChildrenIds
+          childrenIds={columns?.[2]?.childrenIds}
+          parentRef={{ kind: 'ColumnsContainer', parentId: currentBlockId, columnIndex: 2 }}
+          onChange={(change) => updateColumn(2, change)}
+        />,
       ]}
     />
   );

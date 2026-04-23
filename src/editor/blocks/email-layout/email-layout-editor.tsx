@@ -224,6 +224,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
   const editorChildren = (
     <EditorChildrenIds
       childrenIds={childrenIds}
+      parentRef={{ kind: 'EmailLayout', parentId: 'root' }}
       onChange={({ block, blockId, childrenIds }) => {
         setDocument({
           [blockId]: block,
