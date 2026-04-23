@@ -240,20 +240,41 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
     />
   );
 
+  // Editor-only chrome: a muted workspace around the email, so the 600-px
+  // canvas reads as a bounded document on wide screens. None of this ships
+  // with the rendered email — EmailLayoutReader is unchanged.
+  const WORKSPACE_BG = '#e7e8ec';
+  const CARD_MAX_WIDTH = 664; // 600 canvas + 32px horizontal padding
+  const cardStyle: React.CSSProperties = {
+    maxWidth: CARD_MAX_WIDTH,
+    margin: '0 auto',
+    borderRadius: 12,
+    boxShadow: '0 1px 2px rgba(33, 36, 67, 0.05), 0 8px 24px rgba(33, 36, 67, 0.08)',
+    overflow: 'hidden',
+  };
+
   if (props.backdropDisabled) {
     return (
       <div
-        onClick={() => { setSelectedBlockId(null); }}
+        onClick={() => {
+          setSelectedBlockId(null);
+        }}
         style={{
           ...baseStyle,
-          backgroundColor: '#F5F5F5',
+          backgroundColor: WORKSPACE_BG,
           padding: '32px',
           width: '100%',
           minHeight: '100%',
         }}
       >
-        <div style={{ maxWidth: '600px' }}>
-          {editorChildren}
+        <div
+          style={{
+            ...cardStyle,
+            backgroundColor: '#F5F5F5',
+            padding: '32px',
+          }}
+        >
+          <div style={{ maxWidth: '600px', margin: '0 auto' }}>{editorChildren}</div>
         </div>
       </div>
     );
@@ -266,42 +287,48 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
       }}
       style={{
         ...baseStyle,
-        backgroundColor: props.backdropColor ?? '#F5F5F5',
-        padding: '32px 0',
+        backgroundColor: WORKSPACE_BG,
+        padding: '32px 16px',
         width: '100%',
         minHeight: '100%',
       }}
     >
-      <table
-        align="center"
-        width="100%"
+      <div
         style={{
-          margin: '0 auto',
-          maxWidth: '600px',
-          backgroundColor: props.canvasColor ?? '#FFFFFF',
-          borderRadius: props.borderRadius ?? undefined,
-          overflow: props.borderRadius ? 'hidden' : undefined,
-          border: (() => {
-            const v = props.borderColor;
-            if (!v) {
-              return undefined;
-            }
-            return `1px solid ${v}`;
-          })(),
+          ...cardStyle,
+          backgroundColor: props.backdropColor ?? '#F5F5F5',
+          padding: '32px 0',
         }}
-        role="presentation"
-        cellSpacing="0"
-        cellPadding="0"
-        border={0}
       >
-        <tbody>
-          <tr style={{ width: '100%' }}>
-            <td>
-              {editorChildren}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table
+          align="center"
+          width="100%"
+          style={{
+            margin: '0 auto',
+            maxWidth: '600px',
+            backgroundColor: props.canvasColor ?? '#FFFFFF',
+            borderRadius: props.borderRadius ?? undefined,
+            overflow: props.borderRadius ? 'hidden' : undefined,
+            border: (() => {
+              const v = props.borderColor;
+              if (!v) {
+                return undefined;
+              }
+              return `1px solid ${v}`;
+            })(),
+          }}
+          role="presentation"
+          cellSpacing="0"
+          cellPadding="0"
+          border={0}
+        >
+          <tbody>
+            <tr style={{ width: '100%' }}>
+              <td>{editorChildren}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
