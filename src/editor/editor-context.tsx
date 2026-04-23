@@ -26,6 +26,7 @@ type TValue = {
   lastFocusedEditable: TFocusedEditable | null;
   hoveredBlockId: string | null;
   draggingBlock: TDraggingBlock | null;
+  workspaceBackground: 'checkerboard' | 'solid';
 };
 
 // Initialize with an empty document
@@ -54,6 +55,7 @@ const editorStateStore = create<TValue>(() => ({
   lastFocusedEditable: null,
   hoveredBlockId: null,
   draggingBlock: null,
+  workspaceBackground: 'checkerboard',
 }));
 
 export function useDocument() {
@@ -176,6 +178,14 @@ export function getDraggingBlock() {
 
 export function setDraggingBlock(draggingBlock: TValue['draggingBlock']) {
   return editorStateStore.setState({ draggingBlock });
+}
+
+export function useWorkspaceBackground() {
+  return editorStateStore((s) => s.workspaceBackground);
+}
+
+export function setWorkspaceBackground(workspaceBackground: TValue['workspaceBackground']) {
+  return editorStateStore.setState({ workspaceBackground });
 }
 
 export function setLastFocusedEditable(lastFocusedEditable: TFocusedEditable | null) {

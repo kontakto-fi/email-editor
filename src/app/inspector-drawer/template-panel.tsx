@@ -1,9 +1,14 @@
 import React from 'react';
-import { Button, Stack, Typography } from '@mui/material';
-import { DeleteOutlined, ContentCopyOutlined } from '@mui/icons-material';
+import { Button, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { DeleteOutlined, ContentCopyOutlined, GridOnOutlined, SquareOutlined } from '@mui/icons-material';
 
 import { useEmailEditor } from '../context';
-import { useDocument, usePersistenceEnabled } from '@editor/editor-context';
+import {
+  setWorkspaceBackground,
+  useDocument,
+  usePersistenceEnabled,
+  useWorkspaceBackground,
+} from '@editor/editor-context';
 import BaseSidebarPanel from './configuration-panel/input-panels/helpers/base-sidebar-panel';
 import TemplateDownloadButton from './template-panel-download-button';
 
@@ -17,6 +22,7 @@ export default function TemplatePanel({ deleteTemplate, copyTemplate }: Template
   const { currentTemplateId, currentTemplateName } = useEmailEditor();
   const document = useDocument();
   const persistenceEnabled = usePersistenceEnabled();
+  const workspaceBackground = useWorkspaceBackground();
 
   const handleDelete = () => {
     if (!currentTemplateId || !window.confirm('Are you sure you want to delete this template?')) {
@@ -45,8 +51,41 @@ export default function TemplatePanel({ deleteTemplate, copyTemplate }: Template
     }
   };
 
+  const workspaceToggle = (
+    <BaseSidebarPanel title="Editor appearance">
+      <Stack spacing={1}>
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          Workspace background
+        </Typography>
+        <ToggleButtonGroup
+          value={workspaceBackground}
+          exclusive
+          size="small"
+          onChange={(_, v) => v && setWorkspaceBackground(v)}
+        >
+          <ToggleButton value="checkerboard" sx={{ textTransform: 'none', gap: 0.75 }}>
+            <GridOnOutlined fontSize="small" />
+            Checkerboard
+          </ToggleButton>
+          <ToggleButton value="solid" sx={{ textTransform: 'none', gap: 0.75 }}>
+            <SquareOutlined fontSize="small" />
+            Solid
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+          Editor-only — never reaches the rendered email.
+        </Typography>
+      </Stack>
+    </BaseSidebarPanel>
+  );
+
   if (!currentTemplateId) {
-    return <BaseSidebarPanel title="Template">No template selected</BaseSidebarPanel>;
+    return (
+      <>
+        <BaseSidebarPanel title="Template">No template selected</BaseSidebarPanel>
+        {workspaceToggle}
+      </>
+    );
   }
 
   return (
@@ -101,6 +140,7 @@ export default function TemplatePanel({ deleteTemplate, copyTemplate }: Template
           </Stack>
         </BaseSidebarPanel>
       )}
+      {workspaceToggle}
     </>
   );
 }

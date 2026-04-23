@@ -10,7 +10,8 @@ import {
   useDocument,
   useSelectedMainTab,
   useSelectedScreenSize,
-  usePersistenceEnabled
+  usePersistenceEnabled,
+  useWorkspaceBackground
 } from '@editor/editor-context';
 import ToggleInspectorPanelButton from '../inspector-drawer/toggle-inspector-panel-button';
 import ToggleSamplesPanelButton from '../templates-drawer/toggle-samples-panel-button';
@@ -37,11 +38,19 @@ interface TemplatePanelProps {
   samplesDrawerEnabled?: boolean;
 }
 
+// Editor-mode workspace backgrounds. 'checkerboard' is a 24-px light/dark
+// squares pattern (opt-in default per user ask); 'solid' is the previous flat
+// gray. Both sit behind the email card and never reach the rendered output.
+const WORKSPACE_SOLID = '#e7e8ec';
+const WORKSPACE_CHECKERBOARD =
+  'repeating-conic-gradient(#eceef2 0% 25%, #dfe1e6 0% 50%) 50% / 24px 24px';
+
 export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnabled = true }: TemplatePanelProps) {
   const document = useDocument();
   const selectedMainTab = useSelectedMainTab();
   const selectedScreenSize = useSelectedScreenSize();
   const persistenceEnabled = usePersistenceEnabled();
+  const workspaceBackground = useWorkspaceBackground();
 
   let mainBoxSx: SxProps = {
     height: '100%',
@@ -155,7 +164,12 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
             // workspace gray doesn't end midway under a short email.
             // 49px toolbar + 49px subject bar = 98px fixed chrome above.
             minHeight: selectedMainTab === 'editor' ? 'calc(100vh - 98px)' : undefined,
-            backgroundColor: selectedMainTab === 'editor' ? '#e7e8ec' : undefined,
+            background:
+              selectedMainTab === 'editor'
+                ? workspaceBackground === 'checkerboard'
+                  ? WORKSPACE_CHECKERBOARD
+                  : WORKSPACE_SOLID
+                : undefined,
           }}
         >
           <Box sx={{ flexGrow: 1 }}>{renderMainPanel()}</Box>
