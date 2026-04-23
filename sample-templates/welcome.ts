@@ -8,160 +8,129 @@ const WELCOME: TEditorConfiguration = {
       canvasColor: '#FFFFFF',
       textColor: '#242424',
       fontFamily: 'MODERN_SANS',
+      subject: 'Welcome to Acme — let’s get you set up',
+      variables: [
+        {
+          name: 'first_name',
+          description: 'Recipient’s first name',
+          sampleValue: 'Alice',
+        },
+      ],
       childrenIds: [
-        'block-1709571212684',
-        'block-1709571228545',
-        'block-1709571234315',
-        'block-1709571247550',
-        'block-1709571258507',
-        'block-1709571281151',
-        'block-1709571302968',
-        'block-1709571282795',
+        'welcome-logo',
+        'welcome-greeting',
+        'welcome-intro',
+        'welcome-list',
+        'welcome-cta',
+        'welcome-help',
+        'welcome-signature',
       ],
     },
   },
-  'block-1709571212684': {
+  'welcome-logo': {
     type: 'Image',
     data: {
       style: {
-        padding: {
-          top: 24,
-          bottom: 24,
-          right: 24,
-          left: 24,
-        },
+        padding: { top: 24, bottom: 24, right: 24, left: 24 },
+        textAlign: 'left',
       },
       props: {
-        url: '{{ logo_url }}',
-        alt: '{{ company_name }}',
-        linkHref: '{{ website_url }}',
+        width: 120,
+        height: 32,
+        url: 'https://placehold.co/240x64/0068FF/FFFFFF/png?text=Acme',
+        alt: 'Acme',
+        linkHref: 'https://acme.example',
         contentAlignment: 'middle',
       },
     },
   },
-  'block-1709571228545': {
+  'welcome-greeting': {
+    type: 'Heading',
+    data: {
+      style: {
+        textAlign: 'left',
+        padding: { top: 16, bottom: 8, right: 24, left: 24 },
+      },
+      props: {
+        level: 'h2',
+        text: 'Hi {{first_name}} 👋 — welcome aboard',
+      },
+    },
+  },
+  'welcome-intro': {
     type: 'Text',
     data: {
       style: {
         fontWeight: 'normal',
-        padding: {
-          top: 0,
-          bottom: 16,
-          right: 24,
-          left: 24,
-        },
+        padding: { top: 0, bottom: 16, right: 24, left: 24 },
       },
       props: {
-        text: 'Hi {{ name }} 👋,',
+        text:
+          'We’re glad to have you at Acme. You now have everything you need to build, preview, and send emails that actually reach the inbox — without pasting HTML into five different tabs.',
+        markdown: false,
       },
     },
   },
-  'block-1709571234315': {
+  'welcome-list': {
     type: 'Text',
     data: {
       style: {
         fontWeight: 'normal',
-        padding: {
-          top: 0,
-          bottom: 16,
-          right: 24,
-          left: 24,
-        },
+        padding: { top: 0, bottom: 16, right: 24, left: 24 },
       },
       props: {
-        text: 'Welcome to {{ company_name }}! {{ company_description }}',
+        markdown: true,
+        text:
+          '**Here’s where to start:**\n\n' +
+          '- Open a sample template and make it yours\n' +
+          '- Preview in desktop and mobile before you send\n' +
+          '- Save a template once, reuse it forever',
       },
     },
   },
-  'block-1709571247550': {
-    type: 'Text',
-    data: {
-      style: {
-        fontWeight: 'normal',
-        padding: {
-          top: 0,
-          bottom: 16,
-          right: 24,
-          left: 24,
-        },
-      },
-      props: {
-        text: '{{ benefit_text }}',
-      },
-    },
-  },
-  'block-1709571258507': {
-    type: 'Image',
-    data: {
-      style: {
-        padding: {
-          top: 16,
-          bottom: 16,
-          right: 24,
-          left: 24,
-        },
-      },
-      props: {
-        url: '{{ feature_image_url }}',
-        alt: '{{ feature_image_alt }}',
-        linkHref: '{{ feature_link }}',
-        contentAlignment: 'middle',
-      },
-    },
-  },
-  'block-1709571281151': {
-    type: 'Text',
-    data: {
-      style: {
-        fontWeight: 'normal',
-        padding: {
-          top: 16,
-          bottom: 16,
-          right: 24,
-          left: 24,
-        },
-      },
-      props: {
-        text: "If you ever need help, just reply to this email and one of us will get back to you shortly. We're here to help.",
-      },
-    },
-  },
-  'block-1709571282795': {
-    type: 'Image',
-    data: {
-      style: {
-        padding: {
-          top: 16,
-          bottom: 40,
-          right: 24,
-          left: 24,
-        },
-      },
-      props: {
-        url: '{{ secondary_image_url }}',
-        alt: '{{ secondary_image_alt }}',
-        linkHref: null,
-        contentAlignment: 'middle',
-      },
-    },
-  },
-  'block-1709571302968': {
+  'welcome-cta': {
     type: 'Button',
     data: {
       style: {
         fontSize: 14,
-        padding: {
-          top: 16,
-          bottom: 24,
-          right: 24,
-          left: 24,
-        },
+        textAlign: 'left',
+        padding: { top: 8, bottom: 24, right: 24, left: 24 },
       },
       props: {
-        buttonBackgroundColor: '#0079cc',
+        buttonBackgroundColor: '#0068FF',
+        buttonTextColor: '#FFFFFF',
         buttonStyle: 'rectangle',
-        text: '{{ cta_text }}',
-        url: '{{ cta_url }}',
+        fullWidth: false,
+        size: 'medium',
+        text: 'Open your dashboard',
+        url: 'https://acme.example/dashboard',
+      },
+    },
+  },
+  'welcome-help': {
+    type: 'Text',
+    data: {
+      style: {
+        fontWeight: 'normal',
+        padding: { top: 8, bottom: 16, right: 24, left: 24 },
+      },
+      props: {
+        text:
+          'If you ever need a hand, just reply to this email — a real person on our team will write back.',
+        markdown: false,
+      },
+    },
+  },
+  'welcome-signature': {
+    type: 'Text',
+    data: {
+      style: {
+        fontWeight: 'normal',
+        padding: { top: 8, bottom: 32, right: 24, left: 24 },
+      },
+      props: {
+        text: '— The Acme team',
+        markdown: false,
       },
     },
   },

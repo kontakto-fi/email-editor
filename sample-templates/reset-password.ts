@@ -8,146 +8,122 @@ const RESET_PASSWORD: TEditorConfiguration = {
       canvasColor: '#FFFFFF',
       textColor: '#242424',
       fontFamily: 'MODERN_SANS',
+      subject: 'Reset your Acme password',
+      variables: [
+        {
+          name: 'first_name',
+          description: 'Recipient’s first name',
+          sampleValue: 'Alice',
+        },
+        {
+          name: 'reset_url',
+          description: 'One-time password reset link (expires in 30 minutes)',
+          sampleValue: 'https://acme.example/reset?token=sample-token',
+        },
+      ],
       childrenIds: [
-        'block_3gpSGmkgL4nWSBQjWCjK2z',
-        'block_BjpQ7DGTtvaEuYRMd7VE7w',
-        'block_xyg4GWmgGbJJEDRQc76bC',
-        'block_76VptLCZ47t3EkAarUufEJ',
-        'block_Gtk3kDYwsJqEmQf2XGWPRc',
-        'block_LACDCzUS2bsvEbmnq1KHuW',
+        'reset-logo',
+        'reset-heading',
+        'reset-body',
+        'reset-cta',
+        'reset-divider',
+        'reset-footer',
       ],
     },
   },
-  block_3gpSGmkgL4nWSBQjWCjK2z: {
+  'reset-logo': {
     type: 'Image',
     data: {
       style: {
-        padding: {
-          top: 24,
-          bottom: 8,
-          right: 24,
-          left: 24,
-        },
-        backgroundColor: null,
+        padding: { top: 24, bottom: 8, right: 24, left: 24 },
         textAlign: 'left',
       },
       props: {
-        height: 24,
-        url: '{{ logo_url }}',
-        alt: '{{ company_name }}',
-        linkHref: '{{ website_url }}',
+        width: 120,
+        height: 32,
+        url: 'https://placehold.co/240x64/0068FF/FFFFFF/png?text=Acme',
+        alt: 'Acme',
+        linkHref: 'https://acme.example',
         contentAlignment: 'middle',
       },
     },
   },
-  block_BjpQ7DGTtvaEuYRMd7VE7w: {
+  'reset-heading': {
     type: 'Heading',
     data: {
       style: {
-        color: null,
-        backgroundColor: null,
-        fontFamily: null,
         fontWeight: 'bold',
         textAlign: 'left',
-        padding: {
-          top: 32,
-          bottom: 0,
-          left: 24,
-          right: 24,
-        },
+        padding: { top: 32, bottom: 0, left: 24, right: 24 },
       },
       props: {
         level: 'h3',
-        text: '{{ heading_text }}',
+        text: 'Reset your password',
       },
     },
   },
-  block_xyg4GWmgGbJJEDRQc76bC: {
+  'reset-body': {
     type: 'Text',
     data: {
       style: {
         color: '#474849',
-        backgroundColor: null,
         fontSize: 14,
-        fontFamily: null,
         fontWeight: 'normal',
         textAlign: 'left',
-        padding: {
-          top: 8,
-          bottom: 16,
-          left: 24,
-          right: 24,
-        },
+        padding: { top: 8, bottom: 16, left: 24, right: 24 },
       },
       props: {
-        text: `{{ body_text }}`,
+        markdown: false,
+        text:
+          'Hi {{first_name}}, we got a request to reset the password on your Acme account. Click the button below to set a new one. If you didn’t ask for this, you can ignore this email — your password won’t change.',
       },
     },
   },
-  block_76VptLCZ47t3EkAarUufEJ: {
+  'reset-cta': {
     type: 'Button',
     data: {
       style: {
-        backgroundColor: null,
         fontSize: 14,
-        fontFamily: null,
         fontWeight: 'bold',
         textAlign: 'left',
-        padding: {
-          top: 12,
-          bottom: 32,
-          right: 24,
-          left: 24,
-        },
+        padding: { top: 12, bottom: 32, right: 24, left: 24 },
       },
       props: {
         buttonBackgroundColor: '#0068FF',
-        buttonStyle: 'rectangle',
         buttonTextColor: '#FFFFFF',
+        buttonStyle: 'rectangle',
         fullWidth: false,
         size: 'medium',
-        text: '{{ cta_text }}',
-        url: '{{ reset_url }}',
+        text: 'Reset password',
+        url: '{{reset_url}}',
       },
     },
   },
-  block_Gtk3kDYwsJqEmQf2XGWPRc: {
+  'reset-divider': {
     type: 'Divider',
     data: {
       style: {
-        backgroundColor: null,
-        padding: {
-          top: 16,
-          bottom: 16,
-          left: 24,
-          right: 24,
-        },
+        padding: { top: 16, bottom: 16, left: 24, right: 24 },
       },
       props: {
-        lineHeight: 1,
         lineColor: '#EEEEEE',
       },
     },
   },
-  block_LACDCzUS2bsvEbmnq1KHuW: {
+  'reset-footer': {
     type: 'Text',
     data: {
       style: {
-        color: '#474849',
-        backgroundColor: null,
+        color: '#8a8d91',
         fontSize: 12,
-        fontFamily: null,
         fontWeight: 'normal',
         textAlign: 'left',
-        padding: {
-          top: 4,
-          bottom: 24,
-          left: 24,
-          right: 24,
-        },
+        padding: { top: 4, bottom: 24, left: 24, right: 24 },
       },
       props: {
-        text: '{{ footer_text }}',
+        markdown: false,
+        text:
+          'For security, this link expires in 30 minutes and can only be used once. If you need a new link, head to acme.example and choose “Forgot password” again.',
       },
     },
   },
