@@ -10,7 +10,7 @@ test('can type in a text block without losing focus', async ({ page }) => {
   await expect(page.locator('#drawer-container')).toBeVisible({ timeout: 10_000 });
 
   // Click on text content in the canvas
-  const canvasText = page.locator('text=If you ever need help').first();
+  const canvasText = page.locator('text=If you ever need a hand').first();
   await canvasText.click();
 
   // The canvas textarea is the one with rows="1" inside a td (from TextEditor)

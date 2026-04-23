@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 
 test('delete a block using keyboard', async ({ page }) => {
   // Click on a text block to select it (Welcome template has this text)
-  const textBlock = page.locator('text=If you ever need help').first();
+  const textBlock = page.locator('text=If you ever need a hand').first();
   await expect(textBlock).toBeVisible({ timeout: 5_000 });
   await textBlock.click();
 
@@ -24,12 +24,12 @@ test('delete a block using keyboard', async ({ page }) => {
   await page.keyboard.press('Delete');
 
   // The text should be gone
-  await expect(page.locator('text=If you ever need help')).not.toBeVisible({ timeout: 5_000 });
+  await expect(page.locator('text=If you ever need a hand')).not.toBeVisible({ timeout: 5_000 });
 });
 
 test('block copy button appears in tune menu', async ({ page }) => {
   // Click on a text block
-  const textBlock = page.locator('text=If you ever need help').first();
+  const textBlock = page.locator('text=If you ever need a hand').first();
   await textBlock.click();
 
   // The tune menu should appear with a copy button
@@ -39,7 +39,7 @@ test('block copy button appears in tune menu', async ({ page }) => {
 
 test('inline edit a text block', async ({ page }) => {
   // Click on a text block
-  const textBlock = page.locator('text=If you ever need help').first();
+  const textBlock = page.locator('text=If you ever need a hand').first();
   await expect(textBlock).toBeVisible({ timeout: 5_000 });
   await textBlock.click();
 
