@@ -1,3 +1,28 @@
+# [2.3.0](https://github.com/kontakto-fi/email-editor/compare/v2.2.2...v2.3.0) (2026-04-23)
+
+
+### Bug Fixes
+
+* canvas workspace background extends to the bottom of the viewport ([56bddaa](https://github.com/kontakto-fi/email-editor/commit/56bddaa5973b6086ed60941ad05a115e503f44af))
+* reveal row actions without hover; wire rename/delete for user samples ([57c9970](https://github.com/kontakto-fi/email-editor/commit/57c997012e5fa2a39dd9c36d42d5b9b7832ee5bf))
+* treat built-in samples like user samples; resolve row layout overlap ([bcb4ce1](https://github.com/kontakto-fi/email-editor/commit/bcb4ce1d8fe0d5e3df1bfb8424a0a79a2fac814c))
+
+
+### Features
+
+* checkerboard workspace background by default, solid toggle in Settings ([0e9964a](https://github.com/kontakto-fi/email-editor/commit/0e9964a9011c0cf270a7c1cec65a95fd45ccf809))
+* drag-and-drop reorder in the outline tab (and shared move-block core) ([e94748b](https://github.com/kontakto-fi/email-editor/commit/e94748bbba958b0c0f0f53cb672f4ac95d37c6e1))
+* drag-and-drop reorder on the canvas too ([0411df9](https://github.com/kontakto-fi/email-editor/commit/0411df95f95cef865b29b887882f03c66f052bb1))
+* edit tags alongside rename in the row's details dialog ([33d3f2a](https://github.com/kontakto-fi/email-editor/commit/33d3f2a7c6f1c4d0a9e8f927d7ab0dc7dcfaa71b))
+* floating save bar below the email; Save now works on samples ([f3a3108](https://github.com/kontakto-fi/email-editor/commit/f3a31087316d89462eb13dc46060f7d8f0e78f14))
+* optional Handlebars evaluation on renderToStaticMarkup/renderToText ([2104d9e](https://github.com/kontakto-fi/email-editor/commit/2104d9efdf833d828404403b1c87d1d5a959c0b1)), closes [#14](https://github.com/kontakto-fi/email-editor/issues/14)
+* outline rows get type icons and move-up/down; unclip email card ([88ec6d1](https://github.com/kontakto-fi/email-editor/commit/88ec6d1d3cb93da999a09ea52752b9e3f608b361)), closes [#16](https://github.com/kontakto-fi/email-editor/issues/16)
+* outline tree in the left drawer as a three-tab surface ([1bc36f8](https://github.com/kontakto-fi/email-editor/commit/1bc36f86da94f0a1bf02ddcf02e62408f08982e0)), closes [#9](https://github.com/kontakto-fi/email-editor/issues/9)
+* rewrite welcome + reset-password samples as real copy, not placeholders ([1556945](https://github.com/kontakto-fi/email-editor/commit/15569459b11025b827a2760d7ba2504ea4068c8e))
+* tag filter chips with All toggle spanning templates and samples ([6a1fc35](https://github.com/kontakto-fi/email-editor/commit/6a1fc352da3d4bc48bf575959469f27973f22528)), closes [#13](https://github.com/kontakto-fi/email-editor/issues/13)
+* unified new-template picker with starter selection and sample authoring ([a516c86](https://github.com/kontakto-fi/email-editor/commit/a516c86583f793f878cf13ccabc4687f06c201c1))
+* wrap the edit-mode canvas in a visible 'document' card ([4454201](https://github.com/kontakto-fi/email-editor/commit/445420179ae260bc40146e5b0ef17c70190e654b)), closes [#15](https://github.com/kontakto-fi/email-editor/issues/15)
+
 ## [2.2.2](https://github.com/kontakto-fi/email-editor/compare/v2.2.1...v2.2.2) (2026-04-22)
 
 
