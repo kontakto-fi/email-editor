@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/kontakto-fi/email-editor/compare/v2.3.1...v2.4.0) (2026-04-23)
+
+
+### Features
+
+* edit template name & tags from the right-panel Settings tab ([1bb9aad](https://github.com/kontakto-fi/email-editor/commit/1bb9aaddb82de95dc521307fba80291b3a519f42))
+
 ## [2.3.1](https://github.com/kontakto-fi/email-editor/compare/v2.3.0...v2.3.1) (2026-04-23)
 
 
