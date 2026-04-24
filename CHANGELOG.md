@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/kontakto-fi/email-editor/compare/v2.8.0...v2.9.0) (2026-04-24)
+
+
+### Features
+
+* translate Variables tab ([059ebe8](https://github.com/kontakto-fi/email-editor/commit/059ebe8dce10e1a2a6b9a53fe3a75c96d5d41e8b)), closes [#17](https://github.com/kontakto-fi/email-editor/issues/17)
+
 # [2.8.0](https://github.com/kontakto-fi/email-editor/compare/v2.7.0...v2.8.0) (2026-04-23)
 
 
