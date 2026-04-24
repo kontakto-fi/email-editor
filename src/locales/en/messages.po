@@ -648,3 +648,60 @@ msgstr "marketing"
 
 msgid "tag.transactional"
 msgstr "transactional"
+
+msgid "variables.title"
+msgstr "Variables"
+
+msgid "variables.add"
+msgstr "Add variable"
+
+msgid "variables.intro"
+msgstr "Declared variables travel with the template. Reference them in subject and body as {{name}}. In Preview mode, tokens render with the sample values below."
+
+msgid "variables.undeclared"
+msgstr "Undeclared in body"
+
+msgid "variables.click-to-declare"
+msgstr "Click a token to declare it."
+
+msgid "variables.none"
+msgstr "No variables declared. Click + to add one."
+
+msgid "variables.open-template"
+msgstr "Open a template to manage variables."
+
+msgid "variables.confirm-delete"
+msgstr "Variable is still referenced in the body. Delete anyway?"
+
+msgid "variables.copy-token"
+msgstr "Copy {{name}} token"
+
+msgid "variables.insert-at-cursor"
+msgstr "Insert at cursor"
+
+msgid "variables.focus-first"
+msgstr "Focus a text field first"
+
+msgid "variables.remove"
+msgstr "Remove"
+
+msgid "variables.description"
+msgstr "Description"
+
+msgid "variables.optional"
+msgstr "Optional"
+
+msgid "variables.sample-value"
+msgstr "Sample value"
+
+msgid "variables.sample-hint"
+msgstr "Shown in Preview mode"
+
+msgid "variables.unused"
+msgstr "Unused in body"
+
+msgid "variables.ref-one"
+msgstr "ref"
+
+msgid "variables.ref-many"
+msgstr "refs"

@@ -648,3 +648,60 @@ msgstr "markkinointi"
 
 msgid "tag.transactional"
 msgstr "tapahtumaviestit"
+
+msgid "variables.title"
+msgstr "Muuttujat"
+
+msgid "variables.add"
+msgstr "Lisää muuttuja"
+
+msgid "variables.intro"
+msgstr "Määritellyt muuttujat kulkevat pohjan mukana. Viittaa niihin aiherivillä ja viestissä muodossa {{nimi}}. Esikatselussa merkit korvautuvat alla olevilla esimerkkiarvoilla."
+
+msgid "variables.undeclared"
+msgstr "Määrittelemätön viestissä"
+
+msgid "variables.click-to-declare"
+msgstr "Määrittele muuttuja napsauttamalla tunnistetta."
+
+msgid "variables.none"
+msgstr "Ei määriteltyjä muuttujia. Lisää napsauttamalla +."
+
+msgid "variables.open-template"
+msgstr "Avaa pohja hallitaksesi muuttujia."
+
+msgid "variables.confirm-delete"
+msgstr "Muuttujaan viitataan edelleen viestissä. Poistetaanko silti?"
+
+msgid "variables.copy-token"
+msgstr "Kopioi {{nimi}}-tunniste"
+
+msgid "variables.insert-at-cursor"
+msgstr "Lisää kohdistimeen"
+
+msgid "variables.focus-first"
+msgstr "Kohdista ensin tekstikenttään"
+
+msgid "variables.remove"
+msgstr "Poista"
+
+msgid "variables.description"
+msgstr "Kuvaus"
+
+msgid "variables.optional"
+msgstr "Valinnainen"
+
+msgid "variables.sample-value"
+msgstr "Esimerkkiarvo"
+
+msgid "variables.sample-hint"
+msgstr "Näytetään esikatselussa"
+
+msgid "variables.unused"
+msgstr "Ei käytössä viestissä"
+
+msgid "variables.ref-one"
+msgstr "viittaus"
+
+msgid "variables.ref-many"
+msgstr "viittausta"

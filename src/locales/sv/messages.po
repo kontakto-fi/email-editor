@@ -648,3 +648,60 @@ msgstr "marknadsföring"
 
 msgid "tag.transactional"
 msgstr "transaktionella"
+
+msgid "variables.title"
+msgstr "Variabler"
+
+msgid "variables.add"
+msgstr "Lägg till variabel"
+
+msgid "variables.intro"
+msgstr "Deklarerade variabler följer med mallen. Hänvisa till dem i ämnesrad och brödtext som {{namn}}. I förhandsgranskningen renderas tokens med exempelvärdena nedan."
+
+msgid "variables.undeclared"
+msgstr "Odeklarerad i brödtexten"
+
+msgid "variables.click-to-declare"
+msgstr "Klicka på en token för att deklarera den."
+
+msgid "variables.none"
+msgstr "Inga variabler deklarerade. Klicka på + för att lägga till en."
+
+msgid "variables.open-template"
+msgstr "Öppna en mall för att hantera variabler."
+
+msgid "variables.confirm-delete"
+msgstr "Variabeln refereras fortfarande i brödtexten. Ta bort ändå?"
+
+msgid "variables.copy-token"
+msgstr "Kopiera {{namn}}-token"
+
+msgid "variables.insert-at-cursor"
+msgstr "Infoga vid markören"
+
+msgid "variables.focus-first"
+msgstr "Fokusera ett textfält först"
+
+msgid "variables.remove"
+msgstr "Ta bort"
+
+msgid "variables.description"
+msgstr "Beskrivning"
+
+msgid "variables.optional"
+msgstr "Valfritt"
+
+msgid "variables.sample-value"
+msgstr "Exempelvärde"
+
+msgid "variables.sample-hint"
+msgstr "Visas i förhandsgranskning"
+
+msgid "variables.unused"
+msgstr "Oanvänd i brödtexten"
+
+msgid "variables.ref-one"
+msgstr "referens"
+
+msgid "variables.ref-many"
+msgstr "referenser"

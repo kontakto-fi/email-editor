@@ -25,6 +25,7 @@ import {
 } from '@editor/editor-context';
 import { TEditorConfiguration } from '@editor/core';
 import type { EmailLayoutProps } from '@editor/blocks/email-layout/email-layout-props-schema';
+import { t } from '@i18n';
 import {
   buildRenamePatch,
   collectTokenUsage,
@@ -54,7 +55,7 @@ export default function VariablesPanel() {
   if (!root || root.type !== 'EmailLayout') {
     return (
       <Box p={2}>
-        <Alert severity="info">Open a template to manage variables.</Alert>
+        <Alert severity="info">{t('variables.open-template', 'Open a template to manage variables.')}</Alert>
       </Box>
     );
   }
@@ -103,9 +104,8 @@ export default function VariablesPanel() {
     const usageCount = v.name ? usage.get(v.name) ?? 0 : 0;
     if (usageCount > 0) {
       const ok = window.confirm(
-        `"${v.name}" is still referenced in the body (${usageCount} occurrence${
-          usageCount === 1 ? '' : 's'
-        }). Delete anyway?`
+        t('variables.confirm-delete', 'Variable is still referenced in the body. Delete anyway?') +
+          ` (${v.name}, ${usageCount})`
       );
       if (!ok) return;
     }
@@ -173,23 +173,24 @@ export default function VariablesPanel() {
     <Box p={2}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-          Variables
+          {t('variables.title', 'Variables')}
         </Typography>
-        <Tooltip title="Add variable">
-          <IconButton size="small" onClick={add} aria-label="Add variable">
+        <Tooltip title={t('variables.add', 'Add variable')}>
+          <IconButton size="small" onClick={add} aria-label={t('variables.add', 'Add variable')}>
             <AddOutlined fontSize="small" />
           </IconButton>
         </Tooltip>
       </Stack>
       <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mb: 2 }}>
-        Declared variables travel with the template. Reference them in subject and body as{' '}
-        <Box component="code" sx={{ fontFamily: 'monospace' }}>{'{{name}}'}</Box>. In Preview mode,
-        tokens render with the sample values below.
+        {t(
+          'variables.intro',
+          'Declared variables travel with the template. Reference them in subject and body as {{name}}. In Preview mode, tokens render with the sample values below.'
+        )}
       </Typography>
 
       {undeclared.length > 0 && (
         <Alert severity="warning" sx={{ mb: 2 }}>
-          <AlertTitle sx={{ fontSize: 13 }}>Undeclared in body</AlertTitle>
+          <AlertTitle sx={{ fontSize: 13 }}>{t('variables.undeclared', 'Undeclared in body')}</AlertTitle>
           <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
             {undeclared.map((name) => (
               <Chip
@@ -204,14 +205,14 @@ export default function VariablesPanel() {
             ))}
           </Stack>
           <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 0.5 }}>
-            Click a token to declare it.
+            {t('variables.click-to-declare', 'Click a token to declare it.')}
           </Typography>
         </Alert>
       )}
 
       {variables.length === 0 ? (
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          No variables declared. Click + to add one.
+          {t('variables.none', 'No variables declared. Click + to add one.')}
         </Typography>
       ) : (
         <Stack spacing={2}>
@@ -293,7 +294,7 @@ function VariableRow({
     <Stack spacing={0.75} sx={{ pb: 1, borderBottom: 1, borderColor: 'divider' }}>
       <Stack direction="row" spacing={1} alignItems="flex-start">
         <TextField
-          label="Name"
+          label={t('rename.name-label', 'Name')}
           size="small"
           fullWidth
           value={draftName}
@@ -316,35 +317,35 @@ function VariableRow({
           helperText={nameError ?? ' '}
         />
         <Stack direction="row" spacing={0.25} sx={{ mt: 0.5 }}>
-          <Tooltip title="Copy {{name}}">
+          <Tooltip title={t('variables.copy-token', 'Copy {{name}} token')}>
             <span>
               <IconButton
                 size="small"
                 onClick={onCopy}
                 disabled={!hasName}
-                aria-label={`Copy ${variable.name || 'variable'} token`}
+                aria-label={t('variables.copy-token', 'Copy {{name}} token')}
               >
                 <ContentCopyOutlined fontSize="small" />
               </IconButton>
             </span>
           </Tooltip>
-          <Tooltip title={canInsert ? 'Insert at cursor' : 'Focus a text field first'}>
+          <Tooltip title={canInsert ? t('variables.insert-at-cursor', 'Insert at cursor') : t('variables.focus-first', 'Focus a text field first')}>
             <span>
               <IconButton
                 size="small"
                 onClick={onInsert}
                 disabled={!hasName || !canInsert}
-                aria-label={`Insert ${variable.name || 'variable'} at cursor`}
+                aria-label={t('variables.insert-at-cursor', 'Insert at cursor')}
               >
                 <InputOutlined fontSize="small" />
               </IconButton>
             </span>
           </Tooltip>
-          <Tooltip title="Remove">
+          <Tooltip title={t('variables.remove', 'Remove')}>
             <IconButton
               size="small"
               onClick={onRemove}
-              aria-label={`Remove ${variable.name || 'variable'}`}
+              aria-label={t('variables.remove', 'Remove')}
             >
               <DeleteOutline fontSize="small" />
             </IconButton>
@@ -352,20 +353,20 @@ function VariableRow({
         </Stack>
       </Stack>
       <TextField
-        label="Description"
+        label={t('variables.description', 'Description')}
         size="small"
         fullWidth
         value={variable.description ?? ''}
         onChange={(e) => onChangeDescription(e.target.value)}
-        placeholder="Optional"
+        placeholder={t('variables.optional', 'Optional')}
       />
       <TextField
-        label="Sample value"
+        label={t('variables.sample-value', 'Sample value')}
         size="small"
         fullWidth
         value={variable.sampleValue ?? ''}
         onChange={(e) => onChangeSampleValue(e.target.value)}
-        placeholder="Shown in Preview mode"
+        placeholder={t('variables.sample-hint', 'Shown in Preview mode')}
         InputProps={{
           startAdornment: (
             <DataObjectOutlined
@@ -378,12 +379,12 @@ function VariableRow({
       <Stack direction="row" spacing={0.5} sx={{ pt: 0.25 }}>
         {hasName &&
           (unused ? (
-            <Chip size="small" color="warning" variant="outlined" label="Unused in body" />
+            <Chip size="small" color="warning" variant="outlined" label={t('variables.unused', 'Unused in body')} />
           ) : (
             <Chip
               size="small"
               variant="outlined"
-              label={`${usageCount} ref${usageCount === 1 ? '' : 's'}`}
+              label={`${usageCount} ${usageCount === 1 ? t('variables.ref-one', 'ref') : t('variables.ref-many', 'refs')}`}
             />
           ))}
       </Stack>
