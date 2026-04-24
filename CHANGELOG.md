@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/kontakto-fi/email-editor/compare/v2.9.0...v2.10.0) (2026-04-24)
+
+
+### Features
+
+* underline / overline / text color / font in inline toolbar ([9975932](https://github.com/kontakto-fi/email-editor/commit/99759320ae08a652f254acaeeea48be7a94d057d))
+
 # [2.9.0](https://github.com/kontakto-fi/email-editor/compare/v2.8.0...v2.9.0) (2026-04-24)
 
 
