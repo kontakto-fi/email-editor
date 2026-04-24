@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/kontakto-fi/email-editor/compare/v2.10.1...v2.11.0) (2026-04-24)
+
+
+### Features
+
+* translate Subject label + block defaults + font family options ([9f310cc](https://github.com/kontakto-fi/email-editor/commit/9f310cc561b0c059c462e8a9ba3895b11bd4a007))
+
 ## [2.10.1](https://github.com/kontakto-fi/email-editor/compare/v2.10.0...v2.10.1) (2026-04-24)
 
 
