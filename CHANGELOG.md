@@ -1,3 +1,10 @@
+## [2.10.1](https://github.com/kontakto-fi/email-editor/compare/v2.10.0...v2.10.1) (2026-04-24)
+
+
+### Bug Fixes
+
+* text color / font picker applies on selection, not on Apply ([2be68e6](https://github.com/kontakto-fi/email-editor/commit/2be68e6ab74ddb8ae6ea55cbef22ec3826b657b1)), closes [#000000](https://github.com/kontakto-fi/email-editor/issues/000000)
+
 # [2.10.0](https://github.com/kontakto-fi/email-editor/compare/v2.9.0...v2.10.0) (2026-04-24)
 
 
