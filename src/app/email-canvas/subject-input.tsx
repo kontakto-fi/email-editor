@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, InputBase } from '@mui/material';
 import { setDocument, setLastFocusedEditable, useDocument } from '@editor/editor-context';
 import type { EmailLayoutProps } from '@editor/blocks/email-layout/email-layout-props-schema';
+import { t } from '@i18n';
 
 export default function SubjectInput() {
   const document = useDocument();
@@ -43,10 +44,12 @@ export default function SubjectInput() {
         gap: 1.5,
       }}
     >
-      <Box sx={{ color: 'text.secondary', fontSize: 13, fontWeight: 600, minWidth: 56 }}>Subject</Box>
+      <Box sx={{ color: 'text.secondary', fontSize: 13, fontWeight: 600, minWidth: 56 }}>
+        {t('subject.label', 'Subject')}
+      </Box>
       <InputBase
         fullWidth
-        placeholder="Email subject — supports {{variables}}"
+        placeholder={t('subject.placeholder', 'Email subject — supports {{variables}}')}
         value={subject}
         onChange={(e) => handleChange(e.target.value)}
         onFocus={trackFocus}

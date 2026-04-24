@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { useDocument } from '@editor/editor-context';
 import type { EmailLayoutProps } from '@editor/blocks/email-layout/email-layout-props-schema';
+import { t } from '@i18n';
 import {
   buildSampleValueMap,
   substituteSampleValues,
@@ -36,7 +37,7 @@ export default function SubjectPreview() {
       }}
     >
       <Box sx={{ color: 'text.secondary', fontSize: 13, fontWeight: 600, minWidth: 56 }}>
-        Subject
+        {t('subject.label', 'Subject')}
       </Box>
       <Box sx={{ fontSize: 14 }}>{rendered}</Box>
     </Box>

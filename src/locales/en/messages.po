@@ -64,6 +64,69 @@ msgstr "Regular"
 msgid "font-weight.bold"
 msgstr "Bold"
 
+msgid "font-family.modern_sans"
+msgstr "Modern sans"
+
+msgid "font-family.book_sans"
+msgstr "Book sans"
+
+msgid "font-family.organic_sans"
+msgstr "Organic sans"
+
+msgid "font-family.geometric_sans"
+msgstr "Geometric sans"
+
+msgid "font-family.heavy_sans"
+msgstr "Heavy sans"
+
+msgid "font-family.rounded_sans"
+msgstr "Rounded sans"
+
+msgid "font-family.modern_serif"
+msgstr "Modern serif"
+
+msgid "font-family.book_serif"
+msgstr "Book serif"
+
+msgid "font-family.monospace"
+msgstr "Monospace"
+
+msgid "subject.label"
+msgstr "Subject"
+
+msgid "subject.placeholder"
+msgstr "Email subject — supports {{variables}}"
+
+msgid "default.heading"
+msgstr "Hello friend"
+
+msgid "default.text"
+msgstr "My new text block"
+
+msgid "default.button"
+msgstr "Button"
+
+msgid "default.image-alt"
+msgstr "Sample product"
+
+msgid "default.html"
+msgstr "Hello world"
+
+msgid "default.personal-greeting"
+msgstr "Best regards,"
+
+msgid "default.personal-name"
+msgstr "John Doe"
+
+msgid "default.personal-title"
+msgstr "Software Engineer"
+
+msgid "default.personal-company"
+msgstr "Acme Inc."
+
+msgid "default.company-address"
+msgstr "123 Main Street, City, Country"
+
 msgid "drawer.library"
 msgstr "Library"
 

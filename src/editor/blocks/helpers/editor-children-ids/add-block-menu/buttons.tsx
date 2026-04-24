@@ -16,6 +16,7 @@ import {
 } from '@mui/icons-material';
 
 import { TEditorBlock } from '@editor/core';
+import { t } from '@i18n';
 
 type TButtonProps = {
   label: string;
@@ -29,7 +30,7 @@ export const BUTTONS: TButtonProps[] = [
     block: () => ({
       type: 'Heading',
       data: {
-        props: { text: 'Hello friend' },
+        props: { text: t('default.heading', 'Hello friend') },
         style: {
           padding: { top: 16, bottom: 16, left: 24, right: 24 },
         },
@@ -42,7 +43,7 @@ export const BUTTONS: TButtonProps[] = [
     block: () => ({
       type: 'Text',
       data: {
-        props: { text: 'My new text block', markdown: true },
+        props: { text: t('default.text', 'My new text block'), markdown: true },
         style: {
           padding: { top: 16, bottom: 16, left: 24, right: 24 },
           fontWeight: 'normal',
@@ -58,7 +59,7 @@ export const BUTTONS: TButtonProps[] = [
       type: 'Button',
       data: {
         props: {
-          text: 'Button',
+          text: t('default.button', 'Button'),
           url: 'https://example.com',
         },
         style: { padding: { top: 16, bottom: 16, left: 24, right: 24 } },
@@ -73,7 +74,7 @@ export const BUTTONS: TButtonProps[] = [
       data: {
         props: {
           url: 'https://placehold.co/600x400/EEE/999?text=Sample+Image',
-          alt: 'Sample product',
+          alt: t('default.image-alt', 'Sample product'),
           contentAlignment: 'middle',
           linkHref: null,
         },
@@ -102,10 +103,10 @@ export const BUTTONS: TButtonProps[] = [
       type: 'Signature',
       data: {
         props: {
-          greeting: 'Best regards,',
-          name: 'John Doe',
-          title: 'Software Engineer',
-          company: 'Acme Inc.',
+          greeting: t('default.personal-greeting', 'Best regards,'),
+          name: t('default.personal-name', 'John Doe'),
+          title: t('default.personal-title', 'Software Engineer'),
+          company: t('default.personal-company', 'Acme Inc.'),
           email: 'john@example.com',
           phone: '+1 234 567 890',
           imageUrl: 'https://ui-avatars.com/api/?name=John+Doe&size=128',
@@ -124,8 +125,8 @@ export const BUTTONS: TButtonProps[] = [
       type: 'Signature',
       data: {
         props: {
-          company: 'Acme Inc.',
-          address: '123 Main Street, City, Country',
+          company: t('default.personal-company', 'Acme Inc.'),
+          address: t('default.company-address', '123 Main Street, City, Country'),
           email: 'support@example.com',
           website: 'www.example.com',
           imageUrl: 'https://placehold.co/128x128/EEE/999?text=Logo',
@@ -164,7 +165,7 @@ export const BUTTONS: TButtonProps[] = [
     block: () => ({
       type: 'Html',
       data: {
-        props: { contents: '<strong>Hello world</strong>' },
+        props: { contents: `<strong>${t('default.html', 'Hello world')}</strong>` },
         style: {
           fontSize: 16,
           textAlign: null,

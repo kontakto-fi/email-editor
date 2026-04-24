@@ -5,12 +5,6 @@ import { MenuItem, TextField } from '@mui/material';
 import { FONT_FAMILIES } from '@editor/blocks/helpers/font-family';
 import { t } from '@i18n';
 
-const OPTIONS = FONT_FAMILIES.map((option) => (
-  <MenuItem key={option.key} value={option.key} sx={{ fontFamily: option.value }}>
-    {option.label}
-  </MenuItem>
-));
-
 type NullableProps = {
   label: string;
   onChange: (value: null | string) => void;
@@ -18,12 +12,12 @@ type NullableProps = {
 };
 export function NullableFontFamily({ label, onChange, defaultValue }: NullableProps) {
   const [value, setValue] = useState(defaultValue ?? 'inherit');
-  
+
   // Synchronize with external changes to defaultValue
   useEffect(() => {
     setValue(defaultValue ?? 'inherit');
   }, [defaultValue]);
-  
+
   return (
     <TextField
       select
@@ -37,7 +31,11 @@ export function NullableFontFamily({ label, onChange, defaultValue }: NullablePr
       }}
     >
       <MenuItem value="inherit">{t('font-family.inherit', 'Match email settings')}</MenuItem>
-      {OPTIONS}
+      {FONT_FAMILIES.map((option) => (
+        <MenuItem key={option.key} value={option.key} sx={{ fontFamily: option.value }}>
+          {t(`font-family.${option.key.toLowerCase()}`, option.label)}
+        </MenuItem>
+      ))}
     </TextField>
   );
 }

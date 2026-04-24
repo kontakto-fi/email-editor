@@ -64,6 +64,69 @@ msgstr "Normaali"
 msgid "font-weight.bold"
 msgstr "Lihavoitu"
 
+msgid "font-family.modern_sans"
+msgstr "Moderni groteski"
+
+msgid "font-family.book_sans"
+msgstr "Kirjagroteski"
+
+msgid "font-family.organic_sans"
+msgstr "Orgaaninen groteski"
+
+msgid "font-family.geometric_sans"
+msgstr "Geometrinen groteski"
+
+msgid "font-family.heavy_sans"
+msgstr "Paksu groteski"
+
+msgid "font-family.rounded_sans"
+msgstr "Pyöristetty groteski"
+
+msgid "font-family.modern_serif"
+msgstr "Moderni antiikva"
+
+msgid "font-family.book_serif"
+msgstr "Kirja-antiikva"
+
+msgid "font-family.monospace"
+msgstr "Tasalevyinen"
+
+msgid "subject.label"
+msgstr "Aihe"
+
+msgid "subject.placeholder"
+msgstr "Sähköpostin aihe — tukee {{muuttujia}}"
+
+msgid "default.heading"
+msgstr "Hei ystävä"
+
+msgid "default.text"
+msgstr "Uusi tekstilohko"
+
+msgid "default.button"
+msgstr "Painike"
+
+msgid "default.image-alt"
+msgstr "Esimerkkikuva"
+
+msgid "default.html"
+msgstr "Hei maailma"
+
+msgid "default.personal-greeting"
+msgstr "Ystävällisin terveisin,"
+
+msgid "default.personal-name"
+msgstr "Matti Meikäläinen"
+
+msgid "default.personal-title"
+msgstr "Ohjelmistokehittäjä"
+
+msgid "default.personal-company"
+msgstr "Acme Oy"
+
+msgid "default.company-address"
+msgstr "Pääkatu 1, Kaupunki, Suomi"
+
 msgid "drawer.library"
 msgstr "Kirjasto"
 

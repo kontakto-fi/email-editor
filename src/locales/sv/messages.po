@@ -64,6 +64,69 @@ msgstr "Normal"
 msgid "font-weight.bold"
 msgstr "Fet"
 
+msgid "font-family.modern_sans"
+msgstr "Modern sans"
+
+msgid "font-family.book_sans"
+msgstr "Bok sans"
+
+msgid "font-family.organic_sans"
+msgstr "Organisk sans"
+
+msgid "font-family.geometric_sans"
+msgstr "Geometrisk sans"
+
+msgid "font-family.heavy_sans"
+msgstr "Tjock sans"
+
+msgid "font-family.rounded_sans"
+msgstr "Rundad sans"
+
+msgid "font-family.modern_serif"
+msgstr "Modern serif"
+
+msgid "font-family.book_serif"
+msgstr "Bok serif"
+
+msgid "font-family.monospace"
+msgstr "Monospace"
+
+msgid "subject.label"
+msgstr "Ämne"
+
+msgid "subject.placeholder"
+msgstr "E-postens ämne — stöder {{variabler}}"
+
+msgid "default.heading"
+msgstr "Hej vän"
+
+msgid "default.text"
+msgstr "Nytt textblock"
+
+msgid "default.button"
+msgstr "Knapp"
+
+msgid "default.image-alt"
+msgstr "Exempelbild"
+
+msgid "default.html"
+msgstr "Hej världen"
+
+msgid "default.personal-greeting"
+msgstr "Vänliga hälsningar,"
+
+msgid "default.personal-name"
+msgstr "Anna Andersson"
+
+msgid "default.personal-title"
+msgstr "Programvaruutvecklare"
+
+msgid "default.personal-company"
+msgstr "Acme AB"
+
+msgid "default.company-address"
+msgstr "Storgatan 1, Stad, Sverige"
+
 msgid "drawer.library"
 msgstr "Bibliotek"
 
