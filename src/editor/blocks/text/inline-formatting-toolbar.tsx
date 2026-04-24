@@ -85,6 +85,7 @@ export default function InlineFormattingToolbar({
   const [color, setColor] = useState('#000000');
   const [font, setFont] = useState(FONT_OPTIONS[0].value);
   const urlRef = useRef<HTMLInputElement>(null);
+  const colorRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (activePrompt === 'link') {
@@ -92,6 +93,9 @@ export default function InlineFormattingToolbar({
       setTimeout(() => urlRef.current?.focus(), 0);
     } else if (activePrompt === 'color') {
       setColor('#000000');
+      // Auto-open the native color picker so the user doesn't have to click
+      // the tiny swatch to find it. Small delay lets the popper mount first.
+      setTimeout(() => colorRef.current?.click(), 0);
     } else if (activePrompt === 'font') {
       setFont(FONT_OPTIONS[0].value);
     }
@@ -128,12 +132,19 @@ export default function InlineFormattingToolbar({
         ) : activePrompt === 'color' ? (
           <Stack direction="row" alignItems="center" spacing={0.5} sx={{ px: 0.5, py: 0.25 }}>
             <input
+              ref={colorRef}
               type="color"
               value={color}
-              onChange={(e) => setColor(e.target.value)}
+              onChange={(e) => {
+                const v = e.target.value;
+                setColor(v);
+                // Native color pickers fire `change` once the user confirms a
+                // color; apply immediately so there's no separate Apply step.
+                onColorSubmit(v);
+              }}
               style={{ width: 40, height: 28, border: 'none', padding: 0, background: 'transparent', cursor: 'pointer' }}
             />
-            <IconButton size="small" onClick={() => onColorSubmit(color)} title={t('toolbar.apply', 'Apply')}>
+            <IconButton size="small" onClick={onPromptCancel} title={t('common.cancel', 'Cancel')}>
               <FormatColorTextOutlined fontSize="small" />
             </IconButton>
           </Stack>
@@ -141,7 +152,12 @@ export default function InlineFormattingToolbar({
           <Stack direction="row" alignItems="center" spacing={0.5} sx={{ px: 0.5, py: 0.25 }}>
             <Select
               value={font}
-              onChange={(e) => setFont(e.target.value as string)}
+              onChange={(e) => {
+                const v = e.target.value as string;
+                setFont(v);
+                // Apply the font as soon as the user picks one.
+                onFontSubmit(v);
+              }}
               size="small"
               variant="standard"
               sx={{ minWidth: 180, fontSize: 13 }}
@@ -152,7 +168,7 @@ export default function InlineFormattingToolbar({
                 </MenuItem>
               ))}
             </Select>
-            <IconButton size="small" onClick={() => onFontSubmit(font)} title={t('toolbar.apply', 'Apply')}>
+            <IconButton size="small" onClick={onPromptCancel} title={t('common.cancel', 'Cancel')}>
               <TextFieldsOutlined fontSize="small" />
             </IconButton>
           </Stack>

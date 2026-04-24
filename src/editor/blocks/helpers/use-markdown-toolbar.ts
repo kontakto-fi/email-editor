@@ -60,8 +60,16 @@ export function useMarkdownToolbar({ text, isSelected, commitText, trackSelectio
   const wrapSelection = (prefix: string, suffix: string) => {
     const ta = textareaRef.current;
     if (!ta) return;
-    const start = ta.selectionStart ?? selection.start;
-    const end = ta.selectionEnd ?? selection.end;
+    // Prefer the textarea's live selection when it's non-empty. If the
+    // textarea's DOM selection has collapsed (e.g. because a native color
+    // picker briefly stole focus), fall back to the last tracked React-state
+    // selection so async popover flows still find the right range.
+    let start = ta.selectionStart ?? selection.start;
+    let end = ta.selectionEnd ?? selection.end;
+    if (start === end) {
+      start = selection.start;
+      end = selection.end;
+    }
     if (start === end) return;
     const current = textRef.current;
     const selected = current.slice(start, end);
