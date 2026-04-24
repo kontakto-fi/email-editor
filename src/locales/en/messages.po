@@ -37,6 +37,33 @@ msgstr "Italic (Cmd+I)"
 msgid "toolbar.link-shortcut"
 msgstr "Link (Cmd+K)"
 
+msgid "toolbar.underline"
+msgstr "Underline"
+
+msgid "toolbar.underline-shortcut"
+msgstr "Underline (Cmd+U)"
+
+msgid "toolbar.overline"
+msgstr "Overline"
+
+msgid "toolbar.text-color"
+msgstr "Text color"
+
+msgid "toolbar.font-family"
+msgstr "Font family"
+
+msgid "toolbar.apply"
+msgstr "Apply"
+
+msgid "font-family.inherit"
+msgstr "Match email settings"
+
+msgid "font-weight.regular"
+msgstr "Regular"
+
+msgid "font-weight.bold"
+msgstr "Bold"
+
 msgid "drawer.library"
 msgstr "Library"
 

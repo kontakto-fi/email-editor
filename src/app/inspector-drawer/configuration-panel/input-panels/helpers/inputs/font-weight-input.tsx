@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { ToggleButton } from '@mui/material';
 
+import { t } from '@i18n';
+
 import RadioGroupInput from './radio-group-input';
 
 type Props = {
@@ -26,8 +28,8 @@ export default function FontWeightInput({ label, defaultValue, onChange }: Props
         onChange(fontWeight);
       }}
     >
-      <ToggleButton value="normal">Regular</ToggleButton>
-      <ToggleButton value="bold">Bold</ToggleButton>
+      <ToggleButton value="normal">{t('font-weight.regular', 'Regular')}</ToggleButton>
+      <ToggleButton value="bold">{t('font-weight.bold', 'Bold')}</ToggleButton>
     </RadioGroupInput>
   );
 }

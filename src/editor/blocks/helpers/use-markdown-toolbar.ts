@@ -1,6 +1,7 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 
 export type MarkdownToolbarSelection = { start: number; end: number };
+export type MarkdownToolbarPrompt = 'none' | 'link' | 'color' | 'font';
 
 type Options = {
   text: string;
@@ -12,7 +13,7 @@ type Options = {
 export function useMarkdownToolbar({ text, isSelected, commitText, trackSelection }: Options) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [selection, setSelection] = useState<MarkdownToolbarSelection>({ start: 0, end: 0 });
-  const [linkPrompt, setLinkPrompt] = useState(false);
+  const [activePrompt, setActivePrompt] = useState<MarkdownToolbarPrompt>('none');
   const pendingSelectionRef = useRef<MarkdownToolbarSelection | null>(null);
 
   const textRef = useRef(text);
@@ -52,7 +53,7 @@ export function useMarkdownToolbar({ text, isSelected, commitText, trackSelectio
 
   useEffect(() => {
     if (!isSelected || selection.start === selection.end) {
-      setLinkPrompt(false);
+      setActivePrompt('none');
     }
   }, [isSelected, selection.start, selection.end]);
 
@@ -76,17 +77,28 @@ export function useMarkdownToolbar({ text, isSelected, commitText, trackSelectio
 
   const handleBold = () => wrapSelection('**', '**');
   const handleItalic = () => wrapSelection('*', '*');
+  const handleUnderline = () => wrapSelection('<u>', '</u>');
+  const handleOverline = () =>
+    wrapSelection('<span style="text-decoration:overline">', '</span>');
 
-  const handleLinkRequest = () => {
+  const openPrompt = (kind: Exclude<MarkdownToolbarPrompt, 'none'>) => {
     if (selection.start === selection.end) return;
-    setLinkPrompt(true);
+    setActivePrompt(kind);
   };
+  const cancelPrompt = () => {
+    setActivePrompt('none');
+    textareaRef.current?.focus();
+  };
+
+  const handleLinkRequest = () => openPrompt('link');
+  const handleColorRequest = () => openPrompt('color');
+  const handleFontRequest = () => openPrompt('font');
 
   const handleLinkSubmit = (url: string) => {
     const start = selection.start;
     const end = selection.end;
     if (start === end) {
-      setLinkPrompt(false);
+      setActivePrompt('none');
       return;
     }
     const current = textRef.current;
@@ -98,12 +110,17 @@ export function useMarkdownToolbar({ text, isSelected, commitText, trackSelectio
     const newStart = start + wrapped.length;
     pendingSelectionRef.current = { start: newStart, end: newStart };
     commitText(newText);
-    setLinkPrompt(false);
+    setActivePrompt('none');
   };
 
-  const handleLinkCancel = () => {
-    setLinkPrompt(false);
-    textareaRef.current?.focus();
+  const handleColorSubmit = (color: string) => {
+    wrapSelection(`<span style="color: ${color}">`, '</span>');
+    setActivePrompt('none');
+  };
+
+  const handleFontSubmit = (fontFamily: string) => {
+    wrapSelection(`<span style="font-family: ${fontFamily}">`, '</span>');
+    setActivePrompt('none');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -115,13 +132,16 @@ export function useMarkdownToolbar({ text, isSelected, commitText, trackSelectio
     } else if (key === 'i') {
       e.preventDefault();
       handleItalic();
+    } else if (key === 'u') {
+      e.preventDefault();
+      handleUnderline();
     } else if (key === 'k') {
       e.preventDefault();
       handleLinkRequest();
     }
   };
 
-  const toolbarVisible = isSelected && (selection.start !== selection.end || linkPrompt);
+  const toolbarVisible = isSelected && (selection.start !== selection.end || activePrompt !== 'none');
 
   return {
     textareaRef: textareaRef as RefObject<HTMLTextAreaElement>,
@@ -130,12 +150,18 @@ export function useMarkdownToolbar({ text, isSelected, commitText, trackSelectio
     handleKeyDown,
     toolbarProps: {
       visible: toolbarVisible,
-      linkPrompt,
+      activePrompt,
       onBold: handleBold,
       onItalic: handleItalic,
+      onUnderline: handleUnderline,
+      onOverline: handleOverline,
       onLinkRequest: handleLinkRequest,
       onLinkSubmit: handleLinkSubmit,
-      onLinkCancel: handleLinkCancel,
+      onColorRequest: handleColorRequest,
+      onColorSubmit: handleColorSubmit,
+      onFontRequest: handleFontRequest,
+      onFontSubmit: handleFontSubmit,
+      onPromptCancel: cancelPrompt,
     },
   };
 }

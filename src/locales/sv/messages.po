@@ -37,6 +37,33 @@ msgstr "Kursiv (Cmd+I)"
 msgid "toolbar.link-shortcut"
 msgstr "Länk (Cmd+K)"
 
+msgid "toolbar.underline"
+msgstr "Understruken"
+
+msgid "toolbar.underline-shortcut"
+msgstr "Understruken (Cmd+U)"
+
+msgid "toolbar.overline"
+msgstr "Överstruken"
+
+msgid "toolbar.text-color"
+msgstr "Textfärg"
+
+msgid "toolbar.font-family"
+msgstr "Typsnitt"
+
+msgid "toolbar.apply"
+msgstr "Använd"
+
+msgid "font-family.inherit"
+msgstr "Följ mejlets inställningar"
+
+msgid "font-weight.regular"
+msgstr "Normal"
+
+msgid "font-weight.bold"
+msgstr "Fet"
+
 msgid "drawer.library"
 msgstr "Bibliotek"
 

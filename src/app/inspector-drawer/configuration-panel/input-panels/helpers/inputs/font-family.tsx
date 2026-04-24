@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MenuItem, TextField } from '@mui/material';
 
 import { FONT_FAMILIES } from '@editor/blocks/helpers/font-family';
+import { t } from '@i18n';
 
 const OPTIONS = FONT_FAMILIES.map((option) => (
   <MenuItem key={option.key} value={option.key} sx={{ fontFamily: option.value }}>
@@ -35,7 +36,7 @@ export function NullableFontFamily({ label, onChange, defaultValue }: NullablePr
         onChange(v === null ? null : v);
       }}
     >
-      <MenuItem value="inherit">Match email settings</MenuItem>
+      <MenuItem value="inherit">{t('font-family.inherit', 'Match email settings')}</MenuItem>
       {OPTIONS}
     </TextField>
   );

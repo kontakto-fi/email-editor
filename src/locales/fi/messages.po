@@ -37,6 +37,33 @@ msgstr "Kursivointi (Cmd+I)"
 msgid "toolbar.link-shortcut"
 msgstr "Linkki (Cmd+K)"
 
+msgid "toolbar.underline"
+msgstr "Alleviivaus"
+
+msgid "toolbar.underline-shortcut"
+msgstr "Alleviivaus (Cmd+U)"
+
+msgid "toolbar.overline"
+msgstr "Yliviivaus"
+
+msgid "toolbar.text-color"
+msgstr "Tekstin väri"
+
+msgid "toolbar.font-family"
+msgstr "Fontti"
+
+msgid "toolbar.apply"
+msgstr "Käytä"
+
+msgid "font-family.inherit"
+msgstr "Käytä viestin asetuksia"
+
+msgid "font-weight.regular"
+msgstr "Normaali"
+
+msgid "font-weight.bold"
+msgstr "Lihavoitu"
+
 msgid "drawer.library"
 msgstr "Kirjasto"
 
