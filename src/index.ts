@@ -122,7 +122,8 @@ export {
   type SavePayload,
   type ImageCallbacks,
   type LibraryImage,
-  type UploadedImage
+  type UploadedImage,
+  type CustomBlock
 } from './app';
 
 // i18n

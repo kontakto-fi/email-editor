@@ -52,6 +52,7 @@ export function Container({ style, children }: ContainerProps) {
     backgroundColor: style?.backgroundColor ?? undefined,
     border: getBorder(style),
     borderRadius: style?.borderRadius ?? undefined,
+    overflow: style?.borderRadius ? 'hidden' : undefined,
     padding: getPadding(style?.padding),
   };
   if (!children) {

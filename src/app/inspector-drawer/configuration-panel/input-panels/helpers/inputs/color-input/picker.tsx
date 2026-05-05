@@ -1,7 +1,9 @@
 import React from 'react';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 
-import { Box, Stack, SxProps } from '@mui/material';
+import { Box, Divider, Stack, SxProps } from '@mui/material';
+
+import { useEditorConfig } from '../../../../../../editor-config-context';
 
 import Swatch from './swatch';
 
@@ -74,9 +76,18 @@ type Props = {
   onChange: (v: string) => void;
 };
 export default function Picker({ value, onChange }: Props) {
+  const { favoriteColors } = useEditorConfig();
+  const hasFavorites = favoriteColors && favoriteColors.length > 0;
+
   return (
     <Stack spacing={1} sx={SX}>
       <HexColorPicker color={value} onChange={onChange} />
+      {hasFavorites && (
+        <>
+          <Swatch paletteColors={favoriteColors} value={value} onChange={onChange} />
+          <Divider />
+        </>
+      )}
       <Swatch paletteColors={DEFAULT_PRESET_COLORS} value={value} onChange={onChange} />
       <Box pt={1}>
         <HexColorInput prefixed color={value} onChange={onChange} />

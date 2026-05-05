@@ -16,6 +16,7 @@ import {
   setPersistenceEnabled
 } from '@editor/editor-context';
 import { EmailEditorProvider, useEmailEditor, EmailEditorContextType, EmailEditorProviderProps } from './context';
+import { EditorConfigProvider, type EditorConfig, type CustomBlock } from './editor-config-context';
 import { ImageCallbacksProvider, type ImageCallbacks, type LibraryImage, type UploadedImage } from './image-context';
 import type { SavePayload } from './save-payload';
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './inspector-drawer';
@@ -195,6 +196,22 @@ export interface EmailEditorProps {
    * email content and user data are never translated.
    */
   locale?: SupportedLocale | string;
+  /**
+   * Hex color strings shown as quick-pick swatches at the top of every color
+   * picker. Useful for brand colors the user reaches for often.
+   */
+  favoriteColors?: string[];
+  /**
+   * Pre-built block templates that appear in the "Add block" menu.
+   * Each entry needs a label, a block map, and the root block ID within that map.
+   */
+  customBlocks?: CustomBlock[];
+  /**
+   * Called when the user clicks "Send Test" in the toolbar. Receives the
+   * rendered HTML, plain text, and subject. The button is only shown when
+   * this callback is provided. The host application handles actual delivery.
+   */
+  onTestSend?: (payload: { html: string; text: string; subject?: string }) => void | Promise<void>;
 }
 
 function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: boolean) {
@@ -319,6 +336,9 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     deleteImage,
     theme,
     locale,
+    favoriteColors,
+    customBlocks,
+    onTestSend,
   } = props;
 
   // Activate the requested locale before any UI renders. Subsequent prop
@@ -353,12 +373,18 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
     [uploadImage, loadImages, deleteImage]
   );
 
+  const editorConfig = useMemo<EditorConfig>(
+    () => ({ favoriteColors, customBlocks, onTestSend }),
+    [favoriteColors, customBlocks, onTestSend]
+  );
+
   return (
     <I18nProvider i18n={i18n}>
     <ThemeProvider theme={theme || defaultTheme}>
             <CssBaseline />
       <div style={{ height: '100%', overflow: 'auto' }}>
         <SnackbarProvider>
+          <EditorConfigProvider config={editorConfig}>
           <ImageCallbacksProvider callbacks={imageCallbacks}>
             <EmailEditorProvider
               initialTemplate={resolvedTemplate}
@@ -385,6 +411,7 @@ const EmailEditor = forwardRef<EmailEditorRef, EmailEditorProps>((props, ref) =>
               />
             </EmailEditorProvider>
           </ImageCallbacksProvider>
+          </EditorConfigProvider>
         </SnackbarProvider>
       </div>
     </ThemeProvider>
@@ -414,4 +441,7 @@ export { htmlToEditorConfig };
 export type { SavePayload, TemplateVariable } from './save-payload';
 
 // Image-callback types so consumers can type their handlers directly.
-export type { ImageCallbacks, LibraryImage, UploadedImage } from './image-context'; 
+export type { ImageCallbacks, LibraryImage, UploadedImage } from './image-context';
+
+// Editor config types for customization props.
+export type { CustomBlock } from './editor-config-context'; 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { MonitorOutlined, PhoneIphoneOutlined } from '@mui/icons-material';
-import { Box, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
-import { Reader } from '@email-builder';
+import { MonitorOutlined, PhoneIphoneOutlined, SendOutlined } from '@mui/icons-material';
+import { Box, IconButton, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import { Reader, renderToStaticMarkup, renderToText } from '@email-builder';
 
 import EditorBlock from '@editor/editor-block';
 import {
@@ -25,6 +25,7 @@ import SaveBar from './save-bar';
 import UndoRedoButtons from './undo-redo-buttons';
 import SubjectInput from './subject-input';
 import SubjectPreview from './subject-preview';
+import { useEditorConfig } from '../editor-config-context';
 import ImageDropPasteHandler from './image-drop-paste-handler';
 import { TemplateListItem } from '../index';
 import type { SavePayload } from '../save-payload';
@@ -53,6 +54,16 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
   const selectedScreenSize = useSelectedScreenSize();
   const persistenceEnabled = usePersistenceEnabled();
   const workspaceBackground = useWorkspaceBackground();
+  const { onTestSend } = useEditorConfig();
+
+  const handleTestSend = () => {
+    if (!onTestSend) return;
+    const root = document.root;
+    const layoutData = root && root.type === 'EmailLayout' ? (root.data as any) : undefined;
+    const html = renderToStaticMarkup(document, { rootBlockId: 'root' });
+    const text = renderToText(document, { rootBlockId: 'root' });
+    onTestSend({ html, text, subject: layoutData?.subject ?? undefined });
+  };
 
   let mainBoxSx: SxProps = {
     height: '100%',
@@ -149,6 +160,13 @@ export default function TemplatePanel({ loadTemplates, saveAs, samplesDrawerEnab
                 </Tooltip>
               </ToggleButton>
             </ToggleButtonGroup>
+            {onTestSend && (
+              <Tooltip title={t('canvas.send-test', 'Send test')}>
+                <IconButton size="small" onClick={handleTestSend}>
+                  <SendOutlined fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
           </Stack>
         </Stack>
         <ToggleInspectorPanelButton />

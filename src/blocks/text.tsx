@@ -92,6 +92,17 @@ ${body}</tbody>
   paragraph(text: string) {
     return `<p style="margin:0 0 1em 0">${text}</p>`;
   }
+
+  list(body: string, ordered: boolean, start: number) {
+    const tag = ordered ? 'ol' : 'ul';
+    const type = ordered ? 'list-style-type:decimal' : 'list-style-type:disc';
+    const startAttr = ordered && start !== 1 ? ` start="${start}"` : '';
+    return `<${tag} style="margin:0 0 1em 0;padding-left:1.5em;${type}"${startAttr}>${body}</${tag}>`;
+  }
+
+  listitem(text: string) {
+    return `<li style="margin-bottom:0.25em">${text}</li>`;
+  }
 }
 
 export function renderMarkdownString(str: string): string {

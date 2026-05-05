@@ -1,8 +1,12 @@
 import React from 'react';
 
-import { Box, Menu } from '@mui/material';
+import { Box, Divider, Menu, Typography } from '@mui/material';
+import { WidgetsOutlined } from '@mui/icons-material';
 
 import { TEditorBlock } from '@editor/core';
+import { setDocument } from '@editor/editor-context';
+import { rekeyBlocks } from '@editor/blocks/helpers/block-utils';
+import { useEditorConfig, type CustomBlock } from '../../../../../app/editor-config-context';
 import { t } from '@i18n';
 
 import BlockButton from './block-button';
@@ -29,6 +33,8 @@ type BlocksMenuProps = {
   onSelect: (block: TEditorBlock) => void;
 };
 export default function BlocksMenu({ anchorEl, setAnchorEl, onSelect }: BlocksMenuProps) {
+  const { customBlocks } = useEditorConfig();
+
   const onClose = () => {
     setAnchorEl(null);
   };
@@ -38,9 +44,29 @@ export default function BlocksMenu({ anchorEl, setAnchorEl, onSelect }: BlocksMe
     setAnchorEl(null);
   };
 
+  const onCustomBlockClick = (customBlock: CustomBlock) => {
+    const { blocks: rekeyed, newRootId } = rekeyBlocks(customBlock.blocks, customBlock.rootBlockId);
+    const rootBlock = rekeyed[newRootId];
+    // Add all non-root blocks to the document first
+    const extraBlocks: Record<string, any> = {};
+    for (const [id, block] of Object.entries(rekeyed)) {
+      if (id !== newRootId) {
+        extraBlocks[id] = block;
+      }
+    }
+    if (Object.keys(extraBlocks).length > 0) {
+      setDocument(extraBlocks);
+    }
+    // Insert the root block via the normal insertion flow
+    onSelect(rootBlock);
+    setAnchorEl(null);
+  };
+
   if (anchorEl === null) {
     return null;
   }
+
+  const hasCustomBlocks = customBlocks && customBlocks.length > 0;
 
   return (
     <Menu
@@ -60,6 +86,24 @@ export default function BlocksMenu({ anchorEl, setAnchorEl, onSelect }: BlocksMe
           />
         ))}
       </Box>
+      {hasCustomBlocks && (
+        <>
+          <Divider sx={{ my: 1 }} />
+          <Typography variant="caption" sx={{ px: 2, py: 0.5, color: 'text.secondary' }}>
+            {t('block-add.custom-blocks', 'Custom blocks')}
+          </Typography>
+          <Box sx={{ p: 1, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
+            {customBlocks.map((cb, i) => (
+              <BlockButton
+                key={`custom-${i}`}
+                label={cb.label}
+                icon={cb.icon ?? <WidgetsOutlined />}
+                onClick={() => onCustomBlockClick(cb)}
+              />
+            ))}
+          </Box>
+        </>
+      )}
     </Menu>
   );
 }
