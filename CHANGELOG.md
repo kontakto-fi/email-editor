@@ -1,3 +1,10 @@
+# [2.12.0](https://github.com/kontakto-fi/email-editor/compare/v2.11.0...v2.12.0) (2026-05-05)
+
+
+### Features
+
+* add favoriteColors, customBlocks, onTestSend props and fix lists/border-radius ([fd63b64](https://github.com/kontakto-fi/email-editor/commit/fd63b6411f7819a5a3115417a57d5f1bbc9291c1)), closes [#19](https://github.com/kontakto-fi/email-editor/issues/19) [#20](https://github.com/kontakto-fi/email-editor/issues/20) [#21](https://github.com/kontakto-fi/email-editor/issues/21) [#23](https://github.com/kontakto-fi/email-editor/issues/23) [#24](https://github.com/kontakto-fi/email-editor/issues/24)
+
 # [2.11.0](https://github.com/kontakto-fi/email-editor/compare/v2.10.1...v2.11.0) (2026-04-24)
 
 
