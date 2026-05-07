@@ -1,3 +1,10 @@
+# [2.13.0](https://github.com/kontakto-fi/email-editor/compare/v2.12.0...v2.13.0) (2026-05-07)
+
+
+### Features
+
+* add OTP / code block with email-client autolink suppression ([d7e160b](https://github.com/kontakto-fi/email-editor/commit/d7e160b53b5053fbf910ac57a82d273512c12711))
+
 # [2.12.0](https://github.com/kontakto-fi/email-editor/compare/v2.11.0...v2.12.0) (2026-05-05)
 
 
