@@ -8,6 +8,7 @@ import {
   HeadingPropsSchema,
   HtmlPropsSchema,
   Image, ImagePropsSchema,
+  OtpPropsSchema,
   SignaturePropsSchema,
   Spacer, SpacerPropsSchema,
   TextPropsSchema
@@ -28,6 +29,7 @@ import EditorBlockWrapper from '@editor/blocks/helpers/block-wrappers/editor-blo
 import ButtonEditor from '@editor/blocks/button/button-editor';
 import HeadingEditor from '@editor/blocks/heading/heading-editor';
 import HtmlEditor from '@editor/blocks/html/html-editor';
+import OtpEditor from '@editor/blocks/otp/otp-editor';
 import SignatureEditor from '@editor/blocks/signature/signature-editor';
 import TextEditor from '@editor/blocks/text/text-editor';
 
@@ -97,6 +99,14 @@ const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
         </EditorBlockWrapper>
       );
     },
+  },
+  Otp: {
+    schema: OtpPropsSchema,
+    Component: (props) => (
+      <EditorBlockWrapper>
+        <OtpEditor {...props} />
+      </EditorBlockWrapper>
+    ),
   },
   Text: {
     schema: TextPropsSchema,

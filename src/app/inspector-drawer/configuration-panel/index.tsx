@@ -15,6 +15,7 @@ import EmailLayoutSidebarPanel from './input-panels/email-layout-sidebar-panel';
 import HeadingSidebarPanel from './input-panels/heading-sidebar-panel';
 import HtmlSidebarPanel from './input-panels/html-sidebar-panel';
 import ImageSidebarPanel from './input-panels/image-sidebar-panel';
+import OtpSidebarPanel from './input-panels/otp-sidebar-panel';
 import SignatureSidebarPanel from './input-panels/signature-sidebar-panel';
 import SpacerSidebarPanel from './input-panels/spacer-sidebar-panel';
 import TextSidebarPanel from './input-panels/text-sidebar-panel';
@@ -62,6 +63,8 @@ export default function ConfigurationPanel() {
       return <ImageSidebarPanel key={selectedBlockId} data={data} setData={(data) => setBlock({ type, data })} />;
     case 'EmailLayout':
       return <EmailLayoutSidebarPanel key={selectedBlockId} data={data} setData={(data) => setBlock({ type, data })} />;
+    case 'Otp':
+      return <OtpSidebarPanel key={selectedBlockId} data={data} setData={(data) => setBlock({ type, data })} />;
     case 'Spacer':
       return <SpacerSidebarPanel key={selectedBlockId} data={data} setData={(data) => setBlock({ type, data })} />;
     case 'Signature':

@@ -48,6 +48,12 @@ export {
   ImageProps
 } from './image';
 export {
+  default as Otp,
+  OtpPropsSchema,
+  OtpProps,
+  OtpPropsDefaults
+} from './otp';
+export {
   default as Signature,
   SignaturePropsSchema,
   SignatureProps,

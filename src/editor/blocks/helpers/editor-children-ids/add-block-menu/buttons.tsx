@@ -11,6 +11,7 @@ import {
   ImageOutlined,
   LibraryAddOutlined,
   NotesOutlined,
+  PinOutlined,
   SmartButtonOutlined,
   ViewColumnOutlined,
 } from '@mui/icons-material';
@@ -52,6 +53,25 @@ export const BUTTONS: TButtonProps[] = [
     }),
   },
 
+  {
+    label: 'OTP / Code',
+    icon: <PinOutlined />,
+    block: () => ({
+      type: 'Otp',
+      data: {
+        props: { code: t('default.otp', '123456') },
+        style: {
+          padding: { top: 16, bottom: 16, left: 24, right: 24 },
+          textAlign: 'center',
+          letterSpacing: 8,
+          fontSize: 32,
+          fontWeight: 'bold',
+          backgroundColor: '#F4F4F4',
+          borderRadius: 8,
+        },
+      },
+    }),
+  },
   {
     label: 'Button',
     icon: <SmartButtonOutlined />,

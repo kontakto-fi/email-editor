@@ -58,6 +58,10 @@ function renderBlock(document: TReaderDocument, blockId: string, lines: string[]
       renderHtml(data, lines);
       break;
 
+    case 'Otp':
+      renderOtp(data, lines);
+      break;
+
     case 'Divider':
       lines.push('');
       lines.push('---');
@@ -145,6 +149,13 @@ function renderAvatar(data: any, lines: string[]): void {
     lines.push(`[${alt}]`);
     lines.push('');
   }
+}
+
+function renderOtp(data: any, lines: string[]): void {
+  const code = data?.props?.code ?? '';
+  if (!code) return;
+  lines.push(code);
+  lines.push('');
 }
 
 function renderHtml(data: any, lines: string[]): void {

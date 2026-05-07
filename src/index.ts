@@ -51,6 +51,12 @@ export {
   ImagePropsSchema,
   ImageProps,
 
+  // From otp
+  Otp,
+  OtpPropsSchema,
+  OtpProps,
+  OtpPropsDefaults,
+
   // From signature
   Signature,
   SignaturePropsSchema,

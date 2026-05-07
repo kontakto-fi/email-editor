@@ -2,13 +2,14 @@ import React, { createContext, useContext } from 'react';
 import { z } from 'zod';
 
 // Import directly from our local blocks
-import { 
+import {
   Avatar, AvatarPropsSchema,
   Button, ButtonPropsSchema,
   Divider, DividerPropsSchema,
   Heading, HeadingPropsSchema,
   Html, HtmlPropsSchema,
   Image, ImagePropsSchema,
+  Otp, OtpPropsSchema,
   Signature, SignaturePropsSchema,
   Spacer, SpacerPropsSchema,
   Text, TextPropsSchema
@@ -92,6 +93,10 @@ const READER_DICTIONARY = buildBlockConfigurationDictionary({
   Image: {
     schema: ImagePropsSchema,
     Component: Image,
+  },
+  Otp: {
+    schema: OtpPropsSchema,
+    Component: Otp,
   },
   Spacer: {
     schema: SpacerPropsSchema,
