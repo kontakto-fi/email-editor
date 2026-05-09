@@ -62,7 +62,6 @@ export const BUTTONS: TButtonProps[] = [
         props: { code: t('default.otp', '123456') },
         style: {
           padding: { top: 16, bottom: 16, left: 24, right: 24 },
-          textAlign: 'center',
           letterSpacing: 8,
           fontSize: 32,
           fontWeight: 'bold',

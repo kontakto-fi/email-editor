@@ -58,7 +58,7 @@ export default function OtpEditor({ props, style }: OtpProps) {
     fontSize: style?.fontSize ?? 32,
     fontWeight: style?.fontWeight ?? 'bold',
     letterSpacing: style?.letterSpacing != null ? `${style.letterSpacing}px` : '4px',
-    textAlign: 'center',
+    textAlign: style?.textAlign ?? 'center',
     padding: '12px 20px',
     outline: 'none',
     minWidth: 120,
@@ -70,6 +70,7 @@ export default function OtpEditor({ props, style }: OtpProps) {
         ref={inputRef}
         type="text"
         value={localCode}
+        size={Math.max(localCode.length + 2, 8)}
         onChange={(e) => commit(e.target.value)}
         style={inputStyle}
         onClick={(e) => e.stopPropagation()}
