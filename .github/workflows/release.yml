@@ -32,8 +32,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Pinned to the exact versions that succeeded in the 2026-05-07 release
+      # of v2.13.0. Bump deliberately, not via floating `latest`.
       - name: Install semantic-release plugins
-        run: npm install -g semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/github @semantic-release/npm @semantic-release/release-notes-generator
+        run: npm install -g semantic-release@25.0.3 @semantic-release/changelog@6.0.3 @semantic-release/commit-analyzer@13.0.1 @semantic-release/git@10.0.1 @semantic-release/github@12.0.6 @semantic-release/npm@13.1.5 @semantic-release/release-notes-generator@14.1.0
 
       - name: Release
         env:
